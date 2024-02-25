@@ -34,10 +34,10 @@ const up = async ({ context: queryInterface }) => {
       type: DataTypes.STRING,
     },
     latitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     longitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     about: {
       type: DataTypes.TEXT,
@@ -91,14 +91,14 @@ const up = async ({ context: queryInterface }) => {
     picture_path: {
       type: DataTypes.STRING,
     },
-    DOB: {
-      type: DataTypes.DATEONLY,
+    date_of_birth: {
+      type: DataTypes.DATE,
     },
     latitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     longitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     about: {
       type: DataTypes.TEXT,
@@ -316,10 +316,10 @@ const up = async ({ context: queryInterface }) => {
       allowNull: false,
     },
     latitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
-    latitude: {
-      type: DataTypes.INTEGER,
+    longitude: {
+      type: DataTypes.FLOAT,
     },
     created_at: {
       type: DataTypes.DATE,

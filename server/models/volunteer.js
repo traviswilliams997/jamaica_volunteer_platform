@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize'
-import sequelize from '../utils/db'
+import { sequelize } from '../utils/db.js'
 
 class Volunteer extends Model {}
 
@@ -38,14 +38,14 @@ Volunteer.init(
     picturePath: {
       type: DataTypes.STRING,
     },
-    DOB: {
-      type: DataTypes.DATEONLY,
+    dateOfBirth: {
+      type: DataTypes.DATE,
     },
     latitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     longitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     about: {
       type: DataTypes.TEXT,

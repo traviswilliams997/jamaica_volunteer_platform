@@ -38,10 +38,10 @@ Agency.init(
       type: DataTypes.STRING,
     },
     latitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     longitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
     },
     about: {
       type: DataTypes.TEXT,
