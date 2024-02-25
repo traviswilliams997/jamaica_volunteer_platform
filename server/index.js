@@ -5,6 +5,8 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import { PORT } from './utils/config.js'
 import { connectToDatabase } from './utils/db.js'
+import authRoutes from './routes/auth.js'
+import { verifyToken } from './middleware/auth.js'
 
 /* CONFIGURATIONS */
 const app = express()
@@ -15,6 +17,9 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors())
 app.use(express.json())
+
+/* ROUTES */
+app.use('/api/auth', authRoutes)
 
 const start = async () => {
   await connectToDatabase()
