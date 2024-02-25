@@ -1,16 +1,26 @@
-require('dotenv').config()
-const { Sequelize } = require('sequelize')
+import express from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import helmet from 'helmet'
+import morgan from 'morgan'
+import { PORT } from './utils/config.js'
+import { connectToDatabase } from './utils/db.js'
 
-const sequelize = new Sequelize(process.env.DATABASE_URL)
+/* CONFIGURATIONS */
+const app = express()
+app.use(helmet())
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
+app.use(morgan('common'))
+app.use(bodyParser.json({ limit: '30mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
+app.use(cors())
+app.use(express.json())
 
-const main = async () => {
-  try {
-    await sequelize.authenticate()
-    console.log('Connection has been established successfully.')
-    sequelize.close()
-  } catch (error) {
-    console.error('Unable to connect to the database:', error)
-  }
+const start = async () => {
+  await connectToDatabase()
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
 }
 
-main()
+start()
