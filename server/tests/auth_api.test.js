@@ -1,4 +1,4 @@
-import { test, before, after, beforeEach, describe } from 'node:test'
+import { test, before, after, describe } from 'node:test'
 import assert from 'node:assert'
 
 import supertest from 'supertest'
@@ -76,7 +76,7 @@ describe('volunteer auth', () => {
       password: 'wongpassword',
     }
 
-    const response = await api
+    await api
       .post('/api/auth/login/volunteer')
       .send(loginCredentials)
       .expect(401)
@@ -151,7 +151,7 @@ describe('agency auth', () => {
       password: 'wrongpassword',
     }
 
-    const response = await api
+    await api
       .post('/api/auth/login/agency')
       .send(loginCredentials)
       .expect(401)
