@@ -1,4 +1,4 @@
-import { test, before, after, describe } from 'node:test'
+import { test, before, after, afterEach, describe } from 'node:test'
 import assert from 'node:assert'
 import supertest from 'supertest'
 import app from '../app.js'
@@ -39,6 +39,15 @@ describe('/api/volunteers', () => {
     await volunteerObject2.save()
     let volunteerObject3 = new Volunteer(initialVolunteersVolunteerApi[3])
     await volunteerObject3.save()
+  })
+
+  afterEach(async () => {
+    const followings = await Follower.findAll({})
+    if (followings.length !== 0) {
+      await Follower.destroy({
+        where: {},
+      })
+    }
   })
 
   test('getVolunteer returns correct volunteer', async () => {
@@ -124,37 +133,67 @@ describe('/api/volunteers', () => {
       where: { username: 'ray45' },
     })
 
+    const stacey45 = await Volunteer.findOne({
+      where: { username: 'stacey45' },
+    })
+
     let followerObject1 = new Follower({
-      followingVolunteerId: daniel33.id,
-      followedVolunteerId: ray45.id,
+      followingVolunteerId: ray45.id,
+      followedVolunteerId: daniel33.id,
     })
     await followerObject1.save()
 
+    let followerObject2 = new Follower({
+      followingVolunteerId: ray45.id,
+      followedVolunteerId: stacey45.id,
+    })
+    await followerObject2.save()
+
     const response = await api
-      .get(`/api/volunteers/${daniel33.id}/following`)
+      .get(`/api/volunteers/${ray45.id}/following`)
       .set({ Authorization: `Bearer ${token}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body[0].username, 'stacey45')
-    assert.strictEqual(response.body[1].username, 'ray45')
+    assert.strictEqual(response.body[0].username, 'daniel33')
+    assert.strictEqual(response.body[1].username, 'stacey45')
   })
 
   test('getFollowers ', async () => {
     const token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
 
+    const daniel33 = await Volunteer.findOne({
+      where: { username: 'daniel33' },
+    })
     const ray45 = await Volunteer.findOne({
       where: { username: 'ray45' },
     })
 
+    const stacey45 = await Volunteer.findOne({
+      where: { username: 'stacey45' },
+    })
+
+    let followerObject1 = new Follower({
+      followingVolunteerId: ray45.id,
+      followedVolunteerId: stacey45.id,
+    })
+    await followerObject1.save()
+
+    let followerObject2 = new Follower({
+      followingVolunteerId: daniel33.id,
+      followedVolunteerId: stacey45.id,
+    })
+    await followerObject2.save()
+
     const response = await api
-      .get(`/api/volunteers/${ray45.id}/followers`)
+      .get(`/api/volunteers/${stacey45.id}/followers`)
       .set({ Authorization: `Bearer ${token}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body[0].username, 'daniel33')
+    assert.strictEqual(response.body[0].username, 'ray45')
+    assert.strictEqual(response.body[1].username, 'daniel33')
   })
 
   after(async () => {
