@@ -4,7 +4,7 @@ import assert from 'node:assert'
 import supertest from 'supertest'
 import app from '../app.js'
 import { sequelize } from '../utils/db.js'
-import { initialVolunteers, initialAgencies } from './test_helper.js'
+import { initialVolunteersAuthApi, initialAgencies } from './test_helper.js'
 import { volunteersInDb, agenciesInDb } from './test_helper.js'
 import Volunteer from '../models/volunteer.js'
 import Agency from '../models/agency.js'
@@ -12,13 +12,23 @@ import Agency from '../models/agency.js'
 const api = supertest(app)
 
 before(async () => {
-  //await sequelize.sync()
+  //await sequelize.sync({})
+  // Volunteer.sync()
+  //Agency.sync()
 })
 
 describe('volunteer auth', () => {
   before(async () => {
-    await Volunteer.destroy({ where: {} })
-    let volunteerObject = new Volunteer(initialVolunteers[0])
+    const volunteers = await Volunteer.findAll({})
+    if (volunteers.length !== 0) {
+      await Volunteer.destroy({
+        where: {
+          admin: false,
+        },
+      })
+    }
+
+    let volunteerObject = new Volunteer(initialVolunteersAuthApi[0])
     await volunteerObject.save()
   })
 
@@ -84,13 +94,24 @@ describe('volunteer auth', () => {
   })
 
   after(async () => {
-    await Volunteer.destroy({ where: {} })
+    await Volunteer.destroy({
+      where: {
+        admin: false,
+      },
+    })
   })
 })
 
 describe('agency auth', () => {
   before(async () => {
-    await Agency.destroy({ where: {} })
+    const agencies = await Agency.findAll({})
+    if (agencies.length !== 0) {
+      await Agency.destroy({
+        where: {
+          admin: false,
+        },
+      })
+    }
     let agencyObject = new Agency(initialAgencies[0])
     await agencyObject.save()
   })
@@ -159,7 +180,11 @@ describe('agency auth', () => {
   })
 
   after(async () => {
-    await Agency.destroy({ where: {} })
+    await Agency.destroy({
+      where: {
+        admin: false,
+      },
+    })
   })
 })
 
