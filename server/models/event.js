@@ -34,7 +34,7 @@ Event.init(
     latitude: {
       type: DataTypes.FLOAT,
     },
-    latitude: {
+    longitude: {
       type: DataTypes.FLOAT,
     },
   },
