@@ -7,6 +7,6 @@ export const DATABASE_URL =
     ? process.env.TEST_DATABASE_URL
     : process.env.DATABASE_URL
 
-export const PORT = process.env.PORT || 3001
+export const PORT = process.env.PORT || 3003
 
 export const SECRET = process.env.JWT_SECRET

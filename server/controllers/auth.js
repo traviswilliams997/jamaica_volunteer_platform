@@ -14,12 +14,12 @@ export const registerVolunteer = async (req, res) => {
       email,
       phoneNumber,
       password,
+      dateOfBirth,
       picturePath,
       latitude,
       longitude,
       about,
       skills,
-      admin,
     } = req.body
 
     const saltRounds = 10
@@ -34,17 +34,19 @@ export const registerVolunteer = async (req, res) => {
       phoneNumber,
       password: passwordHash,
       picturePath,
-      dateOfBirth: Date.now(),
+      dateOfBirth,
       latitude,
       longitude,
       about,
       skills,
-      admin,
+      admin: false,
     })
 
     const savedVolunteer = await newVolunteer.save()
+
     res.status(201).json(savedVolunteer)
   } catch (err) {
+    console.log('err', err)
     res.status(500).json({ error: err.message })
   }
 }
@@ -62,7 +64,6 @@ export const registerAgency = async (req, res) => {
       latitude,
       longitude,
       about,
-      admin,
     } = req.body
 
     const saltRounds = 10
@@ -80,10 +81,11 @@ export const registerAgency = async (req, res) => {
       latitude,
       longitude,
       about,
-      admin,
+      admin: false,
     })
 
     const savedAgency = await newAgency.save()
+
     res.status(201).json(savedAgency)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -94,11 +96,11 @@ export const registerAgency = async (req, res) => {
 
 export const loginVolunteer = async (req, res) => {
   try {
-    const { username, password } = req.body
+    const { email, password } = req.body
 
     const volunteer = await Volunteer.findOne({
       where: {
-        username: username,
+        email: email,
       },
     })
 
@@ -109,7 +111,7 @@ export const loginVolunteer = async (req, res) => {
 
     if (!(volunteer && passwordCorrect)) {
       return res.status(401).json({
-        error: 'invalid username  or password',
+        error: 'Invalid username  or password',
       })
     }
 
@@ -118,7 +120,7 @@ export const loginVolunteer = async (req, res) => {
       id: volunteer.id,
     }
 
-    const token = jwt.sign(volunteerForToken, SECRET)
+    const token = jwt.sign(volunteerForToken, SECRET, { expiresIn: 60 * 60 })
     delete volunteer.password
 
     res.status(200).send({ token, username: volunteer.username })
@@ -129,11 +131,11 @@ export const loginVolunteer = async (req, res) => {
 
 export const loginAgency = async (req, res) => {
   try {
-    const { username, password } = req.body
+    const { email, password } = req.body
 
     const agency = await Agency.findOne({
       where: {
-        username: username,
+        username: email,
       },
     })
 
@@ -151,7 +153,7 @@ export const loginAgency = async (req, res) => {
       id: agency.id,
     }
 
-    const token = jwt.sign(agencyForToken, SECRET)
+    const token = jwt.sign(agencyForToken, SECRET, { expiresIn: 60 * 60 })
     delete agency.password
 
     res.status(200).send({ token, username: agency.username })

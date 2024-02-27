@@ -8,11 +8,17 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './index'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import volunteerReducer from '../reducers/volunteerReducer'
+import postReducer from '../reducers/postReducer'
+
+const rootReducer = combineReducers({
+  posts: postReducer,
+  volunteer: volunteerReducer,
+})
 
 const persistConfig = { key: 'root', storage, version: 1 }
-const persistedReducer = persistReducer(persistConfig, authReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
   reducer: persistedReducer,
