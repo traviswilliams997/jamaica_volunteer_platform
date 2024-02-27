@@ -6,6 +6,8 @@ import { sequelize } from '../utils/db.js'
 import {
   initialVolunteersVolunteerApi,
   followerRelationsInDb,
+  emptyDbTables,
+  testtoken,
 } from './test_helper.js'
 import Volunteer from '../models/volunteer.js'
 import Follower from '../models/follower.js'
@@ -17,15 +19,7 @@ before(async () => {
 
 describe('/api/volunteers', () => {
   before(async () => {
-    await Follower.destroy({
-      where: {},
-    })
-
-    await Volunteer.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Volunteer', 'Follower'])
 
     const volunteerObject1 = new Volunteer(initialVolunteersVolunteerApi[0])
     await volunteerObject1.save()
@@ -36,20 +30,15 @@ describe('/api/volunteers', () => {
   })
 
   afterEach(async () => {
-    await Follower.destroy({
-      where: {},
-    })
+    await emptyDbTables(['Follower'])
   })
 
   test('getVolunteer returns correct volunteer', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
     const { id } = await Volunteer.findOne({ where: { username: 'daniel33' } })
 
     const response = await api
       .get(`/api/volunteers/${id}`)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -57,8 +46,6 @@ describe('/api/volunteers', () => {
   })
 
   test('followUnfollow can follow ', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
     const daniel33 = await Volunteer.findOne({
       where: { username: 'daniel33' },
     })
@@ -70,7 +57,7 @@ describe('/api/volunteers', () => {
 
     await api
       .patch(`/api/volunteers/${daniel33.id}/${stacey45.id}`)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -81,9 +68,6 @@ describe('/api/volunteers', () => {
     )
   })
   test('followUnfollow can unfollow ', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
     const stacey45 = await Volunteer.findOne({
       where: { username: 'stacey45' },
     })
@@ -102,7 +86,7 @@ describe('/api/volunteers', () => {
 
     await api
       .patch(`/api/volunteers/${stacey45.id}/${ray45.id}`)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -114,9 +98,6 @@ describe('/api/volunteers', () => {
   })
 
   test('getFollowing ', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
     const daniel33 = await Volunteer.findOne({
       where: { username: 'daniel33' },
     })
@@ -142,7 +123,7 @@ describe('/api/volunteers', () => {
 
     const response = await api
       .get(`/api/volunteers/${ray45.id}/following`)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -151,9 +132,6 @@ describe('/api/volunteers', () => {
   })
 
   test('getFollowers ', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
     const daniel33 = await Volunteer.findOne({
       where: { username: 'daniel33' },
     })
@@ -179,7 +157,7 @@ describe('/api/volunteers', () => {
 
     const response = await api
       .get(`/api/volunteers/${stacey45.id}/followers`)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -188,14 +166,7 @@ describe('/api/volunteers', () => {
   })
 
   after(async () => {
-    await Follower.destroy({
-      where: {},
-    })
-    await Volunteer.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Volunteer', 'Follower'])
   })
 })
 

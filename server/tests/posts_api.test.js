@@ -3,11 +3,15 @@ import assert from 'node:assert'
 import supertest from 'supertest'
 import app from '../app.js'
 import { sequelize } from '../utils/db.js'
-import { initialVolunteersPostApi } from './test_helper.js'
-import { volunteersInDb, postsInDb, reactionsInDb } from './test_helper.js'
+import {
+  initialVolunteersPostApi,
+  postsInDb,
+  reactionsInDb,
+  emptyDbTables,
+  testtoken,
+} from './test_helper.js'
 import Volunteer from '../models/volunteer.js'
 import Post from '../models/post.js'
-import Reaction from '../models/reaction.js'
 
 const api = supertest(app)
 
@@ -17,40 +21,22 @@ before(async () => {
 
 describe('posts api', () => {
   before(async () => {
-    await Post.destroy({
-      where: {},
-    })
-    await Volunteer.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Post', 'Volunteer', 'Reaction'])
   })
+
   afterEach(async () => {
-    await Reaction.destroy({
-      where: {},
-    })
-    await Post.destroy({
-      where: {},
-    })
-    await Volunteer.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Post', 'Volunteer', 'Reaction'])
   })
 
   test('volunteer can create post', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
     const postsAtStart = await postsInDb()
 
-    const volunteerObject1 = new Volunteer(initialVolunteersPostApi[0])
-    await volunteerObject1.save()
+    const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
+    await volunteerObject.save()
+    const volunteerId = volunteerObject.dataValues.id
 
     const newPost = new Post({
-      volunteerId: volunteerObject1.dataValues.id,
+      volunteerId,
       content: 'Hello World',
       picturePath: 'hello',
     })
@@ -58,7 +44,7 @@ describe('posts api', () => {
     await api
       .post('/api/posts/')
       .send(newPost)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -72,37 +58,36 @@ describe('posts api', () => {
   })
 
   test('volunteer can get post feed', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
+    const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
+    await volunteerObject.save()
 
-    const volunteerObject2 = new Volunteer(initialVolunteersPostApi[0])
-    await volunteerObject2.save()
+    const volunteerId = volunteerObject.dataValues.id
 
     const newPost1 = new Post({
-      volunteerId: volunteerObject2.dataValues.id,
+      volunteerId,
       content: 'First Post',
       picturePath: '',
     })
     const newPost2 = new Post({
-      volunteerId: volunteerObject2.dataValues.id,
+      volunteerId,
       content: 'Second Post',
       picturePath: '',
     })
     await api
       .post('/api/posts/')
       .send(newPost1)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     await api
       .post('/api/posts/')
       .send(newPost2)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     await api
       .get('/api/posts/')
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -114,37 +99,35 @@ describe('posts api', () => {
   })
 
   test('volunteer can retrieve their posts', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
-    const volunteerObject2 = new Volunteer(initialVolunteersPostApi[0])
-    await volunteerObject2.save()
+    const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
+    await volunteerObject.save()
+    const volunteerId = volunteerObject.dataValues.id
 
     const newPost1 = new Post({
-      volunteerId: volunteerObject2.dataValues.id,
+      volunteerId,
       content: 'Skate',
       picturePath: '',
     })
     const newPost2 = new Post({
-      volunteerId: volunteerObject2.dataValues.id,
+      volunteerId,
       content: 'Board',
       picturePath: '',
     })
     await api
       .post('/api/posts/')
       .send(newPost1)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     await api
       .post('/api/posts/')
       .send(newPost2)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     const response = await api
-      .get(`/api/posts/${volunteerObject2.dataValues.id}/posts`)
-      .set({ Authorization: `Bearer ${token}` })
+      .get(`/api/posts/${volunteerId}/posts`)
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -153,16 +136,14 @@ describe('posts api', () => {
   })
 
   test('volunteer can like post', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
     const reactionsAtStart = await reactionsInDb()
 
-    const volunteerObject2 = new Volunteer(initialVolunteersPostApi[0])
-    await volunteerObject2.save()
+    const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
+    await volunteerObject.save()
+    const volunteerId = volunteerObject.dataValues.id
 
     const newPost1 = new Post({
-      volunteerId: volunteerObject2.dataValues.id,
+      volunteerId,
       content: 'Skate',
       picturePath: '',
     })
@@ -170,17 +151,18 @@ describe('posts api', () => {
     await api
       .post('/api/posts/')
       .send(newPost1)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     const lastestPost = await Post.findOne({
-      where: { volunteerId: volunteerObject2.dataValues.id },
+      where: { volunteerId },
     })
+    const lastestPostId = lastestPost.dataValues.id
 
     await api
-      .patch(`/api/posts/${lastestPost.dataValues.id}/like`)
-      .send({ volunteerId: volunteerObject2.dataValues.id })
-      .set({ Authorization: `Bearer ${token}` })
+      .patch(`/api/posts/${lastestPostId}/like`)
+      .send({ volunteerId })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -190,16 +172,14 @@ describe('posts api', () => {
   })
 
   test('volunteer can unlike post', async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
-
     const reactionsAtStart = await reactionsInDb()
 
-    const volunteerObject2 = new Volunteer(initialVolunteersPostApi[0])
-    await volunteerObject2.save()
+    const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
+    await volunteerObject.save()
+    const volunteerId = volunteerObject.dataValues.id
 
     const newPost1 = new Post({
-      volunteerId: volunteerObject2.dataValues.id,
+      volunteerId,
       content: 'Skate',
       picturePath: '',
     })
@@ -207,24 +187,25 @@ describe('posts api', () => {
     await api
       .post('/api/posts/')
       .send(newPost1)
-      .set({ Authorization: `Bearer ${token}` })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     const lastestPost = await Post.findOne({
-      where: { volunteerId: volunteerObject2.dataValues.id },
+      where: { volunteerId },
     })
+    const lastestPostId = lastestPost.dataValues.id
 
     await api
-      .patch(`/api/posts/${lastestPost.dataValues.id}/like`)
-      .send({ volunteerId: volunteerObject2.dataValues.id })
-      .set({ Authorization: `Bearer ${token}` })
+      .patch(`/api/posts/${lastestPostId}/like`)
+      .send({ volunteerId })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     await api
-      .patch(`/api/posts/${lastestPost.dataValues.id}/like`)
-      .send({ volunteerId: volunteerObject2.dataValues.id })
-      .set({ Authorization: `Bearer ${token}` })
+      .patch(`/api/posts/${lastestPostId}/like`)
+      .send({ volunteerId })
+      .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -233,19 +214,7 @@ describe('posts api', () => {
     assert.strictEqual(reactionsAtEnd.length, reactionsAtStart.length)
   })
   after(async () => {
-    await Reaction.destroy({
-      where: {},
-    })
-
-    await Post.destroy({
-      where: {},
-    })
-
-    await Volunteer.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Post', 'Volunteer', 'Reaction'])
   })
 })
 
