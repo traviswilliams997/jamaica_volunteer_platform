@@ -4,8 +4,8 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import authRoutes from './routes/auth.js'
-import volunteerRoutes from './routes/volunteer.js'
-import { verifyToken } from './middleware/auth.js'
+import volunteerRoutes from './routes/volunteers.js'
+import postRoutes from './routes/posts.js'
 
 /* CONFIGURATIONS */
 const app = express()
@@ -20,5 +20,6 @@ app.use(express.json())
 /* ROUTES */
 app.use('/api/auth', authRoutes)
 app.use('/api/volunteers', volunteerRoutes)
+app.use('/api/posts', postRoutes)
 
 export default app
