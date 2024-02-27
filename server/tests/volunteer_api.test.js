@@ -12,42 +12,33 @@ import Follower from '../models/follower.js'
 
 const api = supertest(app)
 before(async () => {
-  await sequelize.sync({})
-  // Follower.sync({ alter: true })
+  // await sequelize.sync({})
 })
 
 describe('/api/volunteers', () => {
   before(async () => {
-    const followings = await Follower.findAll({})
-    if (followings.length !== 0) {
-      await Follower.destroy({
-        where: {},
-      })
-    }
-    const volunteers = await Volunteer.findAll({})
-    if (volunteers.length !== 0) {
-      await Volunteer.destroy({
-        where: {
-          admin: false,
-        },
-      })
-    }
+    await Follower.destroy({
+      where: {},
+    })
 
-    let volunteerObject1 = new Volunteer(initialVolunteersVolunteerApi[1])
+    await Volunteer.destroy({
+      where: {
+        admin: false,
+      },
+    })
+
+    const volunteerObject1 = new Volunteer(initialVolunteersVolunteerApi[0])
     await volunteerObject1.save()
-    let volunteerObject2 = new Volunteer(initialVolunteersVolunteerApi[2])
+    const volunteerObject2 = new Volunteer(initialVolunteersVolunteerApi[1])
     await volunteerObject2.save()
-    let volunteerObject3 = new Volunteer(initialVolunteersVolunteerApi[3])
+    const volunteerObject3 = new Volunteer(initialVolunteersVolunteerApi[2])
     await volunteerObject3.save()
   })
 
   afterEach(async () => {
-    const followings = await Follower.findAll({})
-    if (followings.length !== 0) {
-      await Follower.destroy({
-        where: {},
-      })
-    }
+    await Follower.destroy({
+      where: {},
+    })
   })
 
   test('getVolunteer returns correct volunteer', async () => {
@@ -101,7 +92,7 @@ describe('/api/volunteers', () => {
       where: { username: 'ray45' },
     })
 
-    let followerObject1 = new Follower({
+    const followerObject1 = new Follower({
       followingVolunteerId: stacey45.id,
       followedVolunteerId: ray45.id,
     })
@@ -137,13 +128,13 @@ describe('/api/volunteers', () => {
       where: { username: 'stacey45' },
     })
 
-    let followerObject1 = new Follower({
+    const followerObject1 = new Follower({
       followingVolunteerId: ray45.id,
       followedVolunteerId: daniel33.id,
     })
     await followerObject1.save()
 
-    let followerObject2 = new Follower({
+    const followerObject2 = new Follower({
       followingVolunteerId: ray45.id,
       followedVolunteerId: stacey45.id,
     })
@@ -174,13 +165,13 @@ describe('/api/volunteers', () => {
       where: { username: 'stacey45' },
     })
 
-    let followerObject1 = new Follower({
+    const followerObject1 = new Follower({
       followingVolunteerId: ray45.id,
       followedVolunteerId: stacey45.id,
     })
     await followerObject1.save()
 
-    let followerObject2 = new Follower({
+    const followerObject2 = new Follower({
       followingVolunteerId: daniel33.id,
       followedVolunteerId: stacey45.id,
     })
