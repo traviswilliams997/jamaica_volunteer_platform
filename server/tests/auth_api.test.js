@@ -1,14 +1,15 @@
-import { test, before, after, describe } from 'node:test'
+import { test, before, beforeEach, after, describe } from 'node:test'
 import assert from 'node:assert'
-
 import supertest from 'supertest'
 import app from '../app.js'
 import { sequelize } from '../utils/db.js'
 import {
   initialVolunteersAuthApi,
   initialAgenciesAuthApi,
+  volunteersInDb,
+  agenciesInDb,
+  emptyDbTables,
 } from './test_helper.js'
-import { volunteersInDb, agenciesInDb } from './test_helper.js'
 import Volunteer from '../models/volunteer.js'
 import Agency from '../models/agency.js'
 
@@ -18,12 +19,8 @@ before(async () => {
   // await sequelize.sync({ force: true })
 })
 describe('volunteer auth', () => {
-  before(async () => {
-    await Volunteer.destroy({
-      where: {
-        admin: false,
-      },
-    })
+  beforeEach(async () => {
+    await emptyDbTables(['Volunteer'])
 
     const volunteerObject = new Volunteer(initialVolunteersAuthApi[0])
     await volunteerObject.save()
@@ -56,13 +53,35 @@ describe('volunteer auth', () => {
     const volunteersAtEnd = await volunteersInDb()
     assert.strictEqual(volunteersAtEnd.length, volunteersAtStart.length + 1)
 
-    const usernamesAtStart = volunteersAtStart.map((u) => u.username)
-    const usernamesAtEnd = volunteersAtEnd.map((u) => u.username)
+    const usernamesAtStart = volunteersAtStart.map((v) => v.username)
+    const usernamesAtEnd = volunteersAtEnd.map((v) => v.username)
+
     assert(!usernamesAtStart.includes('john123'))
     assert(usernamesAtEnd.includes('john123'))
   })
 
   test('volunteer can login with correct credentials', async () => {
+    const newVolunteer = {
+      username: 'john123',
+      firstName: 'john',
+      lastName: 'doe',
+      email: 'john@gmail.com',
+      phoneNumber: '(876)444-5555',
+      password: 'password',
+      picturePath: '',
+      latitude: 18.0059,
+      longitude: -76.7468,
+      about: 'Someone',
+      skills: 'Living',
+      admin: false,
+    }
+
+    await api
+      .post('/api/auth/register/volunteer')
+      .send(newVolunteer)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
     const loginCredentials = {
       username: 'john123',
       password: 'password',
@@ -91,21 +110,13 @@ describe('volunteer auth', () => {
   })
 
   after(async () => {
-    await Volunteer.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Volunteer'])
   })
 })
 
 describe('agency auth', () => {
   before(async () => {
-    await Agency.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Agency'])
 
     const agencyObject = new Agency(initialAgenciesAuthApi[0])
     await agencyObject.save()
@@ -139,6 +150,7 @@ describe('agency auth', () => {
 
     const usernamesAtStart = agenciesAtStart.map((u) => u.username)
     const usernamesAtEnd = agenciesAtEnd.map((u) => u.username)
+
     assert(!usernamesAtStart.includes('helpthepoor'))
     assert(usernamesAtEnd.includes('helpthepoor'))
 
@@ -175,11 +187,7 @@ describe('agency auth', () => {
   })
 
   after(async () => {
-    await Agency.destroy({
-      where: {
-        admin: false,
-      },
-    })
+    await emptyDbTables(['Agency'])
   })
 })
 

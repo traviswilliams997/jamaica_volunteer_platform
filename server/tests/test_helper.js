@@ -98,22 +98,7 @@ const initialVolunteersPostApi = [
     admin: false,
   },
 ]
-const initialPostsPostApi = [
-  {
-    volunteerId: 1,
-    content: 'First Post',
-    type: 'Volunteer',
-    posterPicturePath: '',
-    picturePath: '',
-  },
-  {
-    volunteerId: 2,
-    content: 'Second Post',
-    type: 'Volunteer',
-    posterPicturePath: '',
-    picturePath: '',
-  },
-]
+
 const volunteersInDb = async () => {
   const volunteers = await Volunteer.findAll({})
   return volunteers.map((volunteer) => volunteer.toJSON())
@@ -139,12 +124,45 @@ const reactionsInDb = async () => {
   return reactions.map((reaction) => reaction.toJSON())
 }
 
+const emptyDbTables = async (models) => {
+  if (models.includes('Follower')) {
+    await Follower.destroy({
+      where: {},
+    })
+  }
+  if (models.includes('Reaction')) {
+    await Reaction.destroy({
+      where: {},
+    })
+  }
+
+  if (models.includes('Post')) {
+    await Post.destroy({
+      where: {},
+    })
+  }
+  if (models.includes('Agency')) {
+    await Agency.destroy({
+      where: { admin: false },
+    })
+  }
+  if (models.includes('Volunteer')) {
+    await Volunteer.destroy({
+      where: { admin: false },
+    })
+  }
+}
+
+const testtoken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheTQ0NCIsImlkIjoxMTEsImlhdCI6MTcwODkzNjcwMX0.ToBqZx-WCY_-ZLj_OB8kF-OdpkKIZ7qJVCVKljtzpAY'
+
 export {
+  testtoken,
   initialVolunteersAuthApi,
   initialAgenciesAuthApi,
   initialVolunteersVolunteerApi,
   initialVolunteersPostApi,
-  initialPostsPostApi,
+  emptyDbTables,
   reactionsInDb,
   volunteersInDb,
   agenciesInDb,
