@@ -15,7 +15,7 @@ before(async () => {
   //await sequelize.sync({ force: true })
 })
 
-describe('volunteer logout', () => {
+describe('Volunteer refresh token api', () => {
   beforeEach(async () => {
     await emptyDbTables(['Volunteer', 'VolunteerToken'])
   })
@@ -59,7 +59,7 @@ describe('volunteer logout', () => {
     const refreshToken = tokensAfterLogin[0].token
 
     const refreshTokenResponse = await api
-      .get('/api/refresh')
+      .get('/api/refresh/volunteer')
       .set('Cookie', `jwt=${refreshToken}`)
       .expect(200)
 
