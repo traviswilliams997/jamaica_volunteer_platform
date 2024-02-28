@@ -10,6 +10,7 @@ import postRoutes from './routes/posts.js'
 import refreshRoutes from './routes/refresh.js'
 import logoutRoutes from './routes/logout.js'
 import { corsOptions } from './config/corsOptions.js'
+import { errorHandler, unknownEndpoint } from './middleware/middleware.js'
 
 /* CONFIGURATIONS */
 const app = express()
@@ -28,5 +29,8 @@ app.use('/api/volunteers', volunteerRoutes)
 app.use('/api/posts', postRoutes)
 app.use('/api/refresh', refreshRoutes)
 app.use('/api/logout', logoutRoutes)
+
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 export default app
