@@ -1,9 +1,12 @@
 import express from 'express'
-import { handleVolunteerRefreshToken } from '../controllers/volunteerRefresh.js'
+import {
+  refreshVolunteerAccessToken,
+  refreshAgencyAccessToken,
+} from '../controllers/refresh.js'
 
 const router = express.Router()
 
-router.get('/volunteer', handleVolunteerRefreshToken)
-router.get('/agency')
+router.get('/volunteer', refreshVolunteerAccessToken)
+router.get('/agency', refreshAgencyAccessToken)
 
 export default router
