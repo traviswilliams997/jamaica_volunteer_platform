@@ -1,37 +1,12 @@
-import { Volunteer, Agency, Follower, Post, Reaction } from '../models/index.js'
-
-const initialVolunteersAuthApi = [
-  {
-    username: 'jane123',
-    firstName: 'jane',
-    lastName: 'doe',
-    email: 'jane@gmail.com',
-    phoneNumber: '(876)666-7767',
-    password: '$2b$10$Np6l5ud3oK/sCxtPkLCze.jSZRAR6Og9vzSpKItE93LkGqU7ZuVpa',
-    picturePath: '',
-    latitude: 18.0059,
-    longitude: -76.7468,
-    about: 'Lady',
-    skills: 'Sports',
-    admin: false,
-  },
-]
-
-const initialAgenciesAuthApi = [
-  {
-    username: 'tutorkids',
-    name: 'tutorkids',
-    email: 'tutorkids@gmail.com',
-    phoneNumber: '(876)666-5555',
-    password: '$2b$10$ig0b628/I1btIwlbqlT4SOUalbBEzkHMBl34/SL2GTwXTMtSr7d0i',
-    type: 'tutoring',
-    picturePath: '',
-    latitude: 18.0059,
-    longitude: -76.7468,
-    about: 'we help the kids',
-    admin: false,
-  },
-]
+import {
+  Volunteer,
+  Agency,
+  Follower,
+  Post,
+  Reaction,
+  VolunteerToken,
+  AgencyToken,
+} from '../models/index.js'
 
 const initialVolunteersVolunteerApi = [
   {
@@ -120,6 +95,16 @@ const reactionsInDb = async () => {
   return reactions.map((reaction) => reaction.toJSON())
 }
 
+const volunteerTokensInDb = async () => {
+  const tokens = await VolunteerToken.findAll({})
+  return tokens.map((token) => token.toJSON())
+}
+
+const agencyTokensInDb = async () => {
+  const tokens = await AgencyToken.findAll({})
+  return tokens.map((token) => token.toJSON())
+}
+
 const emptyDbTables = async (models) => {
   console.log('EMPTYING DATABASE')
   if (models.includes('Follower')) {
@@ -148,6 +133,12 @@ const emptyDbTables = async (models) => {
       where: { admin: false },
     })
   }
+  if (models.includes('VolunteerToken')) {
+    await VolunteerToken.destroy({ where: {} })
+  }
+  if (models.includes('AgencyToken')) {
+    await AgencyToken.destroy({ where: {} })
+  }
 }
 
 const testtoken =
@@ -155,8 +146,6 @@ const testtoken =
 
 export {
   testtoken,
-  initialVolunteersAuthApi,
-  initialAgenciesAuthApi,
   initialVolunteersVolunteerApi,
   initialVolunteersPostApi,
   emptyDbTables,
@@ -165,4 +154,6 @@ export {
   agenciesInDb,
   followerRelationsInDb,
   postsInDb,
+  volunteerTokensInDb,
+  agencyTokensInDb,
 }
