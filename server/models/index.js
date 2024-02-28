@@ -20,7 +20,7 @@ import VolunteerToken from './volunteer_token.js'
 Volunteer.hasMany(Post, {
   onDelete: 'CASCADE',
 })
-Post.belongsTo(Volunteer, { foreignKey: 'created_by_volunteer_id' })
+Post.belongsTo(Volunteer)
 
 Volunteer.hasOne(VolunteerAddress, { onDelete: 'CASCADE' })
 VolunteerAddress.belongsTo(Volunteer)
@@ -32,7 +32,7 @@ AgencyReview.belongsTo(Agency, { foreignKey: 'reviewed_agency_id' })
 Volunteer.hasMany(Streak, { onDelete: 'CASCADE' })
 Streak.belongsTo(Volunteer)
 
-Post.hasMany(Comment, { onDelete: 'CASCASE' })
+Post.hasMany(Comment, { onDelete: 'CASCADE' })
 Comment.belongsTo(Post)
 Comment.belongsTo(Volunteer, { foreignKey: 'created_by_volunteer_id' })
 Comment.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
@@ -40,23 +40,23 @@ Comment.belongsTo(Comment, { foreignKey: ' comment_reply_to_id' })
 
 Post.hasMany(Reaction, { onDelete: 'CASCADE' })
 Reaction.belongsTo(Post)
-Reaction.belongsTo(Volunteer, { foreignKey: 'created_by_volunteer_id' })
-Reaction.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
+Reaction.belongsTo(Volunteer)
+Reaction.belongsTo(Agency)
 
-Volunteer.hasMany(Follower, { onDelete: 'CASCADE' })
 Follower.belongsTo(Volunteer, {
-  as: 'following_volunteers',
   foreignKey: 'following_volunteer_id',
+  as: 'followingVolunterId',
 })
+
 Follower.belongsTo(Volunteer, {
-  as: 'followed_volunteers',
   foreignKey: 'followed_volunteer_id',
+  as: 'followedVolunterId',
 })
 
 Agency.hasMany(Post, {
   onDelete: 'CASCADE',
 })
-Post.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
+Post.belongsTo(Agency)
 
 Agency.hasMany(VolunteerReview)
 VolunteerReview.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })

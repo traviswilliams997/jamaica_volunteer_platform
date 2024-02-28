@@ -15,8 +15,9 @@ import { Volunteer, Agency } from '../models/index.js'
 const api = supertest(app)
 
 before(async () => {
-  // await sequelize.sync({ force: true })
+  //await sequelize.sync({ force: true })
 })
+
 describe('volunteer auth', () => {
   beforeEach(async () => {
     await emptyDbTables(['Volunteer'])
@@ -82,7 +83,7 @@ describe('volunteer auth', () => {
       .expect('Content-Type', /application\/json/)
 
     const loginCredentials = {
-      username: 'john123',
+      email: 'john@gmail.com',
       password: 'password',
     }
 
@@ -92,12 +93,33 @@ describe('volunteer auth', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body.username, loginCredentials.username)
+    assert.strictEqual(response.body.username, newVolunteer.username)
   })
 
   test('volunteer cannot login without correct credentials', async () => {
-    const loginCredentials = {
+    const newVolunteer = {
       username: 'john123',
+      firstName: 'john',
+      lastName: 'doe',
+      email: 'john@gmail.com',
+      phoneNumber: '(876)444-5555',
+      password: 'password',
+      picturePath: '',
+      latitude: 18.0059,
+      longitude: -76.7468,
+      about: 'Someone',
+      skills: 'Living',
+      admin: false,
+    }
+
+    await api
+      .post('/api/auth/register/volunteer')
+      .send(newVolunteer)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const loginCredentials = {
+      email: 'john@gmail.com',
       password: 'wongpassword',
     }
 
@@ -114,7 +136,7 @@ describe('volunteer auth', () => {
 })
 
 describe('agency auth', () => {
-  before(async () => {
+  beforeEach(async () => {
     await emptyDbTables(['Agency'])
 
     const agencyObject = new Agency(initialAgenciesAuthApi[0])
@@ -123,7 +145,6 @@ describe('agency auth', () => {
 
   test('agency can regesister', async () => {
     const agenciesAtStart = await agenciesInDb()
-
     const newAgency = {
       username: 'helpthepoor',
       name: 'helpthepoor',
@@ -158,8 +179,28 @@ describe('agency auth', () => {
   })
 
   test('agency can login with correct credentials', async () => {
-    const loginCredentials = {
+    const newAgency = {
       username: 'helpthepoor',
+      name: 'helpthepoor',
+      email: 'helpthepoor@gmail.com',
+      phoneNumber: '(876)444-5555',
+      password: 'secret',
+      type: 'donations',
+      picturePath: '',
+      latitude: 18.0059,
+      longitude: -76.7468,
+      about: 'we help the needy',
+      admin: false,
+    }
+
+    await api
+      .post('/api/auth/register/agency')
+      .send(newAgency)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const loginCredentials = {
+      email: 'helpthepoor@gmail.com',
       password: 'secret',
     }
 
@@ -169,12 +210,31 @@ describe('agency auth', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body.username, loginCredentials.username)
+    assert.strictEqual(response.body.username, newAgency.username)
   })
 
   test('agency cannot login without correct credentials', async () => {
-    const loginCredentials = {
+    const newAgency = {
       username: 'helpthepoor',
+      name: 'helpthepoor',
+      email: 'helpthepoor@gmail.com',
+      phoneNumber: '(876)444-5555',
+      password: 'secret',
+      type: 'donations',
+      picturePath: '',
+      latitude: 18.0059,
+      longitude: -76.7468,
+      about: 'we help the needy',
+      admin: false,
+    }
+
+    await api
+      .post('/api/auth/register/agency')
+      .send(newAgency)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const loginCredentials = {
+      email: 'helpthepoor@gmail.com',
       password: 'wrongpassword',
     }
 
