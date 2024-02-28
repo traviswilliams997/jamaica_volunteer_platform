@@ -10,8 +10,7 @@ import {
   agenciesInDb,
   emptyDbTables,
 } from './test_helper.js'
-import Volunteer from '../models/index.js'
-import Agency from '../models/index.js'
+import { Volunteer, Agency } from '../models/index.js'
 
 const api = supertest(app)
 

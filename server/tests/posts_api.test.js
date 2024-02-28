@@ -10,8 +10,7 @@ import {
   emptyDbTables,
   testtoken,
 } from './test_helper.js'
-import Volunteer from '../models/index.js'
-import Post from '../models/index.js'
+import { Volunteer, Post } from '../models/index.js'
 
 const api = supertest(app)
 

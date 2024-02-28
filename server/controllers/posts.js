@@ -1,6 +1,4 @@
-import Post from '../models/index.js'
-import Volunteer from '../models/index.js'
-import Reaction from '../models/index.js'
+import { Post, Volunteer, Reaction } from '../models/index.js'
 
 /* CREATE */
 export const createVolunteerPost = async (req, res) => {
