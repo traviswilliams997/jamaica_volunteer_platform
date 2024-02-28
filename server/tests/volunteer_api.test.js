@@ -9,8 +9,7 @@ import {
   emptyDbTables,
   testtoken,
 } from './test_helper.js'
-import Volunteer from '../models/index.js'
-import Follower from '../models/index.js'
+import { Volunteer, Follower } from '../models/index.js'
 
 const api = supertest(app)
 before(async () => {
