@@ -1,8 +1,8 @@
-import axios from 'axios'
-const baseUrl = '/api/volunteers'
+import axios from '../api/axios'
+const volunteersEndpoint = '/api/volunteers'
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
+  const response = await axios.get(volunteersEndpoint)
   return response.data
 }
 

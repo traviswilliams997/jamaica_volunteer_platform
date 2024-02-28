@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux'
 import UploadWidget from '../../widgets/UploadWidget'
 import authService from '../../services/auth'
 import { logInVolunteer } from '../../reducers/volunteerReducer'
+import { setAccessToken, setAuthentication } from '../../reducers/globalReducer'
 
 const initialValuesRegister = {
   username: '',
@@ -82,12 +83,11 @@ const Form = () => {
         loginCredentials
       )
 
-      dispatch(
-        logInVolunteer({
-          volunteer: loggedInResponse.username,
-          token: loggedInResponse.token,
-        })
-      )
+      const accessToken = loggedInResponse.accessToken
+      dispatch(setAccessToken(accessToken))
+
+      dispatch(setAuthentication(true))
+      dispatch(logInVolunteer(loggedInResponse.username))
 
       onSubmitProps.resetForm()
       navigate('/home')

@@ -1,18 +1,21 @@
 import jwt from 'jsonwebtoken'
-import { SECRET } from '../utils/config.js'
+import { ACCESS_SECRET } from '../utils/config.js'
+
 export const verifyToken = async (req, res, next) => {
   try {
-    let token = req.header('Authorization')
-    if (!token) {
+    const authHeader = req.header('Authorization')
+    if (!authHeader) {
       return res.status(403).send('Access Denied')
     }
 
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length).trimLeft()
+    if (authHeader.startsWith('Bearer ')) {
+      const token = authHeader.slice(7, token.length).trimLeft()
+      jwt.verify(token, ACCESS_SECRET, (err, decoded) => {
+        if (err) return res.status(403).send('Invalid token')
+        req.user = decoded.username
+      })
+      next()
     }
-
-    req.decodedToken = jwt.verify(token, SECRET)
-    next()
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import volunteerService from '../services/volunteers'
-import postService from '../services/posts'
 
 const intialState = {
-  mode: 'light',
   currentVolunteers: null,
   volunteers: [],
   volunteerFollowers: [],
@@ -12,9 +10,6 @@ const volunteerSlice = createSlice({
   name: 'volunteer',
   initialState: intialState,
   reducers: {
-    setMode: (state) => {
-      state.mode = state.mode === 'light' ? 'dark' : 'light'
-    },
     setCurrentVolunteer: (state, action) => {
       state.currentVolunteer = action.payload
       return state
@@ -60,14 +55,12 @@ export const initializeVolunteerFollowers = () => {
 export const resetVolunteer = (user) => {
   return async (dispatch) => {
     dispatch(setCurrentVolunteer(user))
-    postService.setToken(user.token)
   }
 }
 
 export const logInVolunteer = (volunteer) => {
   return async (dispatch) => {
     dispatch(setCurrentVolunteer(volunteer))
-    postService.setToken(volunteer.token)
   }
 }
 

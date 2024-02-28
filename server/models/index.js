@@ -1,5 +1,6 @@
 import AgencyAddress from './agency_address.js'
 import AgencyReview from './agency_review.js'
+import AgencyToken from './agency_token.js'
 import Agency from './agency.js'
 import Comment from './comment.js'
 import EventAttending from './event_attending.js'
@@ -14,6 +15,7 @@ import Streak from './streak.js'
 import VolunteerReview from './volunteer_review.js'
 import VolunteerAddress from './volunteer_address.js'
 import Volunteer from './volunteer.js'
+import VolunteerToken from './volunteer_token.js'
 
 Volunteer.hasMany(Post, {
   onDelete: 'CASCADE',
@@ -85,9 +87,19 @@ Event.belongsToMany(Volunteer, {
   foreignKey: 'event_attendee_id',
 })
 
-export default {
+Volunteer.hasMany(VolunteerToken, {
+  foreignKey: 'volunteer_id',
+  onDelete: 'CASCADE',
+})
+VolunteerToken.belongsTo(Volunteer, { foreignKey: 'volunteer_id' })
+
+Agency.hasMany(AgencyToken, { foreignKey: 'agency_id', onDelete: 'CASCADE' })
+AgencyToken.belongsTo(Agency, { foreignKey: 'agency_id' })
+
+export {
   AgencyAddress,
   AgencyReview,
+  AgencyToken,
   Agency,
   Comment,
   EventAttending,
@@ -102,4 +114,5 @@ export default {
   VolunteerReview,
   VolunteerAddress,
   Volunteer,
+  VolunteerToken,
 }

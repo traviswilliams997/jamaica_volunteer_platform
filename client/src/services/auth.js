@@ -1,12 +1,13 @@
-import axios from 'axios'
-const baseUrl = '/api/auth'
+import axios from '../api/axios'
+const authEndpoint = '/api/auth'
 
 const logAgencyIn = async (credentials) => {
   const config = {
     headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
   }
   const response = await axios.post(
-    `${baseUrl}/login/agency`,
+    `${authEndpoint}/login/agency`,
     credentials,
     config
   )
@@ -16,9 +17,10 @@ const logAgencyIn = async (credentials) => {
 const logVolunteerIn = async (credentials) => {
   const config = {
     headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
   }
   const response = await axios.post(
-    `${baseUrl}/login/volunteer`,
+    `${authEndpoint}/login/volunteer`,
     credentials,
     config
   )
@@ -26,14 +28,26 @@ const logVolunteerIn = async (credentials) => {
 }
 
 const registerAgency = async (agencyObject) => {
-  const response = await axios.post(`${baseUrl}/register/agency`, agencyObject)
+  const config = {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+  }
+  const response = await axios.post(
+    `${authEndpoint}/register/agency`,
+    agencyObject,
+    config
+  )
   return response.data
 }
 
 const registerVolunteer = async (volunteerObject) => {
+  const config = {
+    headers: { 'Content-Type': 'application/json' },
+  }
   const response = await axios.post(
-    `${baseUrl}/register/volunteer`,
-    volunteerObject
+    `${authEndpoint}/register/volunteer`,
+    volunteerObject,
+    config
   )
   return response.data
 }
