@@ -4,13 +4,12 @@ import supertest from 'supertest'
 import app from '../app.js'
 import { sequelize } from '../utils/db.js'
 import {
-  initialVolunteersAuthApi,
-  initialAgenciesAuthApi,
   volunteersInDb,
   agenciesInDb,
   emptyDbTables,
+  volunteerTokensInDb,
+  agencyTokensInDb,
 } from './test_helper.js'
-import { Volunteer, Agency } from '../models/index.js'
 
 const api = supertest(app)
 
@@ -20,10 +19,7 @@ before(async () => {
 
 describe('volunteer auth', () => {
   beforeEach(async () => {
-    await emptyDbTables(['Volunteer'])
-
-    const volunteerObject = new Volunteer(initialVolunteersAuthApi[0])
-    await volunteerObject.save()
+    await emptyDbTables(['Volunteer', 'VolunteerToken'])
   })
 
   test('volunteer can regsister', async () => {
@@ -130,17 +126,54 @@ describe('volunteer auth', () => {
       .expect('Content-Type', /application\/json/)
   })
 
+  test('volunteer refresh token is created', async () => {
+    const tokensAtStart = await volunteerTokensInDb()
+
+    const newVolunteer = {
+      username: 'john123',
+      firstName: 'john',
+      lastName: 'doe',
+      email: 'john@gmail.com',
+      phoneNumber: '(876)444-5555',
+      password: 'password',
+      picturePath: '',
+      latitude: 18.0059,
+      longitude: -76.7468,
+      about: 'Someone',
+      skills: 'Living',
+      admin: false,
+    }
+
+    await api
+      .post('/api/auth/register/volunteer')
+      .send(newVolunteer)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const loginCredentials = {
+      email: 'john@gmail.com',
+      password: 'password',
+    }
+
+    const response = await api
+      .post('/api/auth/login/volunteer')
+      .send(loginCredentials)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const tokensAtEnd = await volunteerTokensInDb()
+
+    assert.strictEqual(typeof response.body.accessToken === 'string', true)
+    assert.strictEqual(tokensAtEnd.length, tokensAtStart.length + 1)
+  })
   after(async () => {
-    await emptyDbTables(['Volunteer'])
+    await emptyDbTables(['Volunteer', 'VolunteerToken'])
   })
 })
 
 describe('agency auth', () => {
   beforeEach(async () => {
     await emptyDbTables(['Agency'])
-
-    const agencyObject = new Agency(initialAgenciesAuthApi[0])
-    await agencyObject.save()
   })
 
   test('agency can regesister', async () => {
@@ -213,6 +246,46 @@ describe('agency auth', () => {
     assert.strictEqual(response.body.username, newAgency.username)
   })
 
+  test('agency refresh token is created', async () => {
+    const tokensAtStart = await agencyTokensInDb()
+
+    const newAgency = {
+      username: 'helpthepoor',
+      name: 'helpthepoor',
+      email: 'helpthepoor@gmail.com',
+      phoneNumber: '(876)444-5555',
+      password: 'secret',
+      type: 'donations',
+      picturePath: '',
+      latitude: 18.0059,
+      longitude: -76.7468,
+      about: 'we help the needy',
+      admin: false,
+    }
+
+    await api
+      .post('/api/auth/register/agency')
+      .send(newAgency)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const loginCredentials = {
+      email: 'helpthepoor@gmail.com',
+      password: 'secret',
+    }
+
+    const response = await api
+      .post('/api/auth/login/agency')
+      .send(loginCredentials)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const tokensAtEnd = await agencyTokensInDb()
+
+    assert.strictEqual(typeof response.body.accessToken === 'string', true)
+    assert.strictEqual(tokensAtEnd.length, tokensAtStart.length + 1)
+  })
+
   test('agency cannot login without correct credentials', async () => {
     const newAgency = {
       username: 'helpthepoor',
@@ -246,7 +319,7 @@ describe('agency auth', () => {
   })
 
   after(async () => {
-    await emptyDbTables(['Agency'])
+    await emptyDbTables(['Agency', 'AgencyToken'])
   })
 })
 
