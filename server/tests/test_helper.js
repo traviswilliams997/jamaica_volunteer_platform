@@ -1,8 +1,8 @@
-import Volunteer from '../models/volunteer.js'
-import Agency from '../models/agency.js'
-import Follower from '../models/follower.js'
-import Post from '../models/post.js'
-import Reaction from '../models/reaction.js'
+import Volunteer from '../models/index.js'
+import Agency from '../models/index.js'
+import Follower from '../models/index.js'
+import Post from '../models/index.js'
+import Reaction from '../models/index.js'
 
 const initialVolunteersAuthApi = [
   {
