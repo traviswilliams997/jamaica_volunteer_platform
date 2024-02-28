@@ -173,7 +173,7 @@ describe('volunteer auth', () => {
 
 describe('agency auth', () => {
   beforeEach(async () => {
-    await emptyDbTables(['Agency'])
+    await emptyDbTables(['Agency', 'AgencyToken'])
   })
 
   test('agency can regesister', async () => {
