@@ -18,6 +18,16 @@ const up = async ({ context: queryInterface }) => {
     token: {
       type: DataTypes.TEXT,
     },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
   })
 
   await queryInterface.createTable('agency_tokens', {
@@ -36,6 +46,16 @@ const up = async ({ context: queryInterface }) => {
     },
     token: {
       type: DataTypes.TEXT,
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
     },
   })
 }
