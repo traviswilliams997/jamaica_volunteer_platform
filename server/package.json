@@ -15,7 +15,8 @@
     "testAuth": "NODE_ENV=test npm test -- tests/auth_api.test.js",
     "testVolunteer": "NODE_ENV=test npm test -- tests/volunteer_api.test.js",
     "testPost": "NODE_ENV=test npm test -- tests/posts_api.test.js",
-    "testLogout": "NODE_ENV=test npm test -- tests/logout_api.test.js"
+    "testLogout": "NODE_ENV=test npm test -- tests/logout_api.test.js",
+    "testRefreshToken": "NODE_ENV=test npm test -- tests/refresh_token_api.test.js"
   },
   "keywords": [],
   "author": "",
