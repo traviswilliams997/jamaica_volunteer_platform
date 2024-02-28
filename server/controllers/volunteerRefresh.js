@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { ACCESS_SECRET, REFRESH_SECRET } from '../utils/config.js'
 import { VolunteerToken, Volunteer } from '../models/index.js'
-export const handleRefreshToken = async (req, res) => {
+export const handleVolunteerRefreshToken = async (req, res) => {
   const cookies = req.cookies
   if (!cookies?.jwt) return res.sendStatus(401)
   const refreshToken = cookies.jwt
