@@ -1,47 +1,47 @@
-import axios from 'axios'
-const baseUrl = '/api/posts'
-
-let token = null
-
-const setToken = (newToken) => {
-  token = `Bearer ${newToken}`
-}
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
+const postsEndpoint = '/api/posts'
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
+  const response = await useAxiosPrivate.get(postsEndpoint)
   return response.data
 }
 
 const getForPerson = async (id) => {
-  const response = await axios.get(`${baseUrl}/${id}`)
+  const response = await useAxiosPrivate.get(`${postsEndpoint}/${id}`)
   return response.data
 }
 
-const createNew = async (newObject) => {
+const createNew = async (newObject, token) => {
   const config = {
     headers: { Authorization: token },
   }
 
-  const response = await axios.post(baseUrl, newObject, config)
+  const response = await useAxiosPrivate.post(postsEndpoint, newObject, config)
   return response.data
 }
 
 const update = async (id, newObject) => {
-  const response = await axios.put(`${baseUrl}/${id}`, newObject)
+  const response = await useAxiosPrivate.put(
+    `${postsEndpoint}/${id}`,
+    newObject
+  )
   return response.data
 }
 const addComment = async (id, newObject) => {
-  const response = await axios.put(`${baseUrl}/${id}/comments`, newObject)
+  const response = await useAxiosPrivate.put(
+    `${postsEndpoint}/${id}/comments`,
+    newObject
+  )
   return response.data
 }
 
 const likePost = async (id) => {
-  const response = await axios.patch(`${baseUrl}/${id}/like`)
+  const response = await useAxiosPrivate.patch(`${postsEndpoint}/${id}/like`)
   return response.data
 }
 
 const remove = async (id) => {
-  await axios.delete(`${baseUrl}/${id}`)
+  await useAxiosPrivate.delete(`${postsEndpoint}/${id}`)
   return
 }
 
@@ -52,6 +52,5 @@ export default {
   addComment,
   update,
   remove,
-  setToken,
   likePost,
 }

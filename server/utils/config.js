@@ -9,4 +9,6 @@ export const DATABASE_URL =
 
 export const PORT = process.env.PORT || 3003
 
-export const SECRET = process.env.JWT_SECRET
+export const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET
+
+export const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET

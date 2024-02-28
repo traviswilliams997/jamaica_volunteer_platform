@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 
-const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$^%&*]).{8,}$/
 // min 5 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit.
 
 export const volunteerRegisterSchema = yup.object().shape({

@@ -1,8 +1,12 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { SECRET } from '../utils/config.js'
-import Volunteer from '../models/volunteer.js'
-import Agency from '../models/agency.js'
+import { ACCESS_SECRET, REFRESH_SECRET } from '../utils/config.js'
+import {
+  Volunteer,
+  Agency,
+  VolunteerToken,
+  AgencyToken,
+} from '../models/index.js'
 
 /* REGISTER */
 export const registerVolunteer = async (req, res) => {
@@ -98,32 +102,51 @@ export const loginVolunteer = async (req, res) => {
   try {
     const { email, password } = req.body
 
-    const volunteer = await Volunteer.findOne({
+    const foundVolunteer = await Volunteer.findOne({
       where: {
         email: email,
       },
     })
 
     const passwordCorrect =
-      volunteer === null
+      foundVolunteer === null
         ? false
-        : await bcrypt.compare(password, volunteer.password)
+        : await bcrypt.compare(password, foundVolunteer.password)
 
-    if (!(volunteer && passwordCorrect)) {
+    if (!(foundVolunteer && passwordCorrect)) {
       return res.status(401).json({
         error: 'Invalid username  or password',
       })
     }
 
     const volunteerForToken = {
-      username: volunteer.username,
-      id: volunteer.id,
+      username: foundVolunteer.username,
+      id: foundVolunteer.id,
     }
+    delete foundVolunteer.password
 
-    const token = jwt.sign(volunteerForToken, SECRET, { expiresIn: 60 * 60 })
-    delete volunteer.password
+    const accessToken = jwt.sign(volunteerForToken, ACCESS_SECRET, {
+      expiresIn: '600s',
+    })
+    const refreshToken = jwt.sign(volunteerForToken, REFRESH_SECRET, {
+      expiresIn: '1d',
+    })
 
-    res.status(200).send({ token, username: volunteer.username })
+    const newToken = new VolunteerToken({
+      volunteerId: foundVolunteer.id,
+      username: foundVolunteer.username,
+      token: refreshToken,
+    })
+    await newToken.save()
+
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'None',
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    })
+
+    res.status(200).send({ accessToken, username: foundVolunteer.username })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -133,30 +156,51 @@ export const loginAgency = async (req, res) => {
   try {
     const { email, password } = req.body
 
-    const agency = await Agency.findOne({
+    const foundAgency = await Agency.findOne({
       where: {
-        username: email,
+        email: email,
       },
     })
 
     const passwordCorrect =
-      agency === null ? false : await bcrypt.compare(password, agency.password)
+      foundAgency === null
+        ? false
+        : await bcrypt.compare(password, foundAgency.password)
 
-    if (!(agency && passwordCorrect)) {
+    if (!(foundAgency && passwordCorrect)) {
       return res.status(401).json({
         error: 'invalid username  or password',
       })
     }
 
     const agencyForToken = {
-      username: agency.username,
-      id: agency.id,
+      username: foundAgency.username,
+      id: foundAgency.id,
     }
+    delete foundAgency.password
 
-    const token = jwt.sign(agencyForToken, SECRET, { expiresIn: 60 * 60 })
-    delete agency.password
+    const accessToken = jwt.sign(agencyForToken, ACCESS_SECRET, {
+      expiresIn: '600s',
+    })
+    const refreshToken = jwt.sign(agencyForToken, REFRESH_SECRET, {
+      expiresIn: '1d',
+    })
 
-    res.status(200).send({ token, username: agency.username })
+    const newToken = new AgencyToken({
+      agencyId: foundAgency.id,
+      username: foundAgency.username,
+      token: refreshToken,
+    })
+    await newToken.save()
+
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'None',
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    })
+
+    res.status(200).send({ accessToken, username: foundAgency.username })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

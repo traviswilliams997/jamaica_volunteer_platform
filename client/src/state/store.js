@@ -11,10 +11,12 @@ import storage from 'redux-persist/lib/storage'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import volunteerReducer from '../reducers/volunteerReducer'
 import postReducer from '../reducers/postReducer'
+import globalReducer from '../reducers/globalReducer'
 
 const rootReducer = combineReducers({
   posts: postReducer,
   volunteer: volunteerReducer,
+  global: globalReducer,
 })
 
 const persistConfig = { key: 'root', storage, version: 1 }
