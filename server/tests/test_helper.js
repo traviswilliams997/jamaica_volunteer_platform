@@ -121,6 +121,7 @@ const reactionsInDb = async () => {
 }
 
 const emptyDbTables = async (models) => {
+  console.log('EMPTYING DATABASE')
   if (models.includes('Follower')) {
     await Follower.destroy({
       where: {},
