@@ -1,5 +1,5 @@
-import Volunteer from '../models/volunteer.js'
-import Follower from '../models/follower.js'
+import Volunteer from '../models/index.js'
+import Follower from '../models/index.js'
 
 /*READ */
 export const getVolunteer = async (req, res) => {

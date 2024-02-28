@@ -1,6 +1,6 @@
-import Post from '../models/post.js'
-import Volunteer from '../models/volunteer.js'
-import Reaction from '../models/reaction.js'
+import Post from '../models/index.js'
+import Volunteer from '../models/index.js'
+import Reaction from '../models/index.js'
 
 /* CREATE */
 export const createVolunteerPost = async (req, res) => {
