@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import volunteerService from '../services/volunteers'
 
 const intialState = {
-  currentVolunteers: null,
+  currentVolunteer: null,
   volunteers: [],
   volunteerFollowers: [],
 }

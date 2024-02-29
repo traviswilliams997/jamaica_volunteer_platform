@@ -16,7 +16,7 @@ export const createVolunteerPost = async (req, res) => {
     await newPost.save()
     res.status(201).json()
   } catch (err) {
-    res.status(409).json({ message: err.message })
+    res.status(409).json({ message: err })
   }
 }
 
@@ -26,7 +26,7 @@ export const getFeedPosts = async (req, res) => {
     const posts = await Post.findAll({})
     res.status(200).json(posts)
   } catch (err) {
-    res.status(404).json({ message: err.message })
+    res.status(404).json({ message: err })
   }
 }
 
@@ -39,7 +39,7 @@ export const getVolunteerPosts = async (req, res) => {
 
     res.status(200).json(formmattedPosts)
   } catch (err) {
-    res.status(404).json({ message: err.message })
+    res.status(404).json({ message: err })
   }
 }
 
@@ -70,6 +70,6 @@ export const likePost = async (req, res) => {
 
     res.status(200).json()
   } catch (err) {
-    res.status(404).json({ message: err.message })
+    res.status(404).json({ message: err })
   }
 }

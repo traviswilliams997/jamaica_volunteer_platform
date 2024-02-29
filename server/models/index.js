@@ -88,10 +88,9 @@ Event.belongsToMany(Volunteer, {
 })
 
 Volunteer.hasMany(VolunteerToken, {
-  foreignKey: 'volunteer_id',
   onDelete: 'CASCADE',
 })
-VolunteerToken.belongsTo(Volunteer, { foreignKey: 'volunteer_id' })
+VolunteerToken.belongsTo(Volunteer)
 
 Agency.hasMany(AgencyToken, { foreignKey: 'agency_id', onDelete: 'CASCADE' })
 AgencyToken.belongsTo(Agency, { foreignKey: 'agency_id' })

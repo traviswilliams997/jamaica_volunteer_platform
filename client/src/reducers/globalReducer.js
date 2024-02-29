@@ -27,7 +27,7 @@ export const { toggleMode, setToken, setAuth } = globalSlice.actions
 
 export const setAccessToken = (newToken) => {
   return async (dispatch) => {
-    dispatch(setToken(`Bearer ${newToken}`))
+    dispatch(setToken(newToken))
   }
 }
 
