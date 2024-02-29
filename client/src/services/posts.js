@@ -1,52 +1,53 @@
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
 const postsEndpoint = '/api/posts'
 
-const getAll = async () => {
-  const response = await useAxiosPrivate.get(postsEndpoint)
+const getAll = async (customAxios) => {
+  const response = await customAxios.get(postsEndpoint)
   return response.data
 }
 
-const getForPerson = async (id) => {
-  const response = await useAxiosPrivate.get(`${postsEndpoint}/${id}`)
+const getPost = async (postId, customAxios) => {
+  const response = await customAxios.get(`${postsEndpoint}/${postId}`)
   return response.data
 }
 
-const createNew = async (newObject, token) => {
-  const config = {
-    headers: { Authorization: token },
-  }
-
-  const response = await useAxiosPrivate.post(postsEndpoint, newObject, config)
+const getForPerson = async (id, customAxios) => {
+  const response = await customAxios.get(`${postsEndpoint}/${id}`)
   return response.data
 }
 
-const update = async (id, newObject) => {
-  const response = await useAxiosPrivate.put(
-    `${postsEndpoint}/${id}`,
-    newObject
-  )
+const createNew = async (newObject, customAxios) => {
+  const response = await customAxios.post(postsEndpoint, newObject)
   return response.data
 }
-const addComment = async (id, newObject) => {
-  const response = await useAxiosPrivate.put(
+
+const update = async (id, newObject, customAxios) => {
+  const response = await customAxios.put(`${postsEndpoint}/${id}`, newObject)
+  return response.data
+}
+const addComment = async (id, newObject, customAxios) => {
+  const response = await customAxios.put(
     `${postsEndpoint}/${id}/comments`,
     newObject
   )
   return response.data
 }
 
-const likePost = async (id) => {
-  const response = await useAxiosPrivate.patch(`${postsEndpoint}/${id}/like`)
+const likePost = async (postId, volunteerId, customAxios) => {
+  const response = await customAxios.patch(
+    `${postsEndpoint}/${postId}/like`,
+    volunteerId
+  )
   return response.data
 }
 
-const remove = async (id) => {
-  await useAxiosPrivate.delete(`${postsEndpoint}/${id}`)
+const remove = async (id, customAxios) => {
+  await customAxios.delete(`${postsEndpoint}/${id}`)
   return
 }
 
 export default {
   getAll,
+  getPost,
   getForPerson,
   createNew,
   addComment,

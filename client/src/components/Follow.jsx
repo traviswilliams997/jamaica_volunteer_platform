@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import UserImage from './UserImage'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
+import { setVolunteersYouFollow } from '../reducers/volunteerReducer'
+import volunteerService from '../services/volunteers'
 
 const FollowedByYou = ({ followedId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch()
@@ -14,6 +15,7 @@ const FollowedByYou = ({ followedId, name, subtitle, userPicturePath }) => {
   const volunteersYouFollow = useSelector(
     (state) => state.volunteer.volunteersYouFollow
   )
+
   const axiosPrivate = useAxiosPrivate()
 
   const { palette } = useTheme()
@@ -22,11 +24,13 @@ const FollowedByYou = ({ followedId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main
   const medium = palette.neutral.medium
 
-  const isfollowedByYou = volunteersYouFollow.find((vol) => vol.id === vol)
+  const isfollowedByYou = true // volunteersYouFollow.find((vol) => vol.id === vol)
 
   const followUnfollow = async () => {
-    const response = await axiosPrivate.get(
-      `/api/volunteers/${id}/${followedId}`
+    const response = await volunteerService.followUnfollow(
+      id,
+      followedId,
+      axiosPrivate
     )
     const data = await response.json()
     dispatch(setVolunteersYouFollow({ followedByYou: data }))

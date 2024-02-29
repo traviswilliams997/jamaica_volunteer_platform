@@ -49,11 +49,7 @@ const MyPostWidget = ({ posterPicturePath }) => {
       picturePath: pictureRef.current.url,
     }
 
-    const postResponse = await axiosPrivate.post(`/api/post/`, postObject)
-
-    const post = await postResponse.json()
-
-    dispatch(createPost({ post }))
+    dispatch(createPost(postObject, axiosPrivate))
     setPost('')
   }
 

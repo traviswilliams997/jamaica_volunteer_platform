@@ -12,8 +12,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
+import volunteerService from '../../services/volunteers'
 const UserWidget = ({ volunteerId, picturePath }) => {
-  const [user, setUser] = useState(null)
+  const [volunteer, setVolunteer] = useState(null)
   const [followers, setFollowers] = useState([])
   const [followings, setFollowings] = useState([])
 
@@ -26,18 +27,22 @@ const UserWidget = ({ volunteerId, picturePath }) => {
   const main = palette.neutral.main
 
   const getVolunteer = async () => {
-    const response = await axiosPrivate.get(`/api/volunteers/${volunteerId}`)
-    setUser(response.data)
+    const response = await volunteerService.getById(volunteerId, axiosPrivate)
+    setVolunteer(response)
   }
   const getVolunteersYouFollow = async () => {
-    const response = await axiosPrivate.get(
-      `/api/volunteers/${volunteerId}/following`
+    const response = await volunteerService.getFollowing(
+      volunteerId,
+      axiosPrivate
     )
+
     setFollowings(response.data)
   }
+
   const getFollowers = async () => {
-    const response = await axiosPrivate.get(
-      `/api/volunteers/${volunteerId}/followers`
+    const response = await volunteerService.getFollowers(
+      volunteerId,
+      axiosPrivate
     )
     setFollowers(response.data)
   }
@@ -50,7 +55,7 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!user) {
+  if (!volunteer) {
     return null
   }
 
@@ -62,7 +67,7 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     dateOfBirth,
     about,
     skills,
-  } = user
+  } = volunteer
 
   return (
     <WidgetWrapper>

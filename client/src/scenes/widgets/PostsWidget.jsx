@@ -15,21 +15,16 @@ const PostsWidget = ({ volunteerId, isProfile = false }) => {
   const axiosPrivate = useAxiosPrivate()
 
   const getPosts = async () => {
-    const response = await axiosPrivate.post(`/api/post/`)
-    const data = await response.json()
-    dispatch(initializePosts({ posts: data }))
+    dispatch(initializePosts(axiosPrivate))
   }
 
-  const getVolunteersPosts = async () => {
-    const response = await axiosPrivate.post(`/api/post/${volunteerId}/posts`)
-    const data = await response.json()
-
-    dispatch(initializeVolunteerPost({ posts: data }))
+  const getVolunteerPosts = async () => {
+    dispatch(initializeVolunteerPost(axiosPrivate, volunteerId))
   }
 
   useEffect(() => {
     if (isProfile) {
-      getVolunteersPosts()
+      getVolunteerPosts()
     } else {
       getPosts()
     }
@@ -56,14 +51,13 @@ const PostsWidget = ({ volunteerId, isProfile = false }) => {
           <PostWidget
             key={id}
             postId={id}
-            postUserId={volunteerId}
+            posterId={volunteerId}
             name={`${posterFirstName} ${posterLastName}`}
             content={content}
             type={type}
-            location={location}
             picturePath={picturePath}
             posterPicturePath={posterPicturePath}
-            likes={reactions}
+            reactions={reactions}
             comments={comments}
           />
         )

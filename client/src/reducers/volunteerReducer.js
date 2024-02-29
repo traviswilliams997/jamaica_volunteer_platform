@@ -21,7 +21,7 @@ const volunteerSlice = createSlice({
     appendVolunteer(state, action) {
       state.volunteers.push(action.payload)
     },
-    setYourFollowings: (state, action) => {
+    setFollowing: (state, action) => {
       if (state.volunteer) {
         state.volunteersYouFollow = action.payload.followedByYou
       } else {
@@ -36,23 +36,27 @@ export const {
   setVolunteers,
   appendVolunteer,
   setCurrentVolunteer,
-  setYourFollowings,
+  setFollowing,
 } = volunteerSlice.actions
 
-export const initializeVolunteers = (volunteers) => {
+export const initializeVolunteers = (customAxios) => {
   return async (dispatch) => {
+    const volunteers = await volunteerService.getAll(customAxios)
+
     dispatch(setVolunteers(volunteers))
   }
 }
 
-export const setVolunteersYouFollow = (newObj) => {
+export const setVolunteersYouFollow = (id, customAxios) => {
   return async (dispatch) => {
-    dispatch(setVolunteersYouFollow(newObj))
+    const volunteersYouFollow = await volunteerService.getFollowing(customAxios)
+
+    dispatch(setVolunteersYouFollow(volunteersYouFollow))
   }
 }
-export const resetVolunteer = (user) => {
+export const resetVolunteer = (volunteer) => {
   return async (dispatch) => {
-    dispatch(setCurrentVolunteer(user))
+    dispatch(setCurrentVolunteer(volunteer))
   }
 }
 
