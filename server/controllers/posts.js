@@ -169,8 +169,6 @@ export const getPost = async (req, res) => {
       reactions: post.reactions,
     }
 
-    console.log('INDIDE', formattedPost)
-
     res.status(200).json(formattedPost)
   } catch (err) {
     res.status(404).json({ message: err })

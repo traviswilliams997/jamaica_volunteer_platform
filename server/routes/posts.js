@@ -2,6 +2,7 @@ import express from 'express'
 import {
   createVolunteerPost,
   getFeedPosts,
+  getPost,
   getVolunteerPosts,
   likePost,
 } from '../controllers/posts.js'
@@ -12,7 +13,7 @@ const router = express.Router()
 router.post('/', verifyToken, createVolunteerPost)
 /*READ */
 router.get('/', verifyToken, getFeedPosts)
-router.get('/:id', verifyToken, getFeedPosts)
+router.get('/:id', verifyToken, getPost)
 
 router.get('/:volunteerId/posts', verifyToken, getVolunteerPosts)
 
