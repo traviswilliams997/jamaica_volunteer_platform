@@ -50,8 +50,7 @@ export const registerVolunteer = async (req, res) => {
 
     res.status(201).json(savedVolunteer)
   } catch (err) {
-    console.log('err', err)
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }
 
@@ -92,7 +91,7 @@ export const registerAgency = async (req, res) => {
 
     res.status(201).json(savedAgency)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }
 
@@ -146,9 +145,26 @@ export const loginVolunteer = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     })
 
-    res.status(200).send({ accessToken, username: foundVolunteer.username })
+    const responseObj = {
+      accessToken,
+      id: foundVolunteer.id,
+      username: foundVolunteer.username,
+      email: foundVolunteer.email,
+      firstName: foundVolunteer.firstName,
+      lastName: foundVolunteer.lastName,
+      phoneNumber: foundVolunteer.phoneNumber,
+      dateOfBirth: foundVolunteer.dateOfBirth,
+      about: foundVolunteer.about,
+      admin: foundVolunteer.admin,
+      skills: foundVolunteer.skills,
+      picturePath: foundVolunteer.picturePath,
+      latitude: foundVolunteer.latitude,
+      longitude: foundVolunteer.longitude,
+    }
+
+    res.status(200).send(responseObj)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }
 
@@ -202,6 +218,6 @@ export const loginAgency = async (req, res) => {
 
     res.status(200).send({ accessToken, username: foundAgency.username })
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }

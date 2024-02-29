@@ -12,7 +12,7 @@ import { volunteerRegisterSchema, loginSchema } from '../../schemas'
 import { Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import UploadWidget from '../../widgets/UploadWidget'
+import UploadWidget from '../widgets/UploadWidget'
 import authService from '../../services/auth'
 import { logInVolunteer } from '../../reducers/volunteerReducer'
 import { setAccessToken, setAuthentication } from '../../reducers/globalReducer'
@@ -68,7 +68,7 @@ const Form = () => {
       onSubmitProps.resetForm()
       setPageType('login')
     } catch (err) {
-      console.log('error', err.message)
+      console.log('error', err)
     }
   }
 
@@ -87,7 +87,7 @@ const Form = () => {
       dispatch(setAccessToken(accessToken))
 
       dispatch(setAuthentication(true))
-      dispatch(logInVolunteer(loggedInResponse.username))
+      dispatch(logInVolunteer(loggedInResponse))
 
       onSubmitProps.resetForm()
       navigate('/home')

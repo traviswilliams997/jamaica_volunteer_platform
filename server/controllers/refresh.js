@@ -9,6 +9,7 @@ import {
 
 export const refreshVolunteerAccessToken = async (req, res) => {
   const cookies = req.cookies
+
   if (!cookies?.jwt) return res.sendStatus(401)
   const refreshToken = cookies.jwt
 
@@ -18,7 +19,9 @@ export const refreshVolunteerAccessToken = async (req, res) => {
       model: Volunteer,
     },
   })
+
   const foundVolunteer = responseToken[0].volunteer
+  console.log('found', foundVolunteer)
   if (!foundVolunteer) return res.sendStatus(403)
 
   jwt.verify(refreshToken, REFRESH_SECRET, (err, decoded) => {
@@ -30,7 +33,7 @@ export const refreshVolunteerAccessToken = async (req, res) => {
       ACCESS_SECRET,
       { expiresIn: '600s' }
     )
-    res.json({ accessToken })
+    return res.json({ accessToken })
   })
 }
 
