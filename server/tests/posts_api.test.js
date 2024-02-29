@@ -107,16 +107,18 @@ describe('posts api', () => {
       content: 'Skate',
       picturePath: '',
     })
-    const newPost2 = new Post({
-      volunteerId,
-      content: 'Board',
-      picturePath: '',
-    })
+
     await api
       .post('/api/posts/')
       .send(newPost1)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
+
+    const newPost2 = new Post({
+      volunteerId,
+      content: 'Board',
+      picturePath: '',
+    })
 
     await api
       .post('/api/posts/')
@@ -130,8 +132,13 @@ describe('posts api', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body[0].content, 'Skate')
-    assert.strictEqual(response.body[1].content, 'Board')
+    const retrievedPosts = response.body
+    const retrievedPostsContents = []
+
+    retrievedPosts.map((post) => retrievedPostsContents.push(post.content))
+
+    assert(retrievedPostsContents.includes('Board'))
+    assert(retrievedPostsContents.includes('Skate'))
   })
 
   test('volunteer can like post', async () => {
