@@ -1,7 +1,10 @@
-import React from 'react'
-
+import UserWidget from '../../widgets/UserWidget'
 const ProfilePage = () => {
-  return <div>ProfilePage</div>
+  return (
+    <div>
+      <UserWidget volunteerId={2} picturePath={'sss'} />
+    </div>
+  )
 }
 
 export default ProfilePage
