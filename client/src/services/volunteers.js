@@ -12,17 +12,22 @@ const getById = async (id, customAxios) => {
 }
 
 const getFollowing = async (id, customAxios) => {
-  const response = await customAxios.get(`${volunteersEndpoint}/${id}`)
+  const response = await customAxios.get(
+    `${volunteersEndpoint}/${id}/following`
+  )
+
   return response.data
 }
 
 const getFollowers = async (id, customAxios) => {
-  const response = await customAxios.get(`${volunteersEndpoint}/${id}`)
+  const response = await customAxios.get(
+    `${volunteersEndpoint}/${id}/followers`
+  )
   return response.data
 }
 
 const followUnfollow = async (id, follwedId, customAxios) => {
-  const response = await customAxios.get(
+  const response = await customAxios.patch(
     `${volunteersEndpoint}/${id}/${follwedId}`
   )
   return response.data

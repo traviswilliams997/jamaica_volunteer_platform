@@ -8,14 +8,15 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { setVolunteersYouFollow } from '../reducers/volunteerReducer'
 import volunteerService from '../services/volunteers'
 
-const FollowedByYou = ({ followedId, name, subtitle, userPicturePath }) => {
+const FollowedByYou = ({
+  followedId,
+  name,
+  subtitle,
+  volunteerPicturePath,
+}) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { id } = useSelector((state) => state.volunteer.currentVolunteer)
-  const volunteersYouFollow = useSelector(
-    (state) => state.volunteer.volunteersYouFollow
-  )
-
   const axiosPrivate = useAxiosPrivate()
 
   const { palette } = useTheme()
@@ -26,20 +27,21 @@ const FollowedByYou = ({ followedId, name, subtitle, userPicturePath }) => {
 
   const isfollowedByYou = true // volunteersYouFollow.find((vol) => vol.id === vol)
 
-  const followUnfollow = async () => {
+  const followUnfollow = async (id, followedId) => {
     const response = await volunteerService.followUnfollow(
       id,
       followedId,
       axiosPrivate
     )
     const data = await response.json()
+
     dispatch(setVolunteersYouFollow({ followedByYou: data }))
   }
 
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
-        <UserImage image={userPicturePath} size="55px" />
+        <UserImage image={volunteerPicturePath} size="55px" />
         <Box
           onClick={() => {
             navigate(`/profile/${followedId}`)
@@ -65,7 +67,7 @@ const FollowedByYou = ({ followedId, name, subtitle, userPicturePath }) => {
         </Box>
       </FlexBetween>
       <IconButton
-        onClick={() => followUnfollow()}
+        onClick={() => followUnfollow(id, followedId)}
         sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
       >
         {isfollowedByYou ? (

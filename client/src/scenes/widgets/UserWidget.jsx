@@ -5,20 +5,22 @@ import {
   WorkOutlineOutlined,
   BuildOutlined,
 } from '@mui/icons-material'
-import { Box, Typography, Divider, useTheme } from '@mui/material'
+import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone'
+import { Box, Typography, Divider, useTheme, IconButton } from '@mui/material'
 import UserImage from '../../components/UserImage'
 import FlexBetween from '../../components/FlexBetween'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-
+import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
 import volunteerService from '../../services/volunteers'
 const UserWidget = ({ volunteerId, picturePath }) => {
   const [volunteer, setVolunteer] = useState(null)
   const [followers, setFollowers] = useState([])
   const [followings, setFollowings] = useState([])
-
+  const dispatch = useDispatch()
   const { palette } = useTheme()
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
@@ -48,10 +50,15 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     setFollowers(response.data)
   }
 
+  const getFollowedByVolunteer = async () => {
+    dispatch(setVolunteersYouFollow(volunteerId, axiosPrivate))
+  }
+
   useEffect(() => {
     getVolunteer()
     getVolunteersYouFollow()
     getFollowers()
+    getFollowedByVolunteer
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -73,6 +80,7 @@ const UserWidget = ({ volunteerId, picturePath }) => {
       >
         <FlexBetween gap="1rem">
           <UserImage image={picturePath} />
+
           <Box>
             <Typography
               variant="h4"
@@ -118,15 +126,24 @@ const UserWidget = ({ volunteerId, picturePath }) => {
       {/* THIRD ROW*/}
       <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who has viewed your profile</Typography>
+          <Typography color={medium}>Hours Volunteered</Typography>
           <Typography color={medium} fontWeight="500">
             1000
           </Typography>
         </FlexBetween>
         <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
+          <Typography color={medium}>Karma</Typography>
           <Typography color={medium} fontWeight="500">
             200000
+          </Typography>
+        </FlexBetween>
+        <FlexBetween>
+          <Box display="flex">
+            <Typography color={medium}>Current streak</Typography>
+            <WhatshotTwoToneIcon fontSize="medium" sx={{ color: main }} />
+          </Box>
+          <Typography color={medium} fontWeight="500">
+            10 Weeks
           </Typography>
         </FlexBetween>
       </Box>
