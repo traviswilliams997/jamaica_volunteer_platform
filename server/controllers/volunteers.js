@@ -4,17 +4,19 @@ import { Volunteer, Follower } from '../models/index.js'
 export const getVolunteer = async (req, res) => {
   try {
     const { id } = req.params
+
     const volunteer = await Volunteer.findByPk(id)
 
-    res.status(200).json(volunteer)
+    return res.status(200).json(volunteer.dataValues)
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err })
   }
 }
 
 export const getVolunteerFollowing = async (req, res) => {
   try {
     const { id } = req.params
+
     const followings = await Follower.findAll({
       where: { followingVolunteerId: id },
     })
@@ -23,13 +25,18 @@ export const getVolunteerFollowing = async (req, res) => {
         Volunteer.findByPk(dataValues.followedVolunteerId)
       )
     )
-    const peopleYouFollowFormatted = peopleYouFollow.map(
-      (people) => people.dataValues
-    )
 
-    res.status(200).json(peopleYouFollowFormatted)
+    if (peopleYouFollow.length !== 0) {
+      const peopleYouFollowFormatted = peopleYouFollow.map(
+        (people) => people.dataValues
+      )
+
+      return res.status(200).json(peopleYouFollowFormatted)
+    } else {
+      return res.status(200).json(peopleYouFollow)
+    }
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err })
   }
 }
 
@@ -50,7 +57,7 @@ export const getVolunteerFollowers = async (req, res) => {
 
     res.status(200).json(yourFollowersFormatted)
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err })
   }
 }
 
@@ -84,6 +91,6 @@ export const followUnfollow = async (req, res) => {
 
     res.status(200).json()
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err })
   }
 }

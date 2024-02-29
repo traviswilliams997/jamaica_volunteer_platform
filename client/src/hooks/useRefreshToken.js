@@ -7,14 +7,14 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     try {
-      const response = await axios.get('/api/refresh', {
+      const response = await axios.get('/api/refresh/volunteer', {
         withCredentials: true,
       })
 
       dispatch(setAccessToken(response.data.accessToken))
       return response.data.accessToken
     } catch (err) {
-      console.log('Error', err.message)
+      console.log('Error', err)
     }
   }
   return refresh

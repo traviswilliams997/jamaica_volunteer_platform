@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef } from 'react'
 import { Box, Button, Typography, useTheme } from '@mui/material'
-import FlexBetween from '../components/FlexBetween'
+import FlexBetween from '../../components/FlexBetween'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 
 const UploadWidget = ({ pictureRef }) => {
