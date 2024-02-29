@@ -23,21 +23,19 @@ const UserWidget = ({ volunteerId, picturePath }) => {
   const medium = palette.neutral.medium
   const main = palette.neutral.main
 
+  const getVolunteer = async () => {
+    const response = await axiosPrivate.get(`/api/volunteers/${volunteerId}`)
+    setUser(response.data)
+  }
+  const getFollowers = async () => {
+    const response = await axiosPrivate.get(
+      `/api/volunteers/${volunteerId}/following`
+    )
+    setFollowers(response.data)
+  }
+
   useEffect(() => {
-    const getVolunteer = async () => {
-      const response = await axiosPrivate.get(`/api/volunteers/${volunteerId}`)
-      setUser(response.data)
-    }
-
-    const getFollowers = async () => {
-      const response = await axiosPrivate.get(
-        `/api/volunteers/${volunteerId}/following`
-      )
-      setFollowers(response.data)
-    }
-
     getVolunteer()
-
     getFollowers()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

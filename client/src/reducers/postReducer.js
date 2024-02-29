@@ -1,27 +1,45 @@
 import { createSlice } from '@reduxjs/toolkit'
 import postService from '../services/posts'
 
+const intialState = {
+  aVolunteersPosts: [],
+  allPosts: [],
+}
+
 const postSlice = createSlice({
   name: 'posts',
-  initialState: [],
+  initialState: intialState,
   reducers: {
     appendPost(state, action) {
-      state.push(action.payload.post)
+      state.allPosts.push(action.payload.post)
     },
     setPosts(state, action) {
+      return action.payload.posts
+    },
+    appendAVolunteersPost(state, action) {
+      state.allPosts.push(action.payload.post)
+    },
+    setAVolunteersPosts(state, action) {
       return action.payload.posts
     },
   },
 })
 
-export const { appendPost, setPosts } = postSlice.actions
+export const {
+  appendPost,
+  setPosts,
+  appendAVolunteersPost,
+  setAVolunteersPosts,
+} = postSlice.actions
 
-export const initializePosts = () => {
+export const initializePosts = (posts) => {
   return async (dispatch) => {
-    const posts = await postService.getAll()
-    // const sortedPosts = [...posts]
-    // sortedPosts.sort((a, b) => b.likes - a.likes)
     dispatch(setPosts(posts))
+  }
+}
+export const initializeVolunteerPost = (posts) => {
+  return async (dispatch) => {
+    dispatch(setAVolunteersPosts(posts))
   }
 }
 export const createPost = (newObject) => {

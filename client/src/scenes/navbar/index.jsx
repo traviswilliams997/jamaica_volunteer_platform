@@ -152,7 +152,7 @@ const Navbar = () => {
             gap="3rem"
           >
             <IconButton
-              onClick={() => dispatch(setMode())}
+              onClick={() => dispatch(toggleDarkLightMode())}
               sx={{ fontSize: '25px' }}
             >
               {theme.palette.mode === 'dark' ? (
@@ -185,7 +185,7 @@ const Navbar = () => {
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>
+                <MenuItem onClick={() => dispatch(logOutVolunteer())}>
                   Log Out
                 </MenuItem>
               </Select>
