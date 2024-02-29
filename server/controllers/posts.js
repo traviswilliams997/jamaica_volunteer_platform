@@ -133,6 +133,50 @@ export const getVolunteerPosts = async (req, res) => {
   }
 }
 
+export const getPost = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const post = await Post.findByPk(id, {
+      include: [
+        {
+          model: Comment,
+          attributes: ['content'],
+        },
+        {
+          model: Volunteer,
+          attributes: ['firstName', 'lastName', 'picturePath', 'username'],
+        },
+        {
+          model: Reaction,
+        },
+      ],
+    })
+
+    const formattedPost = {
+      id: post.id,
+      volunteerId: post.volunteerId,
+      type: post.type,
+      content: post.content,
+      picturePath: post.picturePath,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      posterPicturePath: post.volunteer.picturePath,
+      posterFirstName: post.volunteer.firstName,
+      posterLastName: post.volunteer.lastName,
+      posterUsername: post.volunteer.username,
+      comments: post.comments,
+      reactions: post.reactions,
+    }
+
+    console.log('INDIDE', formattedPost)
+
+    res.status(200).json(formattedPost)
+  } catch (err) {
+    res.status(404).json({ message: err })
+  }
+}
+
 /* UPDATE */
 export const likePost = async (req, res) => {
   try {
