@@ -30,7 +30,6 @@ const MyPostWidget = ({ posterPicturePath }) => {
   const { id } = useSelector((state) => state.volunteer.currentVolunteer)
   const isNonMobileScreens = useMediaQuery('(min-width: 1000px)')
   const [isImage, setIsImage] = useState(false)
-  const [image, setImage] = useState(null)
   const [post, setPost] = useState('')
   const axiosPrivate = useAxiosPrivate()
   const { palette } = useTheme()
@@ -55,7 +54,6 @@ const MyPostWidget = ({ posterPicturePath }) => {
     const post = await postResponse.json()
 
     dispatch(createPost({ post }))
-    setImage(null)
     setPost('')
   }
 

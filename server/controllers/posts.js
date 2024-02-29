@@ -1,16 +1,16 @@
-import { Post, Volunteer, Reaction } from '../models/index.js'
+import { Post, Reaction } from '../models/index.js'
 
 /* CREATE */
 export const createVolunteerPost = async (req, res) => {
   try {
-    const { volunteerId, content, picturePath } = req.body.dataValues
-    const volunteer = await Volunteer.findByPk(volunteerId)
+    const { volunteerId, content, picturePath, posterPicturePath } =
+      req.body.dataValues
 
     const newPost = new Post({
       volunteerId,
       content,
       type: 'Volunteer',
-      posterPicturePath: volunteer.picturePath,
+      posterPicturePath: posterPicturePath,
       picturePath: picturePath,
     })
     await newPost.save()

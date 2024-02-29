@@ -221,11 +221,7 @@ const Form = () => {
                   sx={{ gridColumn: 'span 4' }}
                 />
 
-                <UploadWidget
-                  setFieldValue={setFieldValue}
-                  values={values}
-                  pictureRef={pictureRef}
-                />
+                <UploadWidget pictureRef={pictureRef} />
               </>
             )}
 
