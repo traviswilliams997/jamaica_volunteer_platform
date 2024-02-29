@@ -4,7 +4,7 @@ import volunteerService from '../services/volunteers'
 const intialState = {
   currentVolunteer: null,
   volunteers: [],
-  volunteerFollowers: [],
+  volunteersYouFollow: [],
 }
 const volunteerSlice = createSlice({
   name: 'volunteer',
@@ -21,9 +21,9 @@ const volunteerSlice = createSlice({
     appendVolunteer(state, action) {
       state.volunteers.push(action.payload)
     },
-    setFollowers: (state, action) => {
+    setFollowing: (state, action) => {
       if (state.volunteer) {
-        state.volunteerFollowers = action.payload
+        state.volunteersYouFollow = action.payload.followedByYou
       } else {
         console.error('This volunteer has no followers')
       }
@@ -36,25 +36,27 @@ export const {
   setVolunteers,
   appendVolunteer,
   setCurrentVolunteer,
-  setFollowers,
+  setFollowing,
 } = volunteerSlice.actions
 
-export const initializeVolunteers = () => {
+export const initializeVolunteers = (customAxios) => {
   return async (dispatch) => {
-    const volunteers = await volunteerService.getAll()
+    const volunteers = await volunteerService.getAll(customAxios)
+
     dispatch(setVolunteers(volunteers))
   }
 }
 
-export const initializeVolunteerFollowers = () => {
+export const setVolunteersYouFollow = (id, customAxios) => {
   return async (dispatch) => {
-    const volunteerFollowers = await volunteerService.getAll()
-    dispatch(setFollowers(volunteerFollowers))
+    const volunteersYouFollow = await volunteerService.getFollowing(customAxios)
+
+    dispatch(setVolunteersYouFollow(volunteersYouFollow))
   }
 }
-export const resetVolunteer = (user) => {
+export const resetVolunteer = (volunteer) => {
   return async (dispatch) => {
-    dispatch(setCurrentVolunteer(user))
+    dispatch(setCurrentVolunteer(volunteer))
   }
 }
 

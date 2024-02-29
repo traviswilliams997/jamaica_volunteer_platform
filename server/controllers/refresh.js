@@ -21,7 +21,6 @@ export const refreshVolunteerAccessToken = async (req, res) => {
   })
 
   const foundVolunteer = responseToken[0].volunteer
-  console.log('found', foundVolunteer)
   if (!foundVolunteer) return res.sendStatus(403)
 
   jwt.verify(refreshToken, REFRESH_SECRET, (err, decoded) => {

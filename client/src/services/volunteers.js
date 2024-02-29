@@ -1,30 +1,37 @@
-import axios from '../api/axios'
-
 const volunteersEndpoint = '/api/volunteers'
 
-const getAll = async () => {
-  const response = await axios.get(volunteersEndpoint)
+const getAll = async (customAxios) => {
+  const response = await customAxios.get(volunteersEndpoint)
+
   return response.data
 }
 
-const getVolunteer = async (id) => {
-  const response = await axios(`${volunteersEndpoint}/${id}`)
+const getById = async (id, customAxios) => {
+  const response = await customAxios.get(`${volunteersEndpoint}/${id}`)
   return response.data
 }
 
-const getVolunteerFollowing = async (id) => {
-  const response = await axios.get(`${volunteersEndpoint}/${id}`)
+const getFollowing = async (id, customAxios) => {
+  const response = await customAxios.get(`${volunteersEndpoint}/${id}`)
   return response.data
 }
 
-const getVolunteerFollowers = async (id) => {
-  const response = await axios.get(`${volunteersEndpoint}/${id}`)
+const getFollowers = async (id, customAxios) => {
+  const response = await customAxios.get(`${volunteersEndpoint}/${id}`)
+  return response.data
+}
+
+const followUnfollow = async (id, follwedId, customAxios) => {
+  const response = await customAxios.get(
+    `${volunteersEndpoint}/${id}/${follwedId}`
+  )
   return response.data
 }
 
 export default {
   getAll,
-  getVolunteer,
-  getVolunteerFollowing,
-  getVolunteerFollowers,
+  getById,
+  getFollowing,
+  getFollowers,
+  followUnfollow,
 }

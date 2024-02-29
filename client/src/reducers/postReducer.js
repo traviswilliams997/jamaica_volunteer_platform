@@ -17,7 +17,7 @@ const postSlice = createSlice({
       return action.payload.posts
     },
     appendAVolunteersPost(state, action) {
-      state.allPosts.push(action.payload.post)
+      state.aVolunteersPosts.push(action.payload.post)
     },
     setAVolunteersPosts(state, action) {
       return action.payload.posts
@@ -32,19 +32,23 @@ export const {
   setAVolunteersPosts,
 } = postSlice.actions
 
-export const initializePosts = (posts) => {
+export const initializePosts = (customAxios) => {
   return async (dispatch) => {
+    const posts = await postService.getAll(customAxios)
+
     dispatch(setPosts(posts))
   }
 }
-export const initializeVolunteerPost = (posts) => {
+export const initializeVolunteerPost = (id, customAxios) => {
   return async (dispatch) => {
+    const posts = await postService.getForPerson(id, customAxios)
+
     dispatch(setAVolunteersPosts(posts))
   }
 }
-export const createPost = (newObject) => {
+export const createPost = (newObject, customAxios) => {
   return async (dispatch) => {
-    const newPost = await postService.createNew(newObject)
+    const newPost = await postService.createNew(newObject, customAxios)
     dispatch(appendPost(newPost))
   }
 }
@@ -58,30 +62,29 @@ export const removePost = (id) => {
   }
 }
 
-export const incrementLikes = (id) => {
+export const likeUnlikePost = (postId, volunteerId, customAxios) => {
   return async (dispatch) => {
-    const posts = await postService.getAll()
+    const posts = await postService.getAll(customAxios)
 
     try {
-      const posts = await posts.find((posts) => posts.id === id)
-      const changedPost = { ...posts, likes: posts.likes + 1 }
-      const returnedPost = await postService.update(id, changedPost)
+      await postService.likePost(postId, volunteerId, customAxios)
+
+      const updatedPost = await postService.getPost(postId, customAxios)
+
       const newPosts = posts.map((post) =>
-        post.id !== id ? posts : returnedPost
+        post.id !== postId ? post : updatedPost
       )
-      //  const sortedPosts= [...newPosts]
-      // sortedPosts.sort((a, b) => b.likes - a.likes)
-      dispatch(setPosts(newPosts))
+
+      dispatch(setPosts({ posts: newPosts }))
     } catch (error) {
-      //    likesErrorHandling(error)
-      dispatch(setPosts(posts.filter((post) => post.id !== id)))
+      console.log('error', error)
     }
   }
 }
 
-export const addComment = (id, commentContent) => {
+export const addComment = (id, commentContent, customAxios) => {
   return async (dispatch) => {
-    const posts = await postService.getAll()
+    const posts = await postService.getAll(customAxios)
     const comment = {
       content: commentContent,
     }
@@ -93,8 +96,7 @@ export const addComment = (id, commentContent) => {
       const newPosts = posts.map((post) =>
         post.id !== id ? post : returnedPost
       )
-      // const sortedPosts = [...newPosts]
-      //sortedPosts.sort((a, b) => b.likes - a.likes)
+
       dispatch(setPosts(newPosts))
     } catch (error) {
       dispatch(setPosts(posts.filter((post) => post.id !== id)))
