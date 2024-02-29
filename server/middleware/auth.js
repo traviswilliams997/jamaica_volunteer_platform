@@ -6,19 +6,19 @@ export const verifyToken = async (req, res, next) => {
     const authHeader = req.header('Authorization')
 
     if (!authHeader) {
-      return res.status(403).send('Access Denied')
+      return res.status(401).send('Access Denied')
     }
 
     if (authHeader.startsWith('Bearer ')) {
       const token = authHeader.slice(7, authHeader.length).trimLeft()
 
       jwt.verify(token, ACCESS_SECRET, (err, decoded) => {
-        if (err) return res.status(403).send('Invalid token')
+        if (err) return res.sendStatus(403)
         req.user = decoded.username
+        next()
       })
-      next()
     }
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    return res.status(500).json({ error: err })
   }
 }
