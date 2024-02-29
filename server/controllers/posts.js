@@ -1,4 +1,4 @@
-import { Post, Reaction } from '../models/index.js'
+import { Post, Reaction, Comment, Volunteer, Agency } from '../models/index.js'
 
 /* CREATE */
 export const createVolunteerPost = async (req, res) => {
@@ -23,8 +23,65 @@ export const createVolunteerPost = async (req, res) => {
 /* READ */
 export const getFeedPosts = async (req, res) => {
   try {
-    const posts = await Post.findAll({})
-    res.status(200).json(posts)
+    const posts = await Post.findAll({
+      where: {},
+      include: [
+        {
+          model: Comment,
+          attributes: ['content'],
+        },
+        {
+          model: Volunteer,
+          attributes: ['firstName', 'lastName', 'picturePath', 'username'],
+        },
+        {
+          model: Agency,
+          attributes: ['name', 'picturePath', 'username'],
+        },
+        {
+          model: Reaction,
+        },
+      ],
+    })
+
+    const formattedPosts = posts.map((post) => {
+      if (post.type === 'Volunteer') {
+        const formattedPost = {
+          id: post.id,
+          volunteerId: post.volunteerId,
+          type: post.type,
+          content: post.content,
+          picturePath: post.picturePath,
+          createdAt: post.createdAt,
+          updatedAt: post.updatedAt,
+          posterPicturePath: post.volunteer.picturePath,
+          posterFirstName: post.volunteer.firstName,
+          posterLastName: post.volunteer.lastName,
+          posterUsername: post.volunteer.username,
+          comments: post.comments,
+          reactions: post.reactions,
+        }
+        return formattedPost
+      } else {
+        const formattedPost = {
+          id: post.id,
+          agencyId: post.agencyId,
+          type: post.type,
+          content: post.content,
+          picturePath: post.picturePath,
+          createdAt: post.createdAt,
+          updatedAt: post.updatedAt,
+          posterPicturePath: post.agency.picturePath,
+          posterName: post.agency.name,
+          posterUsername: post.agency.username,
+          comments: post.comments,
+          reactions: post.reactions,
+        }
+        return formattedPost
+      }
+    })
+
+    res.status(200).json(formattedPosts)
   } catch (err) {
     res.status(404).json({ message: err })
   }
@@ -34,10 +91,43 @@ export const getVolunteerPosts = async (req, res) => {
   try {
     const { volunteerId } = req.params
 
-    const posts = await Post.findAll({ where: { volunteerId: volunteerId } })
-    const formmattedPosts = posts.map((post) => post.dataValues)
+    const posts = await Post.findAll({
+      where: { volunteerId: volunteerId },
+      include: [
+        {
+          model: Comment,
+          attributes: ['content'],
+        },
+        {
+          model: Volunteer,
+          attributes: ['firstName', 'lastName', 'picturePath', 'username'],
+        },
+        {
+          model: Reaction,
+        },
+      ],
+    })
 
-    res.status(200).json(formmattedPosts)
+    const formattedPosts = posts.map((post) => {
+      const formattedPost = {
+        id: post.id,
+        volunteerId: post.volunteerId,
+        type: post.type,
+        content: post.content,
+        picturePath: post.picturePath,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        posterPicturePath: post.volunteer.picturePath,
+        posterFirstName: post.volunteer.firstName,
+        posterLastName: post.volunteer.lastName,
+        posterUsername: post.volunteer.username,
+        comments: post.comments,
+        reactions: post.reactions,
+      }
+      return formattedPost
+    })
+
+    res.status(200).json(formattedPosts)
   } catch (err) {
     res.status(404).json({ message: err })
   }
