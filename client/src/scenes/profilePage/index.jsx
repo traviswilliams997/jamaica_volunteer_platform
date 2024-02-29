@@ -1,4 +1,4 @@
-import UserWidget from '../../widgets/UserWidget'
+import UserWidget from '../widgets/UserWidget'
 const ProfilePage = () => {
   return (
     <div>

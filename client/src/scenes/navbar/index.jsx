@@ -22,15 +22,17 @@ import {
 } from '@mui/icons-material'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { setMode, setLogout } from 'state'
+import { toggleDarkLightMode } from '../../reducers/globalReducer'
+import { logOutVolunteer } from '../../reducers/volunteerReducer'
+
 import { useNavigate } from 'react-router-dom'
-import FlexBetween from 'components/FlexBetween'
+import FlexBetween from '../../components/FlexBetween'
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const volunteer = useSelector((state) => state.user)
+  const volunteer = useSelector((state) => state.volunteer.currentVolunteer)
   const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
 
   const theme = useTheme()
@@ -76,7 +78,7 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isNonMobileScreen ? (
         <FlexBetween gap="2rem">
-          <IconButton onClick={() => dispatch(setMode())}>
+          <IconButton onClick={() => dispatch(toggleDarkLightMode())}>
             {theme.palette.mode === 'dark' ? (
               <DarkMode sx={{ fontSize: '25px' }} />
             ) : (
@@ -107,7 +109,9 @@ const Navbar = () => {
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>LogOut</MenuItem>
+              <MenuItem onClick={() => dispatch(logOutVolunteer())}>
+                LogOut
+              </MenuItem>
             </Select>
           </FormControl>
         </FlexBetween>
