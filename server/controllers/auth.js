@@ -145,7 +145,24 @@ export const loginVolunteer = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     })
 
-    res.status(200).send({ accessToken, username: foundVolunteer.username })
+    const responseObj = {
+      accessToken,
+      id: foundVolunteer.id,
+      username: foundVolunteer.username,
+      email: foundVolunteer.email,
+      firstName: foundVolunteer.firstName,
+      lastName: foundVolunteer.lastName,
+      phoneNumber: foundVolunteer.phoneNumber,
+      dateOfBirth: foundVolunteer.dateOfBirth,
+      about: foundVolunteer.about,
+      admin: foundVolunteer.admin,
+      skills: foundVolunteer.skills,
+      picturePath: foundVolunteer.picturePath,
+      latitude: foundVolunteer.latitude,
+      longitude: foundVolunteer.longitude,
+    }
+
+    res.status(200).send(responseObj)
   } catch (err) {
     res.status(500).json({ error: err })
   }
