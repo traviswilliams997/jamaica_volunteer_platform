@@ -3,6 +3,7 @@ import {
   EditOutlined,
   LocationOnOutlined,
   WorkOutlineOutlined,
+  BuildOutlined,
 } from '@mui/icons-material'
 import { Box, Typography, Divider, useTheme } from '@mui/material'
 import UserImage from '../../components/UserImage'
@@ -59,15 +60,8 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     return null
   }
 
-  const {
-    firstName,
-    lastName,
-    phoneNumber,
-    picture,
-    dateOfBirth,
-    about,
-    skills,
-  } = volunteer
+  const { firstName, lastName, phoneNumber, dateOfBirth, about, skills } =
+    volunteer
 
   return (
     <WidgetWrapper>
@@ -78,11 +72,7 @@ const UserWidget = ({ volunteerId, picturePath }) => {
         onClick={() => navigate(`/profile/${volunteerId}`)}
       >
         <FlexBetween gap="1rem">
-          <UserImage
-            image={
-              'https://www.google.com/search?sca_esv=a1ed381ddb91d5f7&sca_upv=1&sxsrf=ACQVn091AAmhIYQsnk6ZISq9jb712feF4Q:1709160722939&q=image&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjXsITuj8-EAxXiTDABHWpZA9MQ0pQJegQIDRAB&biw=1660&bih=966&dpr=1.5#imgrc=aVgXecnmQ_f1MM'
-            }
-          />
+          <UserImage image={picturePath} />
           <Box>
             <Typography
               variant="h4"
@@ -115,8 +105,12 @@ const UserWidget = ({ volunteerId, picturePath }) => {
           <Typography color={medium}>{phoneNumber}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
+          <WorkOutlineOutlined fontSize="medium" sx={{ color: main }} />
           <Typography color={medium}>{about}</Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+          <BuildOutlined fontSize="medium" sx={{ color: main }} />
+          <Typography color={medium}>{skills}</Typography>
         </Box>
       </Box>
       <Divider />
