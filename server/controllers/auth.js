@@ -50,8 +50,7 @@ export const registerVolunteer = async (req, res) => {
 
     res.status(201).json(savedVolunteer)
   } catch (err) {
-    console.log('err', err)
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }
 
@@ -92,7 +91,7 @@ export const registerAgency = async (req, res) => {
 
     res.status(201).json(savedAgency)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }
 
@@ -148,7 +147,7 @@ export const loginVolunteer = async (req, res) => {
 
     res.status(200).send({ accessToken, username: foundVolunteer.username })
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }
 
@@ -202,6 +201,6 @@ export const loginAgency = async (req, res) => {
 
     res.status(200).send({ accessToken, username: foundAgency.username })
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err })
   }
 }
