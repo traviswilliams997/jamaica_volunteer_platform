@@ -29,7 +29,7 @@ const FollowedByYou = ({ followedId, name, subtitle, userPicturePath }) => {
       `/api/volunteers/${id}/${followedId}`
     )
     const data = await response.json()
-    dispatch(setVolunteersYouFollow({ friends: data }))
+    dispatch(setVolunteersYouFollow({ followedByYou: data }))
   }
 
   return (

@@ -7,6 +7,7 @@ import {
 import PostWidget from './PostWidget'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
+// eslint-disable-next-line react/prop-types
 const PostsWidget = ({ volunteerId, isProfile = false }) => {
   const dispatch = useDispatch()
   const posts = useSelector((state) => state.posts.allPosts)
@@ -43,27 +44,26 @@ const PostsWidget = ({ volunteerId, isProfile = false }) => {
         ({
           id,
           volunteerId,
-          agencyId,
-          firstName,
-          lastName,
+          posterFirstName,
+          posterLastName,
           content,
           type,
           picturePath,
           posterPicturePath,
-          likes,
+          reactions,
           comments,
         }) => (
           <PostWidget
             key={id}
             postId={id}
             postUserId={volunteerId}
-            name={`${firstName} ${lastName}`}
+            name={`${posterFirstName} ${posterLastName}`}
             content={content}
             type={type}
             location={location}
             picturePath={picturePath}
             posterPicturePath={posterPicturePath}
-            likes={likes}
+            likes={reactions}
             comments={comments}
           />
         )

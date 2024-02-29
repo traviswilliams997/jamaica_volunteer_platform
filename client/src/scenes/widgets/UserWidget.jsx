@@ -15,6 +15,8 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 const UserWidget = ({ volunteerId, picturePath }) => {
   const [user, setUser] = useState(null)
   const [followers, setFollowers] = useState([])
+  const [followings, setFollowings] = useState([])
+
   const { palette } = useTheme()
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
@@ -27,15 +29,22 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     const response = await axiosPrivate.get(`/api/volunteers/${volunteerId}`)
     setUser(response.data)
   }
-  const getFollowers = async () => {
+  const getVolunteersYouFollow = async () => {
     const response = await axiosPrivate.get(
       `/api/volunteers/${volunteerId}/following`
+    )
+    setFollowings(response.data)
+  }
+  const getFollowers = async () => {
+    const response = await axiosPrivate.get(
+      `/api/volunteers/${volunteerId}/followers`
     )
     setFollowers(response.data)
   }
 
   useEffect(() => {
     getVolunteer()
+    getVolunteersYouFollow()
     getFollowers()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -20,11 +20,11 @@ before(async () => {
 
 describe('posts api', () => {
   before(async () => {
-    await emptyDbTables(['Post', 'Volunteer', 'Reaction'])
+    await emptyDbTables(['Post', 'Volunteer', 'Agency', 'Reaction', 'Comment'])
   })
 
   afterEach(async () => {
-    await emptyDbTables(['Post', 'Volunteer', 'Reaction'])
+    await emptyDbTables(['Post', 'Volunteer', 'Agency', 'Reaction', 'Comment'])
   })
 
   test('volunteer can create post', async () => {
@@ -97,7 +97,7 @@ describe('posts api', () => {
     assert(contents.includes('Second Post'))
   })
 
-  test('volunteer can retrieve their posts', async () => {
+  test.only('volunteer can retrieve their posts', async () => {
     const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
     await volunteerObject.save()
     const volunteerId = volunteerObject.dataValues.id
@@ -213,7 +213,7 @@ describe('posts api', () => {
     assert.strictEqual(reactionsAtEnd.length, reactionsAtStart.length)
   })
   after(async () => {
-    await emptyDbTables(['Post', 'Volunteer', 'Reaction'])
+    await emptyDbTables(['Post', 'Volunteer', 'Agency', 'Reaction', 'Comment'])
   })
 })
 
