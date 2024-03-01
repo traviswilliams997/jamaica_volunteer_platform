@@ -52,6 +52,7 @@ const PostsWidget = ({ volunteerId, isProfile = false }) => {
           posterPicturePath,
           reactions,
           comments,
+          createdAt,
         }) => (
           <PostWidget
             key={id}
@@ -60,6 +61,7 @@ const PostsWidget = ({ volunteerId, isProfile = false }) => {
             name={`${posterFirstName} ${posterLastName}`}
             content={content}
             type={type}
+            createdAt={createdAt}
             picturePath={picturePath}
             posterPicturePath={posterPicturePath}
             reactions={reactions}

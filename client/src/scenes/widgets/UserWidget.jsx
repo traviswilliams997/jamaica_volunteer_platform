@@ -1,11 +1,12 @@
 import {
   ManageAccountsOutlined,
   EditOutlined,
-  LocationOnOutlined,
   WorkOutlineOutlined,
   BuildOutlined,
 } from '@mui/icons-material'
 import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone'
+import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined'
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import { Box, Typography, Divider, useTheme, IconButton } from '@mui/material'
 import UserImage from '../../components/UserImage'
 import FlexBetween from '../../components/FlexBetween'
@@ -109,11 +110,11 @@ const UserWidget = ({ volunteerId, picturePath }) => {
       {/* SECOND ROW*/}
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
+          <PhoneIphoneOutlinedIcon fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{phoneNumber}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <WorkOutlineOutlined fontSize="medium" sx={{ color: main }} />
+          <DescriptionOutlinedIcon fontSize="medium" sx={{ color: main }} />
           <Typography color={medium}>{about}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
@@ -157,7 +158,12 @@ const UserWidget = ({ volunteerId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
+            <img
+              height="50px"
+              width="50px"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/512px-Logo_of_Twitter.svg.png"
+              alt="twitter"
+            />
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
@@ -170,7 +176,12 @@ const UserWidget = ({ volunteerId, picturePath }) => {
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
+            <img
+              height="50px"
+              width="50px"
+              src="https://store-images.s-microsoft.com/image/apps.31120.9007199266245564.44dc7699-748d-4c34-ba5e-d04eb48f7960.bc4172bd-63f0-455a-9acd-5457f44e4473"
+              alt="linkedin"
+            />
             <Box>
               <Typography color={main} fontWeight="500">
                 Linkedin
