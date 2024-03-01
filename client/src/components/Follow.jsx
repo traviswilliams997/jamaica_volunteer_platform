@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import UserImage from './UserImage'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { setVolunteersYouFollow } from '../reducers/volunteerReducer'
 import volunteerService from '../services/volunteers'
+import { useState, useEffect } from 'react'
+import { setVolunteersYouFollow } from '../reducers/volunteerReducer'
 
 const FollowedByYou = ({
   followedId,
@@ -17,6 +18,9 @@ const FollowedByYou = ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { id } = useSelector((state) => state.volunteer.currentVolunteer)
+
+  const [isfollowedByYou, setIsfollowedByYou] = useState(false)
+
   const axiosPrivate = useAxiosPrivate()
 
   const { palette } = useTheme()
@@ -25,7 +29,22 @@ const FollowedByYou = ({
   const main = palette.neutral.main
   const medium = palette.neutral.medium
 
-  const isfollowedByYou = true // volunteersYouFollow.find((vol) => vol.id === vol)
+  const checkIsFollowing = async () => {
+    if (id && followedId) {
+      const response = await volunteerService.checkIsFollowing(
+        id,
+        followedId,
+        axiosPrivate
+      )
+
+      setIsfollowedByYou(response)
+    } else {
+      setIsfollowedByYou(false)
+    }
+  }
+  useEffect(() => {
+    checkIsFollowing()
+  }, [])
 
   const followUnfollow = async (id, followedId) => {
     const response = await volunteerService.followUnfollow(
@@ -71,9 +90,9 @@ const FollowedByYou = ({
         sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
       >
         {isfollowedByYou ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
           <PersonAddOutlined sx={{ color: primaryDark }} />
+        ) : (
+          <PersonRemoveOutlined sx={{ color: primaryDark }} />
         )}
       </IconButton>
     </FlexBetween>

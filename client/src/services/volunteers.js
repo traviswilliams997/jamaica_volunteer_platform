@@ -26,6 +26,13 @@ const getFollowers = async (id, customAxios) => {
   return response.data
 }
 
+const checkIsFollowing = async (id, followedId, customAxios) => {
+  const response = await customAxios.get(
+    `${volunteersEndpoint}/${id}/${followedId}`
+  )
+  return response.data
+}
+
 const followUnfollow = async (id, follwedId, customAxios) => {
   const response = await customAxios.patch(
     `${volunteersEndpoint}/${id}/${follwedId}`
@@ -38,5 +45,6 @@ export default {
   getById,
   getFollowing,
   getFollowers,
+  checkIsFollowing,
   followUnfollow,
 }
