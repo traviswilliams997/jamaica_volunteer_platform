@@ -12,11 +12,15 @@ const getPost = async (postId, customAxios) => {
 
 const getForPerson = async (id, customAxios) => {
   const response = await customAxios.get(`${postsEndpoint}/${id}`)
+
   return response.data
 }
 
-const createNew = async (newObject, customAxios) => {
-  const response = await customAxios.post(postsEndpoint, newObject)
+const createVolunteerPost = async (newObject, customAxios) => {
+  const response = await customAxios.post(
+    `${postsEndpoint}/volunteer`,
+    newObject
+  )
   return response.data
 }
 
@@ -49,7 +53,7 @@ export default {
   getAll,
   getPost,
   getForPerson,
-  createNew,
+  createVolunteerPost,
   addComment,
   update,
   remove,

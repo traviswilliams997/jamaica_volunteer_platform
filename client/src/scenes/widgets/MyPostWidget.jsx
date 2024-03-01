@@ -23,9 +23,8 @@ import UserImage from '../../components/UserImage'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createPost } from '../../reducers/postReducer'
+import { createVolunteerPost } from '../../reducers/postReducer'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-
 const MyPostWidget = ({ posterPicturePath }) => {
   const { id } = useSelector((state) => state.volunteer.currentVolunteer)
   const isNonMobileScreens = useMediaQuery('(min-width: 1000px)')
@@ -49,7 +48,7 @@ const MyPostWidget = ({ posterPicturePath }) => {
       picturePath: pictureRef.current.url,
     }
 
-    dispatch(createPost(postObject, axiosPrivate))
+    dispatch(createVolunteerPost(postObject, axiosPrivate))
     setPost('')
   }
 
