@@ -23,7 +23,7 @@ const PostsWidget = ({ volunteerId, isProfile = false }) => {
   }
 
   const getVolunteerPosts = async () => {
-    dispatch(initializeVolunteerPost(axiosPrivate, volunteerId))
+    dispatch(initializeVolunteerPost(volunteerId, axiosPrivate))
   }
 
   useEffect(() => {
