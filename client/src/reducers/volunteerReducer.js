@@ -24,8 +24,6 @@ const volunteerSlice = createSlice({
     setFollowing: (state, action) => {
       if (state.currentVolunteer) {
         state.volunteersYouFollow = action.payload.followedByYou
-      } else {
-        console.error('This volunteer has no followers')
       }
     },
   },
@@ -71,6 +69,8 @@ export const logInVolunteer = (volunteer) => {
 
 export const logOutVolunteer = () => {
   return (dispatch) => {
+    dispatch(setVolunteers([]))
+    dispatch(setFollowing([]))
     dispatch(setCurrentVolunteer(null))
   }
 }

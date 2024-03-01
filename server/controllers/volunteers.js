@@ -42,6 +42,22 @@ export const getVolunteerFollowing = async (req, res) => {
   }
 }
 
+export const checkIsFollowing = async (req, res) => {
+  try {
+    const { id, followedId } = req.params
+
+    const followings = await Follower.findOne({
+      where: { followingVolunteerId: id, followedVolunteerId: followedId },
+    })
+
+    const isFollowing = followings !== null
+
+    return res.status(200).json(isFollowing)
+  } catch (err) {
+    res.status(400).json({ message: err })
+  }
+}
+
 export const getVolunteerFollowers = async (req, res) => {
   try {
     const { id } = req.params
