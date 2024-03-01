@@ -12,8 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 function App() {
   const mode = useSelector((state) => state.mode)
   const theme = useMemo(() => createTheme(themeSettings(mode)))
-  const isAuth = Boolean(useSelector((state) => state.global.token))
-
+  const isAuth = useSelector((state) => state.global.isAuth)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="app">
