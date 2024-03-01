@@ -57,7 +57,7 @@ const MyPostWidget = ({ posterPicturePath }) => {
       <FlexBetween gap="1.5rem">
         <UserImage image={posterPicturePath} />
         <InputBase
-          placeholder="What's on your mind..."
+          placeholder="Share your volunteering..."
           onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{

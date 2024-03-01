@@ -10,12 +10,12 @@ AgencyReview.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    volunteerId: {
+    createdByVolunteerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'volunteers', key: 'id' },
     },
-    agencyId: {
+    reviewedAgencyId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'agencies', key: 'id' },

@@ -10,7 +10,7 @@ Event.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    agencyId: {
+    createdByAgencyId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'agencies', key: 'id' },
