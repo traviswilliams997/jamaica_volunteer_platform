@@ -30,7 +30,6 @@ const ProfilePage = () => {
   return (
     <Box>
       <Navbar />
-      <Button onClick={() => console.log(volunteer)}>Button</Button>
       <Box
         width="100%"
         padding="2rem 6%"
@@ -53,7 +52,7 @@ const ProfilePage = () => {
           <MyPostWidget picturePath={volunteer.picturePath} />
           <Box m="2rem 0" />
           Profile
-          <PostsWidget volunteerId={volunteerId} isProfile />
+          <PostsWidget volunteerId={volunteerId} isProfile={true} />
         </Box>
       </Box>
     </Box>

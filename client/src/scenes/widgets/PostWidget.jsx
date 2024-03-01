@@ -41,7 +41,7 @@ const PostWidget = ({
   return (
     <WidgetWrapper m="2rem 0">
       <Follow
-        friendId={posterId}
+        followedId={posterId}
         name={name}
         subtitle={createdAtString}
         volunteerPicturePath={posterPicturePath}

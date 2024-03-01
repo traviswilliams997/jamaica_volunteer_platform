@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-  initializePosts,
-  initializeVolunteerPost,
-} from '../../reducers/postReducer'
+import { initializePosts } from '../../reducers/postReducer'
 import PostWidget from './PostWidget'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import postsService from '../../services/posts'
@@ -12,18 +9,17 @@ import postsService from '../../services/posts'
 const PostsWidget = ({ volunteerId, isProfile = false }) => {
   const dispatch = useDispatch()
   const [posts, setPost] = useState([])
-
   const axiosPrivate = useAxiosPrivate()
 
   const getPosts = async () => {
     const res = await postsService.getAll(axiosPrivate)
     setPost(res)
-
     dispatch(initializePosts(axiosPrivate))
   }
 
   const getVolunteerPosts = async () => {
-    dispatch(initializeVolunteerPost(volunteerId, axiosPrivate))
+    const res = await postsService.getForPerson(volunteerId, axiosPrivate)
+    setPost([res])
   }
 
   useEffect(() => {
