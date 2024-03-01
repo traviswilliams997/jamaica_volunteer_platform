@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Box, Button, Typography, useTheme } from '@mui/material'
 import FlexBetween from '../../components/FlexBetween'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
@@ -8,6 +8,7 @@ const UploadWidget = ({ pictureRef }) => {
   const { palette } = useTheme()
   const cloudinaryRef = useRef()
   const widgetRef = useRef()
+  const [isShowFileName, setShowFileName] = useState(false)
 
   useEffect(() => {
     cloudinaryRef.current = window.cloudinary
@@ -19,11 +20,13 @@ const UploadWidget = ({ pictureRef }) => {
       function (error, result) {
         if (result.event === 'success') {
           pictureRef.current = result.info
+          setShowFileName(true)
         }
       }
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   return (
     <Box
       gridColumn="span 4"
@@ -36,7 +39,7 @@ const UploadWidget = ({ pictureRef }) => {
         p="1rem"
         sx={{ '&:hover': { cursor: 'pointer' } }}
       >
-        {pictureRef.current === 'url' ? (
+        {isShowFileName ? (
           <Button onClick={() => widgetRef.current.open()}>
             <Typography>Click to Add or Drop Profile Picture</Typography>
           </Button>

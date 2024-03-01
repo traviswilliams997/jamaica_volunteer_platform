@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Navbar from '../navbar'
 import UserWidget from '../widgets/UserWidget'
 import MyPostWidget from '../widgets/MyPostWidget'
-import PostsWidget from '../widgets/PostWidget'
+import PostsWidget from '../widgets/PostsWidget'
 import FollowingListWidget from '../widgets/FollowingListWiget'
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')

@@ -28,7 +28,7 @@ const FollowingListWidget = ({ volunteerId }) => {
         fontWeight="500"
         sx={{ mb: '1.5rem' }}
       >
-        Friend List
+        Following
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
         {!volunteersYouFollow.empty ? (
@@ -42,7 +42,7 @@ const FollowingListWidget = ({ volunteerId }) => {
             />
           ))
         ) : (
-          <Box>You have no friends</Box>
+          <Box>You are not following any one yet</Box>
         )}
       </Box>
     </WidgetWrapper>

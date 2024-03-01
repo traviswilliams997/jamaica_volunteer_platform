@@ -1,20 +1,24 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   initializePosts,
   initializeVolunteerPost,
 } from '../../reducers/postReducer'
 import PostWidget from './PostWidget'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import postsService from '../../services/posts'
 
 // eslint-disable-next-line react/prop-types
 const PostsWidget = ({ volunteerId, isProfile = false }) => {
   const dispatch = useDispatch()
-  const posts = useSelector((state) => state.posts.allPosts)
+  const [posts, setPost] = useState([])
 
   const axiosPrivate = useAxiosPrivate()
 
   const getPosts = async () => {
+    const res = await postsService.getAll(axiosPrivate)
+    setPost(res)
+
     dispatch(initializePosts(axiosPrivate))
   }
 
@@ -29,7 +33,8 @@ const PostsWidget = ({ volunteerId, isProfile = false }) => {
       getPosts()
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  if (!posts) {
+
+  if (posts.empty) {
     return <div></div>
   }
 
