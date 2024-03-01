@@ -31,6 +31,12 @@ export const setAccessToken = (newToken) => {
   }
 }
 
+export const clearAccessToken = () => {
+  return async (dispatch) => {
+    dispatch(setToken(null))
+  }
+}
+
 export const toggleDarkLightMode = () => {
   return async (dispatch) => {
     dispatch(toggleMode())

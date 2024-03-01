@@ -24,9 +24,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleDarkLightMode } from '../../reducers/globalReducer'
 import { logOutVolunteer } from '../../reducers/volunteerReducer'
-
+import logoutService from '../../services/logout'
 import { useNavigate } from 'react-router-dom'
 import FlexBetween from '../../components/FlexBetween'
+import {
+  clearAccessToken,
+  setAuthentication,
+} from '../../reducers/globalReducer'
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false)
@@ -42,6 +46,14 @@ const Navbar = () => {
   const primaryLight = theme.palette.primary.light
   const alt = theme.palette.background.alt
   const fullName = `${volunteer.firstName} ${volunteer.lastName}`
+  const handleLogout = async () => {
+    dispatch(clearAccessToken())
+    dispatch(logOutVolunteer())
+    dispatch(setAuthentication(false))
+    await logoutService.logOutVolunteer()
+
+    navigate('/')
+  }
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -109,9 +121,7 @@ const Navbar = () => {
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
-              <MenuItem onClick={() => dispatch(logOutVolunteer())}>
-                LogOut
-              </MenuItem>
+              <MenuItem onClick={() => handleLogout()}>LogOut</MenuItem>
             </Select>
           </FormControl>
         </FlexBetween>
@@ -185,9 +195,7 @@ const Navbar = () => {
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => dispatch(logOutVolunteer())}>
-                  Log Out
-                </MenuItem>
+                <MenuItem onClick={() => handleLogout()}>Log Out</MenuItem>
               </Select>
             </FormControl>
           </FlexBetween>

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import postService from '../services/posts'
 
 const intialState = {
-  aVolunteersPosts: [],
+  currentVolunteersPosts: [],
   allPosts: [],
 }
 
@@ -16,10 +16,10 @@ const postSlice = createSlice({
     setPosts(state, action) {
       return action.payload.posts
     },
-    appendAVolunteersPost(state, action) {
-      state.aVolunteersPosts.push(action.payload.post)
+    appendCurrentVolunteersPost(state, action) {
+      state.currentVolunteersPosts.push(action.payload.post)
     },
-    setAVolunteersPosts(state, action) {
+    setCurrentVolunteersPosts(state, action) {
       return action.payload.posts
     },
   },
@@ -28,8 +28,8 @@ const postSlice = createSlice({
 export const {
   appendPost,
   setPosts,
-  appendAVolunteersPost,
-  setAVolunteersPosts,
+  appendCurrentVolunteersPost,
+  setCurrentVolunteersPosts,
 } = postSlice.actions
 
 export const initializePosts = (customAxios) => {
@@ -43,7 +43,7 @@ export const initializeVolunteerPost = (id, customAxios) => {
   return async (dispatch) => {
     const posts = await postService.getForPerson(id, customAxios)
 
-    dispatch(setAVolunteersPosts({ posts: posts }))
+    dispatch(setCurrentVolunteersPosts({ posts: posts }))
   }
 }
 export const createVolunteerPost = (newObject, customAxios) => {
@@ -104,6 +104,13 @@ export const addComment = (id, commentContent, customAxios) => {
     } catch (error) {
       dispatch(setPosts(posts.filter((post) => post.id !== id)))
     }
+  }
+}
+
+export const clearPosts = () => {
+  return async (dispatch) => {
+    dispatch(setPosts([]))
+    dispatch(setCurrentVolunteersPosts([]))
   }
 }
 
