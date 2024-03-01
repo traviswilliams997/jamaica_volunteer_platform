@@ -8,8 +8,7 @@ const connectToDatabase = async () => {
   try {
     await sequelize.authenticate()
     await runMigrations()
-
-    console.log('connected to the database')
+    console.log('Connected to the database')
   } catch (err) {
     console.log(`${err} failed to connect to the database`)
     return process.exit(1)

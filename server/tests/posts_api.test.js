@@ -32,22 +32,24 @@ describe('posts api', () => {
 
     const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
     await volunteerObject.save()
+
     const volunteerId = volunteerObject.dataValues.id
 
-    const newPost = new Post({
-      volunteerId,
+    const newPost = {
+      volunteerId: volunteerId,
       content: 'Hello World',
       picturePath: 'hello',
-    })
+    }
 
     await api
-      .post('/api/posts/')
+      .post('/api/posts/volunteer')
       .send(newPost)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const postsAtEnd = await postsInDb()
+
     assert.strictEqual(postsAtEnd.length, postsAtStart.length + 1)
 
     const contentAtStart = postsAtStart.map((p) => p.content)
@@ -56,30 +58,65 @@ describe('posts api', () => {
     assert(contentAtEnd.includes('Hello World'))
   })
 
+  test('volunteer can get specific post', async () => {
+    const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
+    await volunteerObject.save()
+    const volunteerId = volunteerObject.dataValues.id
+
+    const newPost1 = {
+      volunteerId: volunteerId,
+      content: 'Skate',
+      picturePath: '',
+    }
+
+    await api
+      .post('/api/posts/volunteer')
+      .send(newPost1)
+      .set({ Authorization: `Bearer ${testtoken}` })
+      .expect(201)
+
+    const lastestPost = await Post.findOne({
+      where: { createdByVolunteerId: volunteerId },
+    })
+    const lastestPostId = lastestPost.dataValues.id
+
+    const response = await api
+      .get(`/api/posts/${lastestPostId}`)
+      .set({ Authorization: `Bearer ${testtoken}` })
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(newPost1.content, response.body.content)
+  })
+
   test('volunteer can get post feed', async () => {
     const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
     await volunteerObject.save()
 
     const volunteerId = volunteerObject.dataValues.id
 
-    const newPost1 = new Post({
-      volunteerId,
+    const newPost1 = {
+      volunteerId: volunteerId,
       content: 'First Post',
       picturePath: '',
-    })
-    const newPost2 = new Post({
-      volunteerId,
-      content: 'Second Post',
-      picturePath: '',
-    })
+      posterPicturePath: '',
+    }
+
     await api
-      .post('/api/posts/')
+      .post('/api/posts/volunteer')
       .send(newPost1)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
+    const newPost2 = {
+      volunteerId: volunteerId,
+      content: 'Second Post',
+      posterPicturePath: '',
+      picturePath: '',
+    }
+
     await api
-      .post('/api/posts/')
+      .post('/api/posts/volunteer')
       .send(newPost2)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
@@ -97,31 +134,31 @@ describe('posts api', () => {
     assert(contents.includes('Second Post'))
   })
 
-  test.only('volunteer can retrieve their posts', async () => {
+  test('volunteer can retrieve their posts', async () => {
     const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
     await volunteerObject.save()
     const volunteerId = volunteerObject.dataValues.id
 
-    const newPost1 = new Post({
-      volunteerId,
+    const newPost1 = {
+      volunteerId: volunteerId,
       content: 'Skate',
       picturePath: '',
-    })
+    }
 
     await api
-      .post('/api/posts/')
+      .post('/api/posts/volunteer')
       .send(newPost1)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
-    const newPost2 = new Post({
-      volunteerId,
+    const newPost2 = {
+      volunteerId: volunteerId,
       content: 'Board',
       picturePath: '',
-    })
+    }
 
     await api
-      .post('/api/posts/')
+      .post('/api/posts/volunteer')
       .send(newPost2)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
@@ -148,20 +185,20 @@ describe('posts api', () => {
     await volunteerObject.save()
     const volunteerId = volunteerObject.dataValues.id
 
-    const newPost1 = new Post({
-      volunteerId,
+    const newPost1 = {
+      volunteerId: volunteerId,
       content: 'Skate',
       picturePath: '',
-    })
+    }
 
     await api
-      .post('/api/posts/')
+      .post('/api/posts/volunteer')
       .send(newPost1)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     const lastestPost = await Post.findOne({
-      where: { volunteerId },
+      where: { createdByVolunteerId: volunteerId },
     })
     const lastestPostId = lastestPost.dataValues.id
 
@@ -184,20 +221,20 @@ describe('posts api', () => {
     await volunteerObject.save()
     const volunteerId = volunteerObject.dataValues.id
 
-    const newPost1 = new Post({
-      volunteerId,
+    const newPost1 = {
+      volunteerId: volunteerId,
       content: 'Skate',
       picturePath: '',
-    })
+    }
 
     await api
-      .post('/api/posts/')
+      .post('/api/posts/volunteer')
       .send(newPost1)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(201)
 
     const lastestPost = await Post.findOne({
-      where: { volunteerId },
+      where: { createdByVolunteerId: volunteerId },
     })
     const lastestPostId = lastestPost.dataValues.id
 

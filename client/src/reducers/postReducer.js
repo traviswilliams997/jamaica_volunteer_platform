@@ -36,20 +36,23 @@ export const initializePosts = (customAxios) => {
   return async (dispatch) => {
     const posts = await postService.getAll(customAxios)
 
-    dispatch(setPosts(posts))
+    dispatch(setPosts({ posts: posts }))
   }
 }
 export const initializeVolunteerPost = (id, customAxios) => {
   return async (dispatch) => {
     const posts = await postService.getForPerson(id, customAxios)
 
-    dispatch(setAVolunteersPosts(posts))
+    dispatch(setAVolunteersPosts({ posts: posts }))
   }
 }
-export const createPost = (newObject, customAxios) => {
+export const createVolunteerPost = (newObject, customAxios) => {
   return async (dispatch) => {
-    const newPost = await postService.createNew(newObject, customAxios)
-    dispatch(appendPost(newPost))
+    const newPost = await postService.createVolunteerPost(
+      newObject,
+      customAxios
+    )
+    dispatch(appendPost({ post: newPost }))
   }
 }
 
@@ -58,7 +61,7 @@ export const removePost = (id) => {
     const posts = await postService.getAll()
     await postService.remove(id)
     const newPosts = posts.filter((b) => b.id !== id)
-    dispatch(setPosts(newPosts))
+    dispatch(setPosts({ posts: newPosts }))
   }
 }
 
@@ -97,7 +100,7 @@ export const addComment = (id, commentContent, customAxios) => {
         post.id !== id ? post : returnedPost
       )
 
-      dispatch(setPosts(newPosts))
+      dispatch(setPosts({ posts: newPosts }))
     } catch (error) {
       dispatch(setPosts(posts.filter((post) => post.id !== id)))
     }

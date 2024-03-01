@@ -10,14 +10,14 @@ import { verifyToken } from '../middleware/auth.js'
 
 const router = express.Router()
 /* CREATE */
-router.post('/', verifyToken, createVolunteerPost)
-/*READ */
+router.post('/volunteer', verifyToken, createVolunteerPost)
+
+/* READ */
 router.get('/', verifyToken, getFeedPosts)
 router.get('/:id', verifyToken, getPost)
-
 router.get('/:volunteerId/posts', verifyToken, getVolunteerPosts)
 
-/*UPDATE */
+/* UPDATE */
 router.patch('/:id/like', verifyToken, likePost)
 
 export default router

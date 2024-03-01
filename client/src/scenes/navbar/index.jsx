@@ -59,7 +59,7 @@ const Navbar = () => {
             },
           }}
         >
-          Voluntaica
+          VolunteerJa
         </Typography>
         {isNonMobileScreen && (
           <FlexBetween

@@ -1,5 +1,6 @@
 import {
   persistReducer,
+  persistStore,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -12,14 +13,19 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import volunteerReducer from '../reducers/volunteerReducer'
 import postReducer from '../reducers/postReducer'
 import globalReducer from '../reducers/globalReducer'
-
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
 const rootReducer = combineReducers({
   posts: postReducer,
   volunteer: volunteerReducer,
   global: globalReducer,
 })
 
-const persistConfig = { key: 'root', storage, version: 1 }
+const persistConfig = {
+  key: 'root',
+  storage,
+  stateReconciler: hardSet,
+  version: 1,
+}
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
@@ -31,5 +37,6 @@ const store = configureStore({
       },
     }),
 })
+const persistor = persistStore(store)
 
-export default store
+export { store, persistor }

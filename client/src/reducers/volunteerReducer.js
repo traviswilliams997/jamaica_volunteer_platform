@@ -22,7 +22,7 @@ const volunteerSlice = createSlice({
       state.volunteers.push(action.payload)
     },
     setFollowing: (state, action) => {
-      if (state.volunteer) {
+      if (state.currentVolunteer) {
         state.volunteersYouFollow = action.payload.followedByYou
       } else {
         console.error('This volunteer has no followers')
@@ -49,9 +49,12 @@ export const initializeVolunteers = (customAxios) => {
 
 export const setVolunteersYouFollow = (id, customAxios) => {
   return async (dispatch) => {
-    const volunteersYouFollow = await volunteerService.getFollowing(customAxios)
+    const volunteersYouFollow = await volunteerService.getFollowing(
+      id,
+      customAxios
+    )
 
-    dispatch(setVolunteersYouFollow(volunteersYouFollow))
+    dispatch(setFollowing({ followedByYou: volunteersYouFollow }))
   }
 }
 export const resetVolunteer = (volunteer) => {

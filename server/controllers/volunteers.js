@@ -89,7 +89,7 @@ export const followUnfollow = async (req, res) => {
       })
     }
 
-    res.status(200).json()
+    res.status(200)
   } catch (err) {
     res.status(400).json({ message: err })
   }

@@ -24,12 +24,10 @@ const PostWidget = ({
   posterPicturePath,
   reactions,
   comments,
+  createdAt,
 }) => {
-  const loggedInUserId = useSelector(
-    (state) => state.volunteer.currentVolunteer.id
-  )
   const [isComments, setIsComments] = useState(false)
-
+  const createdAtString = new Date(createdAt).toDateString()
   const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
 
@@ -45,8 +43,8 @@ const PostWidget = ({
       <Follow
         friendId={posterId}
         name={name}
-        subtitle={'Subtitle'}
-        userPicturePath={posterPicturePath}
+        subtitle={createdAtString}
+        volunteerPicturePath={posterPicturePath}
       />
       <Typography color={main} sx={{ mt: '1rem' }}>
         {content}

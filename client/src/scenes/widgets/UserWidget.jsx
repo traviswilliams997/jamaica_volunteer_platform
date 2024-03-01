@@ -1,23 +1,27 @@
 import {
   ManageAccountsOutlined,
   EditOutlined,
-  LocationOnOutlined,
   WorkOutlineOutlined,
+  BuildOutlined,
 } from '@mui/icons-material'
-import { Box, Typography, Divider, useTheme } from '@mui/material'
+import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone'
+import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined'
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
+import { Box, Typography, Divider, useTheme, IconButton } from '@mui/material'
 import UserImage from '../../components/UserImage'
 import FlexBetween from '../../components/FlexBetween'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-
+import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
 import volunteerService from '../../services/volunteers'
 const UserWidget = ({ volunteerId, picturePath }) => {
   const [volunteer, setVolunteer] = useState(null)
   const [followers, setFollowers] = useState([])
   const [followings, setFollowings] = useState([])
-
+  const dispatch = useDispatch()
   const { palette } = useTheme()
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
@@ -47,10 +51,15 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     setFollowers(response.data)
   }
 
+  const getFollowedByVolunteer = async () => {
+    dispatch(setVolunteersYouFollow(volunteerId, axiosPrivate))
+  }
+
   useEffect(() => {
     getVolunteer()
     getVolunteersYouFollow()
     getFollowers()
+    getFollowedByVolunteer
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -59,15 +68,8 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     return null
   }
 
-  const {
-    firstName,
-    lastName,
-    phoneNumber,
-    picture,
-    dateOfBirth,
-    about,
-    skills,
-  } = volunteer
+  const { firstName, lastName, phoneNumber, dateOfBirth, about, skills } =
+    volunteer
 
   return (
     <WidgetWrapper>
@@ -78,11 +80,8 @@ const UserWidget = ({ volunteerId, picturePath }) => {
         onClick={() => navigate(`/profile/${volunteerId}`)}
       >
         <FlexBetween gap="1rem">
-          <UserImage
-            image={
-              'https://www.google.com/search?sca_esv=a1ed381ddb91d5f7&sca_upv=1&sxsrf=ACQVn091AAmhIYQsnk6ZISq9jb712feF4Q:1709160722939&q=image&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjXsITuj8-EAxXiTDABHWpZA9MQ0pQJegQIDRAB&biw=1660&bih=966&dpr=1.5#imgrc=aVgXecnmQ_f1MM'
-            }
-          />
+          <UserImage image={picturePath} />
+
           <Box>
             <Typography
               variant="h4"
@@ -111,12 +110,16 @@ const UserWidget = ({ volunteerId, picturePath }) => {
       {/* SECOND ROW*/}
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
+          <PhoneIphoneOutlinedIcon fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{phoneNumber}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
+          <DescriptionOutlinedIcon fontSize="medium" sx={{ color: main }} />
           <Typography color={medium}>{about}</Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+          <BuildOutlined fontSize="medium" sx={{ color: main }} />
+          <Typography color={medium}>{skills}</Typography>
         </Box>
       </Box>
       <Divider />
@@ -124,15 +127,24 @@ const UserWidget = ({ volunteerId, picturePath }) => {
       {/* THIRD ROW*/}
       <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who has viewed your profile</Typography>
+          <Typography color={medium}>Hours Volunteered</Typography>
           <Typography color={medium} fontWeight="500">
             1000
           </Typography>
         </FlexBetween>
         <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
+          <Typography color={medium}>Karma</Typography>
           <Typography color={medium} fontWeight="500">
             200000
+          </Typography>
+        </FlexBetween>
+        <FlexBetween>
+          <Box display="flex">
+            <Typography color={medium}>Current streak</Typography>
+            <WhatshotTwoToneIcon fontSize="medium" sx={{ color: main }} />
+          </Box>
+          <Typography color={medium} fontWeight="500">
+            10 Weeks
           </Typography>
         </FlexBetween>
       </Box>
@@ -146,7 +158,12 @@ const UserWidget = ({ volunteerId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
+            <img
+              height="50px"
+              width="50px"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/512px-Logo_of_Twitter.svg.png"
+              alt="twitter"
+            />
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
@@ -159,7 +176,12 @@ const UserWidget = ({ volunteerId, picturePath }) => {
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
+            <img
+              height="50px"
+              width="50px"
+              src="https://store-images.s-microsoft.com/image/apps.31120.9007199266245564.44dc7699-748d-4c34-ba5e-d04eb48f7960.bc4172bd-63f0-455a-9acd-5457f44e4473"
+              alt="linkedin"
+            />
             <Box>
               <Typography color={main} fontWeight="500">
                 Linkedin
