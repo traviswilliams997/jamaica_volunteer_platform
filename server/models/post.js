@@ -10,11 +10,11 @@ Post.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    volunteerId: {
+    createdByVolunteerId: {
       type: DataTypes.INTEGER,
       references: { model: 'volunteers', key: 'id' },
     },
-    agencyId: {
+    createdByAgencyId: {
       type: DataTypes.INTEGER,
       references: { model: 'agencies', key: 'id' },
     },

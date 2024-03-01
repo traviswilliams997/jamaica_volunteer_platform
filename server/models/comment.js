@@ -15,15 +15,15 @@ Comment.init(
       allowNull: false,
       references: { model: 'posts', key: 'id' },
     },
-    volunteerId: {
+    createdByVolunteerId: {
       type: DataTypes.INTEGER,
       references: { model: 'volunteers', key: 'id' },
     },
-    agencyId: {
+    createdByAgencyId: {
       type: DataTypes.INTEGER,
       references: { model: 'agencies', key: 'id' },
     },
-    commentId: {
+    commentRepyToId: {
       type: DataTypes.INTEGER,
       references: { model: 'comments', key: 'id' },
     },

@@ -3,18 +3,19 @@ import { Post, Reaction, Comment, Volunteer, Agency } from '../models/index.js'
 /* CREATE */
 export const createVolunteerPost = async (req, res) => {
   try {
-    const { volunteerId, content, picturePath, posterPicturePath } =
-      req.body.dataValues
+    const { volunteerId, content, picturePath, posterPicturePath } = req.body
 
     const newPost = new Post({
-      volunteerId,
+      createdByVolunteerId: volunteerId,
       content,
       type: 'Volunteer',
       posterPicturePath: posterPicturePath,
       picturePath: picturePath,
     })
-    await newPost.save()
-    res.status(201).json()
+
+    const response = await newPost.save()
+
+    res.status(201).json(response)
   } catch (err) {
     res.status(409).json({ message: err })
   }
@@ -32,10 +33,12 @@ export const getFeedPosts = async (req, res) => {
         },
         {
           model: Volunteer,
+          as: 'createdByVolunteer',
           attributes: ['firstName', 'lastName', 'picturePath', 'username'],
         },
         {
           model: Agency,
+          as: 'createdByAgency',
           attributes: ['name', 'picturePath', 'username'],
         },
         {
@@ -48,16 +51,16 @@ export const getFeedPosts = async (req, res) => {
       if (post.type === 'Volunteer') {
         const formattedPost = {
           id: post.id,
-          volunteerId: post.volunteerId,
+          volunteerId: post.createdByVolunteerId,
           type: post.type,
           content: post.content,
           picturePath: post.picturePath,
           createdAt: post.createdAt,
           updatedAt: post.updatedAt,
-          posterPicturePath: post.volunteer.picturePath,
-          posterFirstName: post.volunteer.firstName,
-          posterLastName: post.volunteer.lastName,
-          posterUsername: post.volunteer.username,
+          posterPicturePath: post.createdByVolunteer.picturePath,
+          posterFirstName: post.createdByVolunteer.firstName,
+          posterLastName: post.createdByVolunteer.lastName,
+          posterUsername: post.createdByVolunteer.username,
           comments: post.comments,
           reactions: post.reactions,
         }
@@ -65,15 +68,15 @@ export const getFeedPosts = async (req, res) => {
       } else {
         const formattedPost = {
           id: post.id,
-          agencyId: post.agencyId,
+          agencyId: post.createdByAgencyId,
           type: post.type,
           content: post.content,
           picturePath: post.picturePath,
           createdAt: post.createdAt,
           updatedAt: post.updatedAt,
-          posterPicturePath: post.agency.picturePath,
-          posterName: post.agency.name,
-          posterUsername: post.agency.username,
+          posterPicturePath: post.createdByAgency.picturePath,
+          posterName: post.createdByAgency.name,
+          posterUsername: post.createdByAgency.username,
           comments: post.comments,
           reactions: post.reactions,
         }
@@ -83,6 +86,8 @@ export const getFeedPosts = async (req, res) => {
 
     res.status(200).json(formattedPosts)
   } catch (err) {
+    console.log(err)
+
     res.status(404).json({ message: err })
   }
 }
@@ -92,7 +97,7 @@ export const getVolunteerPosts = async (req, res) => {
     const { volunteerId } = req.params
 
     const posts = await Post.findAll({
-      where: { volunteerId: volunteerId },
+      where: { createdByVolunteerId: volunteerId },
       include: [
         {
           model: Comment,
@@ -100,6 +105,7 @@ export const getVolunteerPosts = async (req, res) => {
         },
         {
           model: Volunteer,
+          as: 'createdByVolunteer',
           attributes: ['firstName', 'lastName', 'picturePath', 'username'],
         },
         {
