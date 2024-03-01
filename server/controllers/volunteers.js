@@ -5,9 +5,11 @@ export const getVolunteer = async (req, res) => {
   try {
     const { id } = req.params
 
-    const volunteer = await Volunteer.findByPk(id)
+    const volunteer = await Volunteer.findByPk(id, {
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+    })
 
-    return res.status(200).json(volunteer.dataValues)
+    return res.status(200).json(volunteer)
   } catch (err) {
     res.status(400).json({ message: err })
   }
