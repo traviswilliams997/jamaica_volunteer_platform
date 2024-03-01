@@ -12,7 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 function App() {
   const mode = useSelector((state) => state.mode)
   const theme = useMemo(() => createTheme(themeSettings(mode)))
-  const isAuth = useState(true)
+  const isAuth = Boolean(useSelector((state) => state.global.token))
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -27,7 +27,7 @@ function App() {
                 element={isAuth ? <HomePage /> : <Navigate to="/" />}
               />
               <Route
-                path="/profile/:userId"
+                path="/profile/:volunteerId"
                 element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
               />
             </Routes>
