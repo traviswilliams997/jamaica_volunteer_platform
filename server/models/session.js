@@ -10,7 +10,7 @@ Session.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    agencyId: {
+    createdByAgencyId: {
       type: DataTypes.INTEGER,
       references: { model: 'agencies', key: 'id' },
     },
