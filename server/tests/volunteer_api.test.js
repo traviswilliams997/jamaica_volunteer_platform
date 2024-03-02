@@ -172,6 +172,40 @@ describe('/api/volunteers', () => {
     assert(usernames.includes('daniel33'))
   })
 
+  test('volunteer can check if they are following someone', async () => {
+    const daniel33 = await Volunteer.findOne({
+      where: { username: 'daniel33' },
+    })
+    const ray45 = await Volunteer.findOne({
+      where: { username: 'ray45' },
+    })
+
+    const stacey45 = await Volunteer.findOne({
+      where: { username: 'stacey45' },
+    })
+
+    const followerObject1 = new Follower({
+      followingVolunteerId: ray45.id,
+      followedVolunteerId: daniel33.id,
+    })
+    await followerObject1.save()
+
+    const isFollowing = await api
+      .get(`/api/volunteers/${ray45.id}/${daniel33.id}`)
+      .set({ Authorization: `Bearer ${testtoken}` })
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const isNotFollowing = await api
+      .get(`/api/volunteers/${ray45.id}/${stacey45.id}`)
+      .set({ Authorization: `Bearer ${testtoken}` })
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(isFollowing.body, true)
+    assert.strictEqual(isNotFollowing.body, false)
+  })
+
   after(async () => {
     await emptyDbTables(['Volunteer', 'Follower'])
   })

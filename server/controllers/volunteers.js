@@ -11,6 +11,7 @@ export const getVolunteer = async (req, res) => {
 
     return res.status(200).json(volunteer)
   } catch (err) {
+    console.log('getVolunteer Error', err)
     res.status(400).json({ message: err })
   }
 }
@@ -38,6 +39,7 @@ export const getVolunteerFollowing = async (req, res) => {
       return res.status(200).json(peopleYouFollow)
     }
   } catch (err) {
+    console.log('getVolunteerFollowing Error', err)
     res.status(400).json({ message: err })
   }
 }
@@ -54,6 +56,7 @@ export const checkIsFollowing = async (req, res) => {
 
     return res.status(200).json(isFollowing)
   } catch (err) {
+    console.log('checkIsFollowing Error', err)
     res.status(400).json({ message: err })
   }
 }
@@ -75,6 +78,7 @@ export const getVolunteerFollowers = async (req, res) => {
 
     res.status(200).json(yourFollowersFormatted)
   } catch (err) {
+    console.log('getVolunteerFollowers Error', err)
     res.status(400).json({ message: err })
   }
 }
@@ -88,6 +92,7 @@ export const followUnfollow = async (req, res) => {
     const following = await Follower.findAll({
       where: { followingVolunteerId: id, followedVolunteerId: followedId },
     })
+
     //Follower relationship doesnt exist
     if (following.length === 0) {
       const followerObject = new Follower({
@@ -106,6 +111,7 @@ export const followUnfollow = async (req, res) => {
         },
       })
     }
+
 
     const foll = await Follower.findAll({
       where: { followingVolunteerId: id, followedVolunteerId: followedId },
