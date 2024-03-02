@@ -10,12 +10,12 @@ Follower.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    followingVolunteerId: {
+    following_volunteer_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'volunteers', key: 'id' },
     },
-    followedVolunteerId: {
+    followed_volunteer_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'volunteers', key: 'id' },
