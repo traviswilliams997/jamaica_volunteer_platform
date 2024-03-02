@@ -9,11 +9,15 @@ import FollowingListWidget from '../widgets/FollowingListWiget'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 import volunteerService from '../../services/volunteers'
+import { useSelector } from 'react-redux'
 const ProfilePage = () => {
   const [volunteer, setVolunteer] = useState(null)
   const { volunteerId } = useParams()
   const privateAxios = useAxiosPrivate()
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
+  const currentVoluneerId = useSelector(
+    (state) => state.volunteer.currentVolunteer.id
+  )
 
   const getVolunteer = async () => {
     const data = await volunteerService.getById(volunteerId, privateAxios)
@@ -49,7 +53,9 @@ const ProfilePage = () => {
           flexBasis={isNonMobileScreens ? '42%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}
         >
-          <MyPostWidget picturePath={volunteer.picturePath} />
+          {Number(currentVoluneerId) === Number(volunteerId) ? (
+            <MyPostWidget picturePath={volunteer.picturePath} />
+          ) : null}
           <Box m="2rem 0" />
           <PostsWidget volunteerId={volunteerId} isProfile={true} />
         </Box>
