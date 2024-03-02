@@ -81,6 +81,7 @@ const AgenciesWidget = ({}) => {
               variant="h5"
               fontWeight="700"
               sx={{
+                fontSize: `${viewState.zoom * 1}px`,
                 '&:hover': {
                   color: palette.primary.main,
                 },
@@ -90,7 +91,7 @@ const AgenciesWidget = ({}) => {
             </Typography>
             <Room
               style={{
-                fontSize: viewState.zoom * 5,
+                fontSize: viewState.zoom * 2,
                 color: 'tomato',
                 cursor: 'pointer',
               }}
