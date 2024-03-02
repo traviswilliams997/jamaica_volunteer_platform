@@ -9,6 +9,7 @@ import { createTheme } from '@mui/material/styles'
 import { themeSettings } from './theme'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import AgenciesPage from './scenes/agenciesPage'
 function App() {
   const mode = useSelector((state) => state.mode)
   const theme = useMemo(() => createTheme(themeSettings(mode)))
@@ -24,6 +25,10 @@ function App() {
               <Route
                 path="/home"
                 element={isAuth ? <HomePage /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/agencies"
+                element={isAuth ? <AgenciesPage /> : <Navigate to="/" />}
               />
               <Route
                 path="/profile/:volunteerId"
