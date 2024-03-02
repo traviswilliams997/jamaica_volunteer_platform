@@ -12,6 +12,7 @@ const getById = async (id, customAxios) => {
 }
 
 const getFollowing = async (id, customAxios) => {
+  if (typeof id === 'undefined') return []
   const response = await customAxios.get(
     `${volunteersEndpoint}/${id}/following`
   )

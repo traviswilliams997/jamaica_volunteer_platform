@@ -67,10 +67,12 @@ Follower.belongsTo(Volunteer, {
 })
 Agency.hasMany(Post, {
   onDelete: 'CASCADE',
-  foreignKey: 'agency_id',
+
+  foreignKey: 'created_by_agency_id',
 })
 Post.belongsTo(Agency, {
-  foreignKey: 'agency_id',
+  as: 'createdByAgency',
+  foreignKey: 'created_by_agency_id',
 })
 
 Agency.hasMany(VolunteerReview)

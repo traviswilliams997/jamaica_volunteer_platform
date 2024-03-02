@@ -20,6 +20,8 @@ export const getVolunteerFollowing = async (req, res) => {
   try {
     const { id } = req.params
 
+    if (id === 'undefined') return res.status(422)
+
     const volunteer = await Volunteer.findByPk(id, {
       where: {},
       include: {
