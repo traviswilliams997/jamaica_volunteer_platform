@@ -10,8 +10,6 @@ export const getAgencies = async (req, res) => {
 
     const formattedAgencies = agencies.map((agency) => agency.dataValues)
 
-    console.log(formattedAgencies)
-
     return res.status(200).json(formattedAgencies)
   } catch (err) {
     console.log('getAgency Error', err)
