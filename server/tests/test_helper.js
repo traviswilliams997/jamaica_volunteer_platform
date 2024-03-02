@@ -53,6 +53,31 @@ const initialVolunteersVolunteerApi = [
   },
 ]
 
+const initialAgenciesAgencyApi = [
+  {
+    username: 'agency1',
+    name: 'Agency1',
+    email: 'agency1@gmail.com',
+    phoneNumber: '(876)666-7777',
+    password: '$2b$10$Np6l5ud3oK/sCxtPkLCze.jSZRAR6Og9vzSpKItE93LkGqU7ZuVpa',
+  },
+  {
+    username: 'agency2',
+    name: 'Agency2',
+    email: 'agency2@gmail.com',
+    phoneNumber: '(876)999-1777',
+    password: '$2b$10$Np6l5ud3oK/sCxtPkLCze.jSZRAR6Og9vzSpKItE93LkGqU7ZuVpa',
+    picturePath: '',
+  },
+  {
+    username: 'agency3',
+    name: 'Agency3',
+    email: 'agency3@gmail.com',
+    phoneNumber: '(876)333-1877',
+    password: '$2b$10$Np6l5ud3oK/sCxtPkLCze.jSZRAR6Og9vzSpKItE93LkGqU7ZuVpa',
+  },
+]
+
 const initialVolunteersPostApi = [
   {
     username: 'andrew99',
@@ -148,6 +173,7 @@ export {
   testtoken,
   initialVolunteersVolunteerApi,
   initialVolunteersPostApi,
+  initialAgenciesAgencyApi,
   emptyDbTables,
   reactionsInDb,
   volunteersInDb,
