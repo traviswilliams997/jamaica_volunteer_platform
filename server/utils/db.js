@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize'
-import { DATABASE_URL } from './config.js'
+import { DATABASE_URL, ENVIRONMENT } from './config.js'
 import { Umzug, SequelizeStorage } from 'umzug'
 
 const sequelize = new Sequelize(DATABASE_URL)
@@ -8,9 +8,9 @@ const connectToDatabase = async () => {
   try {
     await sequelize.authenticate()
     await runMigrations()
-    console.log('Connected to the database')
+    console.log(`Connected to the ${ENVIRONMENT} database`)
   } catch (err) {
-    console.log(`${err} failed to connect to the database`)
+    console.log(`${err} failed to connect to the ${ENVIRONMENT} database`)
     return process.exit(1)
   }
 
