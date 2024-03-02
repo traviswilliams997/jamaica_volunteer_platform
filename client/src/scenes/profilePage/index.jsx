@@ -1,4 +1,4 @@
-import { Box, Button, useMediaQuery } from '@mui/material'
+import { Box, useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Navbar from '../navbar'
@@ -51,7 +51,6 @@ const ProfilePage = () => {
         >
           <MyPostWidget picturePath={volunteer.picturePath} />
           <Box m="2rem 0" />
-          Profile
           <PostsWidget volunteerId={volunteerId} isProfile={true} />
         </Box>
       </Box>

@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
+// eslint-disable-next-line react/prop-types
 const FollowingListWidget = ({ volunteerId }) => {
   const volunteersYouFollow = useSelector(
     (state) => state.volunteer.volunteersYouFollow
@@ -31,7 +32,7 @@ const FollowingListWidget = ({ volunteerId }) => {
         Following
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {!volunteersYouFollow.empty ? (
+        {!volunteersYouFollow ? (
           volunteersYouFollow.map((followed) => (
             <FollowedByYou
               key={followed.id}

@@ -1,18 +1,15 @@
-import * as React from 'react'
 import { Box, useTheme, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { initializeAgencies } from '../../reducers/agencyReducer'
 import agenciesService from '../../services/agencies'
-import WidgetWrapper from '../../components/WidgetWrapper'
 import Map, { Marker, Popup } from 'react-map-gl'
 import { Room, Star } from '@mui/icons-material'
-import './agencies.css'
 import { format } from 'timeago.js'
 import { styled } from '@mui/system'
 
 // eslint-disable-next-line react/prop-types
-const AgenciesWidget = ({ volunteerId }) => {
+const AgenciesWidget = ({}) => {
   const [showPopup, setShowPopup] = useState(false)
 
   const [agencies, setAgencies] = useState([])
@@ -22,25 +19,32 @@ const AgenciesWidget = ({ volunteerId }) => {
   const [viewState, setViewState] = useState({
     longitude: -76.8099,
     latitude: 18.0179,
-    zoom: 12,
+    zoom: 11,
   })
 
   const PopupLabel = styled(Typography)(({}) => ({
     width: 'max-content',
-    color: palette.primary.main,
-    fontsize: '24px',
-    borderbottom: '0.5px solid tomato',
+    color: 'tomato',
+    fontSize: '1rem',
+    fontWeight: '500',
+    margin: '3px 0',
+  }))
+
+  const PopupContent = styled(Typography)(({}) => ({
+    width: 'max-content',
+    color: 'black',
+    fontSize: '1rem',
+    fontWeight: '500',
     margin: '3px 0',
   }))
 
   const getAgencies = async () => {
     const res = await agenciesService.getAll()
-
     setAgencies(res)
     dispatch(initializeAgencies())
   }
 
-  const handleMarkerClick = (volunteerId, lat, long) => {
+  const handleMarkerClick = (id, lat, long) => {
     setViewState({ ...viewState, latitude: lat, longitude: long })
     setShowPopup(true)
   }
@@ -73,13 +77,12 @@ const AgenciesWidget = ({ volunteerId }) => {
             style={{ width: 30, height: 30, margin: 0 }}
           >
             <Typography
-              color={palette.primary.main}
+              color="tomato"
               variant="h5"
               fontWeight="700"
               sx={{
                 '&:hover': {
-                  color: palette.primary.dark,
-                  cursor: 'pointer',
+                  color: palette.primary.main,
                 },
               }}
             >
@@ -88,7 +91,7 @@ const AgenciesWidget = ({ volunteerId }) => {
             <Room
               style={{
                 fontSize: viewState.zoom * 5,
-                color: palette.primary.main,
+                color: 'tomato',
                 cursor: 'pointer',
               }}
               onClick={() => handleMarkerClick(a.id, a.latitude, a.longitude)}
@@ -107,28 +110,46 @@ const AgenciesWidget = ({ volunteerId }) => {
                 display="flex"
                 sx={{
                   width: '250px',
-                  height: '250px',
+                  height: '200px',
                   display: 'flex',
-                  flexDirection: 'column',
+                  flexDirection: 'row',
                   alignItems: 'center',
                 }}
               >
-                <PopupLabel variant="h5">Agency</PopupLabel>
-                <Typography className="place">{a.name}</Typography>
-                <PopupLabel variant="h5">Type</PopupLabel>
-                <Typography className="desc">{a.type}</Typography>
-                <PopupLabel>Founded</PopupLabel>
-                <Typography className="username">February 24, 2024 </Typography>
-                <PopupLabel>Members</PopupLabel>
-                <Typography className="username">10</Typography>
-                <PopupLabel variant="h5">Rating</PopupLabel>
-                <Typography sx={{ color: 'gold' }}>
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
-                </Typography>
+                <Box
+                  display="flex"
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {' '}
+                  <PopupLabel variant="h5">Agency:</PopupLabel>{' '}
+                  <PopupLabel variant="h5">Type:</PopupLabel>{' '}
+                  <PopupLabel variant="h5">Members:</PopupLabel>{' '}
+                  <PopupLabel variant="h5">Rating:</PopupLabel>
+                  <PopupLabel variant="h5">Founded:</PopupLabel>
+                </Box>
+                <Box
+                  display="flex"
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {' '}
+                  <PopupContent variant="h5">{a.name}</PopupContent>{' '}
+                  <PopupContent variant="h5">{a.type}</PopupContent>{' '}
+                  <PopupContent variant="h5">10</PopupContent>{' '}
+                  <PopupContent variant="h5" sx={{ color: 'gold' }}>
+                    <PopupContent variant="h5">February 24, 2024</PopupContent>{' '}
+                    <Star />
+                    <Star />
+                    <Star />
+                    <Star />
+                    <Star />
+                  </PopupContent>
+                </Box>
               </Box>
             </Popup>
           ) : null}

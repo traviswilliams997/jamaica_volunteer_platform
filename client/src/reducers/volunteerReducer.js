@@ -30,7 +30,6 @@ const volunteerSlice = createSlice({
 })
 
 export const {
-  setMode,
   setVolunteers,
   appendVolunteer,
   setCurrentVolunteer,
