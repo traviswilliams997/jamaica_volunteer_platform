@@ -54,17 +54,21 @@ describe('/api/volunteers', () => {
 
     const followerRelationsAtStart = await followerRelationsInDb()
 
-    await api
+    const response = await api
       .patch(`/api/volunteers/${daniel33.id}/${stacey45.id}`)
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     const followerRelationsAtEnd = await followerRelationsInDb()
+
     assert.strictEqual(
       followerRelationsAtEnd.length,
       followerRelationsAtStart.length + 1
     )
+
+    assert.strictEqual(daniel33.id, response.body.followingVolunteerId)
+    assert.strictEqual(stacey45.id, response.body.followedVolunteerId)
   })
   test('followUnfollow can unfollow ', async () => {
     const stacey45 = await Volunteer.findOne({
@@ -142,17 +146,17 @@ describe('/api/volunteers', () => {
       where: { username: 'stacey45' },
     })
 
-    const followerObject1 = new Follower({
-      followingVolunteerId: ray45.id,
-      followedVolunteerId: stacey45.id,
-    })
-    await followerObject1.save()
+    const follow1 = await api
+      .patch(`/api/volunteers/${ray45.id}/${stacey45.id}`)
+      .set({ Authorization: `Bearer ${testtoken}` })
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-    const followerObject2 = new Follower({
-      followingVolunteerId: daniel33.id,
-      followedVolunteerId: stacey45.id,
-    })
-    await followerObject2.save()
+    const follow2 = await api
+      .patch(`/api/volunteers/${daniel33.id}/${stacey45.id}`)
+      .set({ Authorization: `Bearer ${testtoken}` })
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
     const response = await api
       .get(`/api/volunteers/${stacey45.id}/followers`)
@@ -160,8 +164,12 @@ describe('/api/volunteers', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body[0].username, 'ray45')
-    assert.strictEqual(response.body[1].username, 'daniel33')
+    const fetchedFollowers = response.body
+
+    const usernames = fetchedFollowers.map((follower) => follower.username)
+
+    assert(usernames.includes('ray45'))
+    assert(usernames.includes('daniel33'))
   })
 
   test('volunteer can check if they are following someone', async () => {

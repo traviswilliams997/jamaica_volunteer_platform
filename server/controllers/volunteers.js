@@ -95,7 +95,7 @@ export const followUnfollow = async (req, res) => {
 
     //Follower relationship doesnt exist
     if (following.length === 0) {
-      let followerObject = new Follower({
+      const followerObject = new Follower({
         followingVolunteerId: id,
         followedVolunteerId: followedId,
       })
@@ -112,10 +112,14 @@ export const followUnfollow = async (req, res) => {
       })
     }
 
-    res.status(200).json()
-  } catch (err) {
-    console.log('followUnfollow Error', err)
 
+    const foll = await Follower.findAll({
+      where: { followingVolunteerId: id, followedVolunteerId: followedId },
+    })
+
+    res.status(200).json(foll[0])
+  } catch (err) {
+    console.log('followUnfollow ERROR', err)
     res.status(400).json({ message: err })
   }
 }
