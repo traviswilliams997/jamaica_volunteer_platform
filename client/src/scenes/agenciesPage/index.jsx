@@ -2,7 +2,7 @@ import { Box, useMediaQuery } from '@mui/material'
 import { useSelector } from 'react-redux'
 import Navbar from '../navbar'
 import UserWidget from '../widgets/UserWidget'
-import AgenciesWidget from '../widgets/AgenciesWidget'
+import AgencyMapWidget from '../widgets/AgencyMapWidget'
 const AgenciesPage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
   const volunteer = useSelector((state) => state.volunteer.currentVolunteer)
@@ -30,11 +30,7 @@ const AgenciesPage = () => {
           flexBasis={isNonMobileScreens ? '74%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}
         >
-          <AgenciesWidget
-            volunteerId={volunteer.id}
-            latititude={volunteer.latititude}
-            longitude={volunteer.longitude}
-          />
+          <AgencyMapWidget />
         </Box>
       </Box>
     </Box>
