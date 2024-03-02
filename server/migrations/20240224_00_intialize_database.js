@@ -673,7 +673,7 @@ const down = async ({ context: queryInterface }) => {
   await queryInterface.dropTable('event_attendings')
   await queryInterface.dropTable('followers')
   await queryInterface.dropTable('memberships')
-  await queryInterface.dropTable('positons')
+  await queryInterface.dropTable('positions')
   await queryInterface.dropTable('reactions')
   await queryInterface.dropTable('sessions')
   await queryInterface.dropTable('streaks')
