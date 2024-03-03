@@ -1,7 +1,8 @@
+import axios from 'axios'
 const postsEndpoint = '/api/posts'
 
-const getAll = async (customAxios) => {
-  const response = await customAxios.get(postsEndpoint)
+const getAll = async () => {
+  const response = await axios.get(postsEndpoint)
   return response.data
 }
 

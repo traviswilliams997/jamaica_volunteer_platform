@@ -1,8 +1,8 @@
+import axios from 'axios'
 const volunteersEndpoint = '/api/volunteers'
 
-const getAll = async (customAxios) => {
-  const response = await customAxios.get(volunteersEndpoint)
-
+const getAll = async () => {
+  const response = await axios.get(volunteersEndpoint)
   return response.data
 }
 

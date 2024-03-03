@@ -1,6 +1,19 @@
 import { Volunteer, Follower } from '../models/index.js'
 
 /*READ */
+
+export const getVolunteers = async (req, res) => {
+  try {
+    const response = await Volunteer.findAll({
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+    })
+
+    return res.status(200).json(response)
+  } catch (err) {
+    console.log('getVolunteers Error', err)
+    res.status(400).json({ message: err })
+  }
+}
 export const getVolunteer = async (req, res) => {
   try {
     const { id } = req.params

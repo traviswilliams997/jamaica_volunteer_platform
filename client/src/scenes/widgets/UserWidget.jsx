@@ -12,7 +12,7 @@ import UserImage from '../../components/UserImage'
 import FlexBetween from '../../components/FlexBetween'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
@@ -26,14 +26,19 @@ const UserWidget = ({ volunteerId, picturePath }) => {
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
 
+  const volunteers = useSelector((state) => state.volunteer.volunteers)
+
   const dark = palette.neutral.dark
   const medium = palette.neutral.medium
   const main = palette.neutral.main
 
-  const getVolunteer = async () => {
-    const response = await volunteerService.getById(volunteerId, axiosPrivate)
-    setVolunteer(response)
+  const getVolunteer = () => {
+    const volunteer = volunteers.find((volunteer) => {
+      return Number(volunteer.id) === Number(volunteerId)
+    })
+    setVolunteer(volunteer)
   }
+
   const getVolunteersYouFollow = async () => {
     const response = await volunteerService.getFollowing(
       volunteerId,

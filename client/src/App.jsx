@@ -4,18 +4,36 @@ import LoginPage from './scenes/loginPage'
 import ProfilePage from './scenes/profilePage'
 import AgenciesPage from './scenes/agenciesPage'
 import AgencyPage from './scenes/agencyPage'
-import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useMemo, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 import { themeSettings } from './theme'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { initializeAgencies } from './reducers/agencyReducer'
+import { initializeVolunteers } from './reducers/volunteerReducer'
+import { initializePosts } from './reducers/postReducer'
+
 function App() {
   const mode = useSelector((state) => state.global.mode)
   // eslint-disable-next-line react-hooks/exhaustive-deps
+
   const theme = useMemo(() => createTheme(themeSettings(mode)))
   const isAuth = useSelector((state) => state.global.isAuth)
+
+  const dispatch = useDispatch()
+
+  const setIniitalState = async () => {
+    dispatch(initializePosts())
+    dispatch(initializeAgencies())
+    dispatch(initializeVolunteers())
+  }
+
+  useEffect(() => {
+    setIniitalState()
+  }, [])
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="app">
@@ -32,6 +50,10 @@ function App() {
                 path="/agencies"
                 element={isAuth ? <AgenciesPage /> : <Navigate to="/" />}
               />
+              {/*   <Route
+                path="/events"
+                element={isAuth ? <EventsPage /> : <Navigate to="/" />}
+  /> */}
               <Route
                 path="/profile/:volunteerId"
                 element={isAuth ? <ProfilePage /> : <Navigate to="/" />}

@@ -1,36 +1,28 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { initializePosts } from '../../reducers/postReducer'
+import { useSelector } from 'react-redux'
 import PostWidget from './PostWidget'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import postsService from '../../services/posts'
 
 // eslint-disable-next-line react/prop-types
 const PostsWidget = ({ volunteerId, isProfile = false }) => {
-  const dispatch = useDispatch()
-  const [posts, setPost] = useState([])
-  const axiosPrivate = useAxiosPrivate()
-
-  const getPosts = async () => {
-    const res = await postsService.getAll(axiosPrivate)
-    setPost(res)
-    dispatch(initializePosts(axiosPrivate))
-  }
-
-  const getVolunteerPosts = async () => {
-    const res = await postsService.getForPerson(volunteerId, axiosPrivate)
-    setPost([res])
-  }
+  const allPosts = useSelector((state) => state.posts)
+  const volunteerPosts = allPosts.find((post) => {
+    return Number(post.volunteerId) === Number(volunteerId)
+  })
+  const [posts, setPosts] = useState([])
 
   useEffect(() => {
     if (isProfile) {
-      getVolunteerPosts()
+      if (Array.isArray(volunteerPosts)) {
+        setPosts(volunteerPosts)
+      } else {
+        setPosts([volunteerPosts])
+      }
     } else {
-      getPosts()
+      setPosts(allPosts)
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (posts.empty) {
+  if (typeof posts === 'undefined' || posts.empty) {
     return <div></div>
   }
 

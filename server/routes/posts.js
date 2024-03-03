@@ -13,7 +13,7 @@ const router = express.Router()
 router.post('/volunteer', verifyToken, createVolunteerPost)
 
 /* READ */
-router.get('/', verifyToken, getFeedPosts)
+router.get('/', getFeedPosts)
 router.get('/:id', verifyToken, getPost)
 router.get('/:volunteerId/posts', verifyToken, getVolunteerPosts)
 
