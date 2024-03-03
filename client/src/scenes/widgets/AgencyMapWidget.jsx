@@ -1,18 +1,25 @@
 import { Box, useTheme, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { initializeAgencies } from '../../reducers/agencyReducer'
 import agenciesService from '../../services/agencies'
-import Map, { Marker, Popup } from 'react-map-gl'
+import ReactMapGL, {
+  Marker,
+  Popup,
+  NavigationControl,
+  GeolocateControl,
+} from 'react-map-gl'
 import { Room, Star } from '@mui/icons-material'
 import { format } from 'timeago.js'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import Geocoder from './GeocoderWidget'
 // eslint-disable-next-line react/prop-types
 const AgenciesWidget = ({}) => {
   const [showPopup, setShowPopup] = useState(false)
   const [agencies, setAgencies] = useState([])
   const navigate = useNavigate()
+  const mapRef = useRef()
 
   const { palette } = useTheme()
   const dispatch = useDispatch()
@@ -50,12 +57,17 @@ const AgenciesWidget = ({}) => {
     setShowPopup(true)
   }
 
+  const handleGeoLocateClick = (lat, long) => {
+    setViewState({ ...viewState, latitude: lat, longitude: long })
+  }
+
   useEffect(() => {
     getAgencies()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Map
+    <ReactMapGL
+      ref={mapRef}
       mapboxAccessToken={import.meta.env.VITE_MAPBOX}
       {...viewState}
       onMove={(evt) => setViewState(evt.viewState)}
@@ -100,7 +112,6 @@ const AgenciesWidget = ({}) => {
               onClick={() => handleMarkerClick(a.id, a.latitude, a.longitude)}
             />
           </Marker>
-
           {showPopup ? (
             <Popup
               longitude={a.longitude}
@@ -155,10 +166,19 @@ const AgenciesWidget = ({}) => {
                 </Box>
               </Box>
             </Popup>
-          ) : null}
+          ) : null}{' '}
         </Box>
       ))}
-    </Map>
+      <NavigationControl position="bottom-right" />
+      <GeolocateControl
+        position="top-left"
+        trackUserLocation
+        onGeolocate={(e) =>
+          handleGeoLocateClick(e.coords.longitude, e.coords.latitude)
+        }
+      />
+      <Geocoder viewState={viewState} setViewState={setViewState} />
+    </ReactMapGL>
   )
 }
 
