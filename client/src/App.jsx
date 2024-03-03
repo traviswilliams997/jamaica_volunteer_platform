@@ -36,6 +36,7 @@ function App() {
   }
 
   useEffect(() => {
+    console.log('State Intialized ')
     setIniitalState()
   }, [])
   return (
