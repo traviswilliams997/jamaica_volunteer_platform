@@ -12,7 +12,7 @@ const SessionsWidget = () => {
     <WidgetWrapper>
       <FlexBetween>
         <Typography color={dark} varaint="h5" fontWeight="500">
-          Last Sessions
+          Last Session
         </Typography>
         <Typography color={medium}>Red Cross</Typography>
       </FlexBetween>
