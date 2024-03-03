@@ -21,6 +21,8 @@ const FollowingListWidget = ({ volunteerId }) => {
   useEffect(() => {
     getFollowedByVolunteer()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!volunteersYouFollow) return
   return (
     <WidgetWrapper>
       <Typography
