@@ -72,8 +72,6 @@ export const getFeedPosts = async (req, res) => {
       ],
     })
 
-    console.log('get [posts res', posts)
-
     const formattedPosts = posts.map((post) => {
       if (post.type === 'Volunteer') {
         const formattedPost = {

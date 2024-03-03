@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux'
 import Navbar from '../navbar'
 import MyPostWidget from '../widgets/MyPostWidget'
 import PostsWidget from '../widgets/PostsWidget'
+import EventsWidget from '../widgets/EventWidget'
 import UserWidget from '../widgets/UserWidget'
 import FollowingListWidget from '../widgets/FollowingListWiget'
 import AgencyPositionsWidget from '../widgets/AgencyPositionsWidget '
 import AgencyWidget from '../widgets/AgencyWidget'
+import EventWidget from '../widgets/EventWidget'
 
 const ProfilePage = () => {
   const [agency, setAgency] = useState(null)
@@ -47,10 +49,8 @@ const ProfilePage = () => {
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? '42%' : undefined}
-          mt={isNonMobileScreens ? undefined : '2rem'}
+          mt={isNonMobileScreens ? undefined : '1rem'}
         >
-          {/*<MyPostWidget picturePath={volunteer.picturePath} /> */}
-          <Box m="2rem 0" />
           <PostsWidget agencyId={agencyId} isProfile={true} isAgency={true} />
         </Box>
 
@@ -58,7 +58,7 @@ const ProfilePage = () => {
           flexBasis={isNonMobileScreens ? '26%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}
         >
-          <AgencyPositionsWidget agencyPositions={agency.positions} />
+          <EventWidget agencyId={agencyId} />
           <Box m="2rem 0" />
           <AgencyPositionsWidget agencyPositions={agency.positions} />
         </Box>

@@ -134,13 +134,19 @@ const UserWidget = ({ volunteerId, picturePath }) => {
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Hours Volunteered</Typography>
           <Typography color={medium} fontWeight="500">
-            1000
+            2183
+          </Typography>
+        </FlexBetween>
+        <FlexBetween mb="0.5rem">
+          <Typography color={medium}>Rank</Typography>
+          <Typography color={medium} fontWeight="500">
+            #2980 By Hours Volunteered
           </Typography>
         </FlexBetween>
         <FlexBetween>
           <Typography color={medium}>Karma</Typography>
           <Typography color={medium} fontWeight="500">
-            200000
+            217985
           </Typography>
         </FlexBetween>
         <FlexBetween>

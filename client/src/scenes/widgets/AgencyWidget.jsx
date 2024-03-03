@@ -96,25 +96,23 @@ const AgencyWidget = ({ agencyId, picturePath }) => {
       {/* THIRD ROW*/}
       <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
-          <Typography color={medium}>
-            Hours Volunteered At This Ageceny
-          </Typography>
+          <Typography color={medium}> Time Volunteered At</Typography>
           <Typography color={medium} fontWeight="500">
-            10000000000
+            167.8 Years
+          </Typography>
+        </FlexBetween>
+        <FlexBetween>
+          <Box display="flex">
+            <Typography color={medium}> Rank</Typography>
+          </Box>
+          <Typography color={medium} fontWeight="500">
+            #1 By Hours Volunteered At
           </Typography>
         </FlexBetween>
         <FlexBetween>
           <Typography color={medium}>Karma</Typography>
           <Typography color={medium} fontWeight="500">
-            200000
-          </Typography>
-        </FlexBetween>
-        <FlexBetween>
-          <Box display="flex">
-            <Typography color={medium}>Current rank</Typography>
-          </Box>
-          <Typography color={medium} fontWeight="500">
-            #1 Agency By hours volunteerd At
+            7098239812
           </Typography>
         </FlexBetween>
       </Box>
