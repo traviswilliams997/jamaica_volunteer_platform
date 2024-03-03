@@ -92,10 +92,18 @@ const Navbar = () => {
       {isNonMobileScreen ? (
         <FlexBetween gap="2rem">
           <IconButton onClick={() => navigate('/events')}>
-            <Event sx={{ color: 'black', fontSize: '25px' }} />
+            {theme.palette.mode === 'dark' ? (
+              <Event sx={{ color: dark, fontSize: '25px' }} />
+            ) : (
+              <Event sx={{ color: 'black', fontSize: '25px' }} />
+            )}
           </IconButton>
           <IconButton onClick={() => navigate('/agencies')}>
-            <VolunteerActivism sx={{ color: 'black', fontSize: '25px' }} />
+            {theme.palette.mode === 'dark' ? (
+              <VolunteerActivism sx={{ color: dark, fontSize: '25px' }} />
+            ) : (
+              <VolunteerActivism sx={{ color: 'black', fontSize: '25px' }} />
+            )}
           </IconButton>
           <Message />
           <Notifications sx={{ fontSize: '25px' }} />
