@@ -37,13 +37,13 @@ export const getAgency = async (req, res) => {
   }
 }
 
-export const createNewPostion = async (req, res) => {
+export const createPostion = async (req, res) => {
   try {
-    const { agencyId, title, description, skills, schedule, vacancies } =
-      req.body
+    const { id } = req.params
+    const { title, description, skills, schedule, vacancies } = req.body
 
     const postion = {
-      agencyId,
+      agencyId: id,
       title,
       description,
       skills,

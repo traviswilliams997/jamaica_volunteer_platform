@@ -1,10 +1,8 @@
 import {
   ManageAccountsOutlined,
   EditOutlined,
-  WorkOutlineOutlined,
   BuildOutlined,
 } from '@mui/icons-material'
-import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone'
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import { Box, Typography, Divider, useTheme, IconButton } from '@mui/material'
@@ -114,7 +112,6 @@ const AgencyWidget = ({ agencyId, picturePath }) => {
         <FlexBetween>
           <Box display="flex">
             <Typography color={medium}>Current rank</Typography>
-            <WhatshotTwoToneIcon fontSize="medium" sx={{ color: main }} />
           </Box>
           <Typography color={medium} fontWeight="500">
             #1 Agency By hours volunteerd At

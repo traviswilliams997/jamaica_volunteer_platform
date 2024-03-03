@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react'
 const AgencyPositionWidget = ({ agencyPosition }) => {
   const { palette } = useTheme()
   const [position, setPosition] = useState(false)
+  const createdAtString = new Date(position.createdAt).toDateString()
+
   const dark = palette.neutral.dark
   const main = palette.neutral.main
   const medium = palette.neutral.medium
@@ -55,7 +57,7 @@ const AgencyPositionWidget = ({ agencyPosition }) => {
         {' '}
         Posted:
       </Typography>
-      <Typography color={medium}>Thursday, Feb 29, 2024</Typography>
+      <Typography color={medium}>{createdAtString}</Typography>
     </WidgetWrapper>
   )
 }

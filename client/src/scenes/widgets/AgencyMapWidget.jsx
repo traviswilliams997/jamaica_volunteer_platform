@@ -7,19 +7,20 @@ import Map, { Marker, Popup } from 'react-map-gl'
 import { Room, Star } from '@mui/icons-material'
 import { format } from 'timeago.js'
 import { styled } from '@mui/system'
-
+import { useNavigate } from 'react-router-dom'
 // eslint-disable-next-line react/prop-types
 const AgenciesWidget = ({}) => {
   const [showPopup, setShowPopup] = useState(false)
-
   const [agencies, setAgencies] = useState([])
+  const navigate = useNavigate()
+
   const { palette } = useTheme()
   const dispatch = useDispatch()
 
   const [viewState, setViewState] = useState({
     longitude: -76.8099,
     latitude: 18.0179,
-    zoom: 11,
+    zoom: 12,
   })
 
   const PopupLabel = styled(Typography)(({}) => ({
@@ -81,17 +82,18 @@ const AgenciesWidget = ({}) => {
               variant="h5"
               fontWeight="700"
               sx={{
-                fontSize: `${viewState.zoom * 1}px`,
+                fontSize: `${viewState.zoom * 1.5}px`,
                 '&:hover': {
                   color: palette.primary.main,
                 },
               }}
+              onClick={() => navigate(`/agency/${a.id}`)}
             >
               {a.name}
             </Typography>
             <Room
               style={{
-                fontSize: viewState.zoom * 2,
+                fontSize: viewState.zoom * 4,
                 color: 'tomato',
                 cursor: 'pointer',
               }}
@@ -125,11 +127,11 @@ const AgenciesWidget = ({}) => {
                   }}
                 >
                   {' '}
-                  <PopupLabel variant="h5">Agency:</PopupLabel>{' '}
-                  <PopupLabel variant="h5">Type:</PopupLabel>{' '}
-                  <PopupLabel variant="h5">Members:</PopupLabel>{' '}
-                  <PopupLabel variant="h5">Rating:</PopupLabel>
-                  <PopupLabel variant="h5">Founded:</PopupLabel>
+                  <PopupLabel variant="h3">Agency:</PopupLabel>{' '}
+                  <PopupLabel variant="h3">Type:</PopupLabel>{' '}
+                  <PopupLabel variant="h3">Members:</PopupLabel>{' '}
+                  <PopupLabel variant="h3">Rating:</PopupLabel>
+                  <PopupLabel variant="h3">Founded:</PopupLabel>
                 </Box>
                 <Box
                   display="flex"
@@ -139,11 +141,11 @@ const AgenciesWidget = ({}) => {
                   }}
                 >
                   {' '}
-                  <PopupContent variant="h5">{a.name}</PopupContent>{' '}
-                  <PopupContent variant="h5">{a.type}</PopupContent>{' '}
-                  <PopupContent variant="h5">10</PopupContent>{' '}
-                  <PopupContent variant="h5" sx={{ color: 'gold' }}>
-                    <PopupContent variant="h5">February 24, 2024</PopupContent>{' '}
+                  <PopupContent variant="h3">{a.name}</PopupContent>{' '}
+                  <PopupContent variant="h3">{a.type}</PopupContent>{' '}
+                  <PopupContent variant="h3">10</PopupContent>{' '}
+                  <PopupContent variant="h3" sx={{ color: 'gold' }}>
+                    <PopupContent variant="h3">February 24, 2024</PopupContent>{' '}
                     <Star />
                     <Star />
                     <Star />

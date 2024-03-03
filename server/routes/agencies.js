@@ -2,7 +2,7 @@ import express from 'express'
 import {
   getAgencies,
   getAgency,
-  createNewPostion,
+  createPostion,
 } from '../controllers/agencies.js'
 
 const router = express.Router()
@@ -12,6 +12,6 @@ router.get('/', getAgencies)
 router.get('/:id', getAgency)
 
 /* CREATE*/
-router.post('/position', createNewPostion)
+router.post('/:id/position', createPostion)
 
 export default router
