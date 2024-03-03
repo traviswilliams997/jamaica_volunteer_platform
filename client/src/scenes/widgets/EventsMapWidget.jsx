@@ -137,7 +137,6 @@ const EventMapsWidget = ({}) => {
                     flexDirection: 'column',
                   }}
                 >
-                  {' '}
                   <PopupLabel variant="h3">Date:</PopupLabel>{' '}
                   <PopupContent variant="h3">
                     {new Date(e.date).toDateString()}
@@ -152,14 +151,7 @@ const EventMapsWidget = ({}) => {
                 >
                   {' '}
                   <PopupLabel variant="h3">Description:</PopupLabel>{' '}
-                  <PopupContent
-                    variant="h3"
-                    sx={{
-                      border: '5px solid red',
-                    }}
-                  >
-                    {e.description}
-                  </PopupContent>{' '}
+                  <PopupContent variant="h3">{e.description}</PopupContent>{' '}
                 </Box>{' '}
                 <Box
                   display="flex"
@@ -170,6 +162,27 @@ const EventMapsWidget = ({}) => {
                 >
                   <PopupLabel variant="h3">Location:</PopupLabel>
                   <PopupContent variant="h3">{e.location}</PopupContent>{' '}
+                </Box>{' '}
+                <Box
+                  display="flex"
+                  sx={{
+                    display: 'column',
+                    flexDirection: 'row',
+                  }}
+                >
+                  {' '}
+                  <PopupLabel variant="h3">Agency:</PopupLabel>{' '}
+                  <PopupContent
+                    variant="h3"
+                    sx={{
+                      '&:hover': {
+                        color: 'tomato',
+                      },
+                    }}
+                    onClick={() => navigate(`/agency/${e.createdByAgencyId}`)}
+                  >
+                    {e.agencyName}
+                  </PopupContent>{' '}
                 </Box>{' '}
               </Box>
             </Popup>
