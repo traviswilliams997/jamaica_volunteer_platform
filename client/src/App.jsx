@@ -15,6 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { initializeAgencies } from './reducers/agencyReducer'
 import { initializeVolunteers } from './reducers/volunteerReducer'
 import { initializePosts } from './reducers/postReducer'
+import { initializeEvents } from './reducers/eventReducer'
 
 function App() {
   const mode = useSelector((state) => state.global.mode)
@@ -26,9 +27,10 @@ function App() {
   const dispatch = useDispatch()
 
   const setIniitalState = async () => {
+    dispatch(initializeVolunteers())
     dispatch(initializePosts())
     dispatch(initializeAgencies())
-    dispatch(initializeVolunteers())
+    dispatch(initializeEvents())
   }
 
   useEffect(() => {
