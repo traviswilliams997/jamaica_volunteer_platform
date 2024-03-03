@@ -1,8 +1,6 @@
 import { Box, useTheme, Typography } from '@mui/material'
-import { useEffect, useState, useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { initializeAgencies } from '../../reducers/agencyReducer'
-import agenciesService from '../../services/agencies'
+import { useState, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import ReactMapGL, {
   Marker,
   Popup,
@@ -15,14 +13,13 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import Geocoder from './GeocoderWidget'
 // eslint-disable-next-line react/prop-types
-const AgenciesWidget = ({}) => {
+const AgencyMapWidget = ({}) => {
   const [showPopup, setShowPopup] = useState(false)
-  const [agencies, setAgencies] = useState([])
+  const [clickedPopUpId, setClickPopUpId] = useState(0)
   const navigate = useNavigate()
   const mapRef = useRef()
-
+  const agencies = useSelector((state) => state.agency.agencies)
   const { palette } = useTheme()
-  const dispatch = useDispatch()
 
   const [viewState, setViewState] = useState({
     longitude: -76.8099,
@@ -46,14 +43,9 @@ const AgenciesWidget = ({}) => {
     margin: '3px 0',
   }))
 
-  const getAgencies = async () => {
-    const res = await agenciesService.getAll()
-    setAgencies(res)
-    dispatch(initializeAgencies())
-  }
-
   const handleMarkerClick = (id, lat, long) => {
     setViewState({ ...viewState, latitude: lat, longitude: long })
+    setClickPopUpId(id)
     setShowPopup(true)
   }
 
@@ -61,10 +53,7 @@ const AgenciesWidget = ({}) => {
     setViewState({ ...viewState, latitude: lat, longitude: long })
   }
 
-  useEffect(() => {
-    getAgencies()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
+  if (!agencies) return
   return (
     <ReactMapGL
       ref={mapRef}
@@ -112,7 +101,7 @@ const AgenciesWidget = ({}) => {
               onClick={() => handleMarkerClick(a.id, a.latitude, a.longitude)}
             />
           </Marker>
-          {showPopup ? (
+          {showPopup && clickedPopUpId === a.id ? (
             <Popup
               longitude={a.longitude}
               latitude={a.latitude}
@@ -182,4 +171,4 @@ const AgenciesWidget = ({}) => {
   )
 }
 
-export default AgenciesWidget
+export default AgencyMapWidget

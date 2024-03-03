@@ -10,7 +10,7 @@ import FlexBetween from '../../components/FlexBetween'
 import Follow from '../../components/Follow'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { likeUnlikePost } from '../../reducers/postReducer'
 
