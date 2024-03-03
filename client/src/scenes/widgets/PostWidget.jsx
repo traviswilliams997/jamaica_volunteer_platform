@@ -8,6 +8,7 @@ import {
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material'
 import FlexBetween from '../../components/FlexBetween'
 import Follow from '../../components/Follow'
+import Join from '../../components/Join'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -25,13 +26,14 @@ const PostWidget = ({
   reactions,
   comments,
   createdAt,
+  isVolunteer = true,
 }) => {
   const [isComments, setIsComments] = useState(false)
   const createdAtString = new Date(createdAt).toDateString()
   const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
 
-  const isLiked = false //Boolean(reactions[loggedInUserId])
+  const isLiked = reactions.empty
   const likeCount = reactions ? 1000 : reactions
 
   const { palette } = useTheme()
@@ -40,12 +42,21 @@ const PostWidget = ({
 
   return (
     <WidgetWrapper m="2rem 0">
-      <Follow
-        followedId={posterId}
-        name={name}
-        subtitle={createdAtString}
-        volunteerPicturePath={posterPicturePath}
-      />
+      {isVolunteer ? (
+        <Follow
+          followedId={posterId}
+          name={name}
+          subtitle={createdAtString}
+          volunteerPicturePath={posterPicturePath}
+        />
+      ) : (
+        <Join
+          agencyId={posterId}
+          name={name}
+          subtitle={createdAtString}
+          volunteerPicturePath={posterPicturePath}
+        />
+      )}
       <Typography color={main} sx={{ mt: '1rem' }}>
         {content}
       </Typography>

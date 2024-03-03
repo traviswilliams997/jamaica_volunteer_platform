@@ -1,6 +1,7 @@
 import { Box, useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Navbar from '../navbar'
 import MyPostWidget from '../widgets/MyPostWidget'
 import PostsWidget from '../widgets/PostsWidget'
@@ -8,18 +9,20 @@ import UserWidget from '../widgets/UserWidget'
 import FollowingListWidget from '../widgets/FollowingListWiget'
 import AgencyPositionsWidget from '../widgets/AgencyPositionsWidget '
 import AgencyWidget from '../widgets/AgencyWidget'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
-import agencyService from '../../services/agencies'
 const ProfilePage = () => {
   const [agency, setAgency] = useState(null)
+
+  const agencies = useSelector((state) => state.agency.agencies)
+
   const { agencyId } = useParams()
-  const privateAxios = useAxiosPrivate()
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
 
   const getAgency = async () => {
-    const data = await agencyService.getById(agencyId, privateAxios)
-    setAgency(data)
+    const agency = agencies.find((agency) => {
+      return Number(agency.id) === Number(agencyId)
+    })
+    setAgency(agency)
   }
 
   useEffect(() => {
@@ -42,17 +45,17 @@ const ProfilePage = () => {
           <AgencyWidget agencyId={agency.id} picturePath={agency.picturePath} />
           <Box m="2rem 0" />
         </Box>
-        {/*<Box
+        <Box
           flexBasis={isNonMobileScreens ? '42%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}
         >
-          <MyPostWidget picturePath={volunteer.picturePath} />
+          {/*<MyPostWidget picturePath={volunteer.picturePath} /> */}
           <Box m="2rem 0" />
-          <PostsWidget volunteerId={volunteerId} isProfile={true} />
-        </Box> */}
+          <PostsWidget agencyId={agencyId} isProfile={true} isAgency={true} />
+        </Box>
 
         <Box
-          flexBasis={isNonMobileScreens ? '42%' : undefined}
+          flexBasis={isNonMobileScreens ? '26%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}
         >
           <AgencyPositionsWidget agencyPositions={agency.positions} />
