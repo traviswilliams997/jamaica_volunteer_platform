@@ -223,7 +223,7 @@ export const likePost = async (req, res) => {
     const likes = await Reaction.findAll({
       where: {
         createdByVolunteerId: volunteerId,
-        postId: id,
+        postId: Number(id),
       },
     })
 
@@ -231,15 +231,16 @@ export const likePost = async (req, res) => {
 
     if (isAlreadyLiked) {
       likes[0].destroy()
+      res.status(200).json()
     } else {
       const like = new Reaction({
         createdByVolunteerId: volunteerId,
-        postId: id,
+        postId: Number(id),
       })
-      await like.save()
-    }
 
-    res.status(200).json()
+      const newLike = await like.save()
+      res.status(200).json(newLike)
+    }
   } catch (err) {
     console.log('likePost err', err)
     res.status(404).json({ message: err })
