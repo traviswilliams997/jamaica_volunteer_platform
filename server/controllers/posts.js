@@ -23,9 +23,32 @@ export const createVolunteerPost = async (req, res) => {
   }
 }
 
+export const createAgencyPost = async (req, res) => {
+  try {
+    const { agencyId, content, picturePath, posterPicturePath } = req.body
+
+    const newPost = new Post({
+      createdAgencyId: agencyId,
+      content,
+      type: 'Agency',
+      posterPicturePath: posterPicturePath,
+      picturePath: picturePath,
+    })
+
+    const response = await newPost.save()
+
+    res.status(201).json(response)
+  } catch (err) {
+    console.log('createAgencyPost err', err)
+
+    res.status(409).json({ message: err })
+  }
+}
+
 /* READ */
 export const getFeedPosts = async (req, res) => {
   try {
+    console.log('Inside get posts')
     const posts = await Post.findAll({
       where: {},
       include: [
@@ -48,6 +71,8 @@ export const getFeedPosts = async (req, res) => {
         },
       ],
     })
+
+    console.log('get [posts res', posts)
 
     const formattedPosts = posts.map((post) => {
       if (post.type === 'Volunteer') {
