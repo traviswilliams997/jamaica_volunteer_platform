@@ -230,7 +230,8 @@ export const likePost = async (req, res) => {
     const isAlreadyLiked = likes.length !== 0
 
     if (isAlreadyLiked) {
-      likes[0].destroy()
+      const deletedLike = await likes[0].destroy()
+
       res.status(200).json()
     } else {
       const like = new Reaction({

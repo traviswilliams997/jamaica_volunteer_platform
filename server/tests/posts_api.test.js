@@ -216,7 +216,7 @@ describe('posts api', () => {
 
   test('volunteer can unlike post', async () => {
     const reactionsAtStart = await reactionsInDb()
-    console.log('reacactions at start', reactionsAtStart)
+
     const volunteerObject = new Volunteer(initialVolunteersPostApi[0])
     await volunteerObject.save()
     const volunteerId = volunteerObject.dataValues.id
