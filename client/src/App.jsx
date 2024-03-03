@@ -4,6 +4,8 @@ import LoginPage from './scenes/loginPage'
 import ProfilePage from './scenes/profilePage'
 import AgenciesPage from './scenes/agenciesPage'
 import AgencyPage from './scenes/agencyPage'
+import EventsPage from './scenes/eventsPage'
+
 import { useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -52,10 +54,10 @@ function App() {
                 path="/agencies"
                 element={isAuth ? <AgenciesPage /> : <Navigate to="/" />}
               />
-              {/*   <Route
+              <Route
                 path="/events"
                 element={isAuth ? <EventsPage /> : <Navigate to="/" />}
-  /> */}
+              />
               <Route
                 path="/profile/:volunteerId"
                 element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
