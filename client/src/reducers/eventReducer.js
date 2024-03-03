@@ -22,7 +22,6 @@ export const { setEvents, appendEvent } = eventSlice.actions
 export const initializeEvents = () => {
   return async (dispatch) => {
     const events = await eventService.getAll()
-    console.log('Event reducer', events)
     dispatch(setEvents(events))
   }
 }

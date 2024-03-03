@@ -6,7 +6,7 @@ const intialState = {
 }
 
 const postSlice = createSlice({
-  name: 'posts',
+  name: 'post',
   initialState: intialState,
   reducers: {
     appendPost(state, action) {
