@@ -175,7 +175,7 @@ export const getPost = async (req, res) => {
   try {
     const { id } = req.params
 
-    const post = await Post.findByPk(id, {
+    const post = await Post.findByPk(Number(id), {
       include: [
         {
           model: Comment,

@@ -18,7 +18,7 @@ export const getVolunteer = async (req, res) => {
   try {
     const { id } = req.params
 
-    const volunteer = await Volunteer.findByPk(id, {
+    const volunteer = await Volunteer.findByPk(Number(id), {
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     })
 
@@ -35,7 +35,7 @@ export const getVolunteerFollowing = async (req, res) => {
 
     if (id === 'undefined') return res.status(422)
 
-    const volunteer = await Volunteer.findByPk(id, {
+    const volunteer = await Volunteer.findByPk(Number(id), {
       where: {},
       include: {
         model: Volunteer,
@@ -74,7 +74,10 @@ export const checkIsFollowing = async (req, res) => {
     const { id, followedId } = req.params
 
     const followings = await Follower.findOne({
-      where: { following_volunteer_id: id, followed_volunteer_id: followedId },
+      where: {
+        following_volunteer_id: Number(id),
+        followed_volunteer_id: Number(followedId),
+      },
     })
 
     const isFollowing = followings !== null
@@ -90,7 +93,7 @@ export const getVolunteerFollowers = async (req, res) => {
   try {
     const { id } = req.params
 
-    const volunteer = await Volunteer.findByPk(id, {
+    const volunteer = await Volunteer.findByPk(Number(id), {
       where: {},
       include: {
         model: Volunteer,
