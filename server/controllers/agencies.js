@@ -1,4 +1,4 @@
-import { Agency, Position } from '../models/index.js'
+import { Agency, Position, Event } from '../models/index.js'
 
 /*READ */
 export const getAgencies = async (req, res) => {
@@ -15,7 +15,7 @@ export const getAgencies = async (req, res) => {
 
     return res.status(200).json(formattedAgencies)
   } catch (err) {
-    console.log('getAgency Error', err)
+    console.log('getAgencies Error', err)
     res.status(400).json({ message: err })
   }
 }
@@ -32,7 +32,7 @@ export const getAgency = async (req, res) => {
     })
     return res.status(200).json(agency)
   } catch (err) {
-    console.log('getAfency Error', err)
+    console.log('getAgency Error', err)
     res.status(400).json({ message: err })
   }
 }
@@ -55,7 +55,32 @@ export const createPostion = async (req, res) => {
 
     return res.status(200).json(savedPosition)
   } catch (err) {
-    console.log('getAgency Error', err)
+    console.log('createPosition Error', err)
+    res.status(400).json({ message: err })
+  }
+}
+export const createEvent = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { title, description, date, location, latitude, longitude } = req.body
+
+    console.log(req.body)
+
+    const eventObject = {
+      createdByAgencyId: id,
+      title,
+      description,
+      date,
+      location,
+      latitude,
+      longitude,
+    }
+    const newEvent = new Event(eventObject)
+    const savedEvent = await newEvent.save()
+
+    return res.status(200).json(savedEvent)
+  } catch (err) {
+    console.log('createEvent Error', err)
     res.status(400).json({ message: err })
   }
 }

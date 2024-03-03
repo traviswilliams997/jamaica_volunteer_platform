@@ -94,7 +94,7 @@ AgencyAddress.belongsTo(Agency)
 Volunteer.belongsToMany(Agency, { through: Membership })
 Agency.belongsToMany(Volunteer, { through: Membership })
 
-Agency.hasMany(Event)
+Agency.hasMany(Event, { foreignKey: 'created_by_agency_id' })
 Event.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
 
 Volunteer.belongsToMany(Event, {
