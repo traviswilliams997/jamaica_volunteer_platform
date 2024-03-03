@@ -33,7 +33,7 @@ const PostWidget = ({
   const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
 
-  const isLiked = reactions.empty
+  const isLiked = true
   const likeCount = reactions ? 1000 : reactions
 
   const { palette } = useTheme()
