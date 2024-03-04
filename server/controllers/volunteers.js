@@ -1,14 +1,16 @@
-import { Volunteer, Follower } from '../models/index.js'
+import { Volunteer, Follower, Membership } from '../models/index.js'
 
 /*READ */
 
 export const getVolunteers = async (req, res) => {
   try {
-    const response = await Volunteer.findAll({
+    const volunteers = await Volunteer.findAll({
+      include: {
+        model: Membership,
+      },
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     })
-
-    return res.status(200).json(response)
+    return res.status(200).json(volunteers)
   } catch (err) {
     console.log('getVolunteers Error', err)
     res.status(400).json({ message: err })

@@ -5,9 +5,14 @@ export const getAgencies = async (req, res) => {
   try {
     const agencies = await Agency.findAll({
       where: {},
-      include: {
-        model: Position,
-      },
+      include: [
+        {
+          model: Position,
+        },
+        {
+          model: Membership,
+        },
+      ],
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     })
 
