@@ -9,6 +9,8 @@ import volunteerRoutes from './routes/volunteers.js'
 import postRoutes from './routes/posts.js'
 import refreshRoutes from './routes/refresh.js'
 import logoutRoutes from './routes/logout.js'
+import agencyRoutes from './routes/agencies.js'
+import eventRoutes from './routes/events.js'
 import { corsOptions } from './config/corsOptions.js'
 import { errorHandler, unknownEndpoint } from './middleware/middleware.js'
 
@@ -26,7 +28,10 @@ app.use(cookieParser())
 /* ROUTES */
 app.use('/api/auth', authRoutes)
 app.use('/api/volunteers', volunteerRoutes)
+app.use('/api/agencies', agencyRoutes)
 app.use('/api/posts', postRoutes)
+app.use('/api/events', eventRoutes)
+
 app.use('/api/refresh', refreshRoutes)
 app.use('/api/logout', logoutRoutes)
 

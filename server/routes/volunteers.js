@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  getVolunteers,
   getVolunteer,
   getVolunteerFollowing,
   getVolunteerFollowers,
@@ -11,6 +12,8 @@ import { verifyToken } from '../middleware/auth.js'
 const router = express.Router()
 
 /* READ */
+router.get('/', getVolunteers)
+
 router.get('/:id', verifyToken, getVolunteer)
 router.get('/:id/following', verifyToken, getVolunteerFollowing)
 router.get('/:id/followers', verifyToken, getVolunteerFollowers)

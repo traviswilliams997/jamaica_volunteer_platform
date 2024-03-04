@@ -15,7 +15,7 @@ import { Volunteer, Post } from '../models/index.js'
 const api = supertest(app)
 
 before(async () => {
-  //await sequelize.sync({ force: true })
+  // await sequelize.sync({ force: true })
 })
 
 describe('posts api', () => {
@@ -221,32 +221,27 @@ describe('posts api', () => {
     await volunteerObject.save()
     const volunteerId = volunteerObject.dataValues.id
 
-    const newPost1 = {
-      volunteerId: volunteerId,
+    const newPostObject = {
+      createdByVolunteerId: volunteerId,
       content: 'Skate',
       picturePath: '',
+      type: 'Volunteer',
+      posterPicturePath: '',
     }
 
-    await api
-      .post('/api/posts/volunteer')
-      .send(newPost1)
-      .set({ Authorization: `Bearer ${testtoken}` })
-      .expect(201)
+    const newPost = new Post(newPostObject)
 
-    const lastestPost = await Post.findOne({
-      where: { createdByVolunteerId: volunteerId },
-    })
-    const lastestPostId = lastestPost.dataValues.id
+    const savedPost = await newPost.save()
 
     await api
-      .patch(`/api/posts/${lastestPostId}/like`)
+      .patch(`/api/posts/${savedPost.id}/like`)
       .send({ volunteerId })
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     await api
-      .patch(`/api/posts/${lastestPostId}/like`)
+      .patch(`/api/posts/${savedPost.id}/like`)
       .send({ volunteerId })
       .set({ Authorization: `Bearer ${testtoken}` })
       .expect(200)

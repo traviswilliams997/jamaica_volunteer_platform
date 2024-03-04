@@ -12,7 +12,7 @@ import UserImage from '../../components/UserImage'
 import FlexBetween from '../../components/FlexBetween'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
@@ -26,14 +26,19 @@ const UserWidget = ({ volunteerId, picturePath }) => {
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
 
+  const volunteers = useSelector((state) => state.volunteer.volunteers)
+
   const dark = palette.neutral.dark
   const medium = palette.neutral.medium
   const main = palette.neutral.main
 
-  const getVolunteer = async () => {
-    const response = await volunteerService.getById(volunteerId, axiosPrivate)
-    setVolunteer(response)
+  const getVolunteer = () => {
+    const volunteer = volunteers.find((volunteer) => {
+      return Number(volunteer.id) === Number(volunteerId)
+    })
+    setVolunteer(volunteer)
   }
+
   const getVolunteersYouFollow = async () => {
     const response = await volunteerService.getFollowing(
       volunteerId,
@@ -96,10 +101,7 @@ const UserWidget = ({ volunteerId, picturePath }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>
-              {' '}
-              {followers && followers.length} followers
-            </Typography>
+            <Typography color={medium}> 5 followers</Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />
@@ -129,13 +131,19 @@ const UserWidget = ({ volunteerId, picturePath }) => {
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Hours Volunteered</Typography>
           <Typography color={medium} fontWeight="500">
-            1000
+            2183
+          </Typography>
+        </FlexBetween>
+        <FlexBetween mb="0.5rem">
+          <Typography color={medium}>Rank</Typography>
+          <Typography color={medium} fontWeight="500">
+            #2980 By Hours Volunteered
           </Typography>
         </FlexBetween>
         <FlexBetween>
           <Typography color={medium}>Karma</Typography>
           <Typography color={medium} fontWeight="500">
-            200000
+            217985
           </Typography>
         </FlexBetween>
         <FlexBetween>

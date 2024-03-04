@@ -5,21 +5,22 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
+// eslint-disable-next-line react/prop-types
 const FollowingListWidget = ({ volunteerId }) => {
-  const volunteersYouFollow = useSelector(
-    (state) => state.volunteer.volunteersYouFollow
-  )
+  const volunteersYouFollow = useSelector((state) => state.volunteer.volunteers)
   const dispatch = useDispatch()
   const { palette } = useTheme()
   const axiosPrivate = useAxiosPrivate()
 
-  const getFollowedByVolunteer = async () => {
-    dispatch(setVolunteersYouFollow(volunteerId, axiosPrivate))
-  }
+  // const getFollowedByVolunteer = async () => {
+  //   dispatch(setVolunteersYouFollow(volunteerId, axiosPrivate))
+  // }
 
   useEffect(() => {
-    getFollowedByVolunteer()
+    // getFollowedByVolunteer()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (volunteersYouFollow.length === 0) return
   return (
     <WidgetWrapper>
       <Typography
@@ -31,7 +32,7 @@ const FollowingListWidget = ({ volunteerId }) => {
         Following
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {!volunteersYouFollow.empty ? (
+        {volunteersYouFollow.length !== 0 ? (
           volunteersYouFollow.map((followed) => (
             <FollowedByYou
               key={followed.id}

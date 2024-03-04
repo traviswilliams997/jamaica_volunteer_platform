@@ -23,6 +23,28 @@ export const createVolunteerPost = async (req, res) => {
   }
 }
 
+export const createAgencyPost = async (req, res) => {
+  try {
+    const { agencyId, content, picturePath, posterPicturePath } = req.body
+
+    const newPost = new Post({
+      createdAgencyId: agencyId,
+      content,
+      type: 'Agency',
+      posterPicturePath: posterPicturePath,
+      picturePath: picturePath,
+    })
+
+    const response = await newPost.save()
+
+    res.status(201).json(response)
+  } catch (err) {
+    console.log('createAgencyPost err', err)
+
+    res.status(409).json({ message: err })
+  }
+}
+
 /* READ */
 export const getFeedPosts = async (req, res) => {
   try {
@@ -34,58 +56,62 @@ export const getFeedPosts = async (req, res) => {
           attributes: ['content'],
         },
         {
-          model: Volunteer,
-          as: 'createdByVolunteer',
-          attributes: ['firstName', 'lastName', 'picturePath', 'username'],
-        },
-        {
-          model: Agency,
-          as: 'createdByAgency',
-          attributes: ['name', 'picturePath', 'username'],
-        },
-        {
           model: Reaction,
         },
       ],
     })
 
-    const formattedPosts = posts.map((post) => {
-      if (post.type === 'Volunteer') {
-        const formattedPost = {
-          id: post.id,
-          volunteerId: post.createdByVolunteerId,
-          type: post.type,
-          content: post.content,
-          picturePath: post.picturePath,
-          createdAt: post.createdAt,
-          updatedAt: post.updatedAt,
-          posterPicturePath: post.createdByVolunteer.picturePath,
-          posterFirstName: post.createdByVolunteer.firstName,
-          posterLastName: post.createdByVolunteer.lastName,
-          posterUsername: post.createdByVolunteer.username,
-          comments: post.comments,
-          reactions: post.reactions,
-        }
+    const formattedPosts = await Promise.all(
+      posts.map(async (post) => {
+        if (post.type === 'Volunteer') {
+          const volunteer = await Volunteer.findByPk(
+            post.createdByVolunteerId,
+            {
+              where: {},
+            }
+          )
 
-        return formattedPost
-      } else {
-        const formattedPost = {
-          id: post.id,
-          agencyId: post.createdByAgencyId,
-          type: post.type,
-          content: post.content,
-          picturePath: post.picturePath,
-          createdAt: post.createdAt,
-          updatedAt: post.updatedAt,
-          posterPicturePath: post.createdByAgency.picturePath,
-          posterName: post.createdByAgency.name,
-          posterUsername: post.createdByAgency.username,
-          comments: post.comments,
-          reactions: post.reactions,
+          const formattedPost = {
+            id: post.id,
+            volunteerId: post.createdByVolunteerId,
+            type: post.type,
+            content: post.content,
+            picturePath: post.picturePath,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+            posterPicturePath: volunteer.dataValues.picturePath,
+            posterFirstName: volunteer.dataValues.firstName,
+            posterLastName: volunteer.dataValues.lastName,
+            posterUsername: volunteer.dataValues.username,
+            comments: post.comments,
+            reactions: post.reactions,
+          }
+
+          return formattedPost
+        } else {
+          const agency = await Agency.findByPk(post.createdByAgencyId, {
+            where: {},
+          })
+
+          const formattedPost = {
+            id: post.id,
+            agencyId: post.createdByAgencyId,
+            type: post.type,
+            content: post.content,
+            picturePath: post.picturePath,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+            posterPicturePath: agency.dataValues.picturePath,
+            posterName: agency.dataValues.name,
+            posterUsername: agency.dataValues.username,
+            comments: post.comments,
+            reactions: post.reactions,
+          }
+
+          return formattedPost
         }
-        return formattedPost
-      }
-    })
+      })
+    )
 
     res.status(200).json(formattedPosts)
   } catch (err) {
@@ -149,7 +175,7 @@ export const getPost = async (req, res) => {
   try {
     const { id } = req.params
 
-    const post = await Post.findByPk(id, {
+    const post = await Post.findByPk(Number(id), {
       include: [
         {
           model: Comment,
@@ -197,23 +223,25 @@ export const likePost = async (req, res) => {
     const likes = await Reaction.findAll({
       where: {
         createdByVolunteerId: volunteerId,
-        postId: id,
+        postId: Number(id),
       },
     })
 
     const isAlreadyLiked = likes.length !== 0
 
     if (isAlreadyLiked) {
-      likes[0].destroy()
+      const deletedLike = await likes[0].destroy()
+
+      res.status(200).json()
     } else {
       const like = new Reaction({
         createdByVolunteerId: volunteerId,
-        postId: id,
+        postId: Number(id),
       })
-      await like.save()
-    }
 
-    res.status(200).json()
+      const newLike = await like.save()
+      res.status(200).json(newLike)
+    }
   } catch (err) {
     console.log('likePost err', err)
     res.status(404).json({ message: err })

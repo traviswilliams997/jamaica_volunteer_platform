@@ -26,7 +26,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createVolunteerPost } from '../../reducers/postReducer'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 const MyPostWidget = ({ posterPicturePath }) => {
-  const { id } = useSelector((state) => state.volunteer.currentVolunteer)
+  const { id, picturePath } = useSelector(
+    (state) => state.volunteer.currentVolunteer
+  )
   const isNonMobileScreens = useMediaQuery('(min-width: 1000px)')
   const [isImage, setIsImage] = useState(false)
   const [post, setPost] = useState('')
@@ -55,7 +57,7 @@ const MyPostWidget = ({ posterPicturePath }) => {
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
-        <UserImage image={posterPicturePath} />
+        <UserImage image={picturePath} />
         <InputBase
           placeholder="Share your volunteering..."
           onChange={(e) => setPost(e.target.value)}

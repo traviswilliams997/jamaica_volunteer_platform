@@ -8,7 +8,7 @@ const UploadWidget = ({ pictureRef }) => {
   const { palette } = useTheme()
   const cloudinaryRef = useRef()
   const widgetRef = useRef()
-  const [isShowFileName, setShowFileName] = useState(false)
+  const [isShowButton, setShowButton] = useState(true)
 
   useEffect(() => {
     cloudinaryRef.current = window.cloudinary
@@ -20,13 +20,16 @@ const UploadWidget = ({ pictureRef }) => {
       function (error, result) {
         if (result.event === 'success') {
           pictureRef.current = result.info
-          setShowFileName(true)
+          setShowButton(false)
         }
       }
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleClick = () => {
+    widgetRef.current.open()
+  }
   return (
     <Box
       gridColumn="span 4"
@@ -39,8 +42,8 @@ const UploadWidget = ({ pictureRef }) => {
         p="1rem"
         sx={{ '&:hover': { cursor: 'pointer' } }}
       >
-        {isShowFileName ? (
-          <Button onClick={() => widgetRef.current.open()}>
+        {isShowButton ? (
+          <Button onClick={() => handleClick()}>
             <Typography>Click to Add or Drop Profile Picture</Typography>
           </Button>
         ) : (

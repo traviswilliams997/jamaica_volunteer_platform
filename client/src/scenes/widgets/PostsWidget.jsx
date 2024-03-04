@@ -1,70 +1,102 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { initializePosts } from '../../reducers/postReducer'
+import { useSelector } from 'react-redux'
 import PostWidget from './PostWidget'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import postsService from '../../services/posts'
-
 // eslint-disable-next-line react/prop-types
-const PostsWidget = ({ volunteerId, isProfile = false }) => {
-  const dispatch = useDispatch()
-  const [posts, setPost] = useState([])
-  const axiosPrivate = useAxiosPrivate()
+const PostsWidget = ({
+  volunteerId,
+  agencyId,
+  isProfile = false,
+  isAgency = false,
+}) => {
+  // const allPosts = useSelector((state) => state.posts.posts)
+  const [posts, setPosts] = useState([])
 
-  const getPosts = async () => {
-    const res = await postsService.getAll(axiosPrivate)
-    setPost(res)
-    dispatch(initializePosts(axiosPrivate))
-  }
+  const allPosts = useSelector((state) => state.posts)
 
-  const getVolunteerPosts = async () => {
-    const res = await postsService.getForPerson(volunteerId, axiosPrivate)
-    setPost([res])
+  const getPosts = () => {
+    if (isProfile) {
+      if (!isAgency) {
+        const volunteerPosts = allPosts.find((post) => {
+          return Number(post.volunteerId) === Number(volunteerId)
+        })
+        if (Array.isArray(volunteerPosts)) {
+          setPosts(volunteerPosts)
+        } else {
+          setPosts([volunteerPosts])
+        }
+      }
+
+      if (isAgency) {
+        const agencyPosts = allPosts.find((post) => {
+          return Number(post.agencyId) === Number(agencyId)
+        })
+        if (Array.isArray(agencyPosts)) {
+          setPosts(agencyPosts)
+        } else {
+          setPosts([agencyPosts])
+        }
+      }
+    } else {
+      setPosts(allPosts)
+    }
   }
 
   useEffect(() => {
-    if (isProfile) {
-      getVolunteerPosts()
-    } else {
-      getPosts()
-    }
+    getPosts()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (posts.empty) {
-    return <div></div>
-  }
+  if (posts.length < 1) return
 
   return (
     <>
-      {posts.map(
-        ({
-          id,
-          volunteerId,
-          posterFirstName,
-          posterLastName,
-          content,
-          type,
-          picturePath,
-          posterPicturePath,
-          reactions,
-          comments,
-          createdAt,
-        }) => (
-          <PostWidget
-            key={id}
-            postId={id}
-            posterId={volunteerId}
-            name={`${posterFirstName} ${posterLastName}`}
-            content={content}
-            type={type}
-            createdAt={createdAt}
-            picturePath={picturePath}
-            posterPicturePath={posterPicturePath}
-            reactions={reactions}
-            comments={comments}
-          />
-        )
-      )}
+      {posts &&
+        posts.map(
+          ({
+            id,
+            volunteerId,
+            agencyId,
+            posterFirstName,
+            posterLastName,
+            posterName,
+            content,
+            type,
+            picturePath,
+            posterPicturePath,
+            reactions,
+            comments,
+            createdAt,
+          }) =>
+            type === 'Volunteer' ? (
+              <PostWidget
+                key={id}
+                postId={id}
+                posterId={volunteerId}
+                name={`${posterFirstName} ${posterLastName}`}
+                content={content}
+                type={type}
+                createdAt={createdAt}
+                picturePath={picturePath}
+                posterPicturePath={posterPicturePath}
+                reactions={reactions}
+                comments={comments}
+              />
+            ) : (
+              <PostWidget
+                key={id}
+                postId={id}
+                posterId={agencyId}
+                name={posterName}
+                content={content}
+                type={type}
+                createdAt={createdAt}
+                picturePath={picturePath}
+                posterPicturePath={posterPicturePath}
+                reactions={reactions}
+                comments={comments}
+                isVolunteer={false}
+              />
+            )
+        )}
     </>
   )
 }

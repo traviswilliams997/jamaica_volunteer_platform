@@ -6,6 +6,9 @@ import {
   Reaction,
   VolunteerToken,
   AgencyToken,
+  Position,
+  Event,
+  Membership,
 } from '../models/index.js'
 
 const initialVolunteersVolunteerApi = [
@@ -50,6 +53,31 @@ const initialVolunteersVolunteerApi = [
     about: 'Chill',
     skills: 'Makeup',
     admin: false,
+  },
+]
+
+const initialAgenciesAgencyApi = [
+  {
+    username: 'agency1',
+    name: 'Agency1',
+    email: 'agency1@gmail.com',
+    phoneNumber: '(876)666-7777',
+    password: '$2b$10$Np6l5ud3oK/sCxtPkLCze.jSZRAR6Og9vzSpKItE93LkGqU7ZuVpa',
+  },
+  {
+    username: 'agency2',
+    name: 'Agency2',
+    email: 'agency2@gmail.com',
+    phoneNumber: '(876)999-1777',
+    password: '$2b$10$Np6l5ud3oK/sCxtPkLCze.jSZRAR6Og9vzSpKItE93LkGqU7ZuVpa',
+    picturePath: '',
+  },
+  {
+    username: 'agency3',
+    name: 'Agency3',
+    email: 'agency3@gmail.com',
+    phoneNumber: '(876)333-1877',
+    password: '$2b$10$Np6l5ud3oK/sCxtPkLCze.jSZRAR6Og9vzSpKItE93LkGqU7ZuVpa',
   },
 ]
 
@@ -105,6 +133,21 @@ const agencyTokensInDb = async () => {
   return tokens.map((token) => token.toJSON())
 }
 
+const eventsInDb = async () => {
+  const events = await Event.findAll({})
+  return events.map((e) => e.toJSON())
+}
+
+const positionsInDb = async () => {
+  const positions = await Position.findAll({})
+  return positions.map((p) => p.toJSON())
+}
+
+const membershipsInDb = async () => {
+  const memberships = await Membership.findAll({})
+  return memberships.map((m) => m.toJSON())
+}
+
 const emptyDbTables = async (models) => {
   console.log('EMPTYING DATABASE')
   if (models.includes('Follower')) {
@@ -139,6 +182,9 @@ const emptyDbTables = async (models) => {
   if (models.includes('AgencyToken')) {
     await AgencyToken.destroy({ where: {} })
   }
+  if (models.includes('Event')) {
+    await Event.destroy({ where: {} })
+  }
 }
 
 const testtoken =
@@ -148,6 +194,7 @@ export {
   testtoken,
   initialVolunteersVolunteerApi,
   initialVolunteersPostApi,
+  initialAgenciesAgencyApi,
   emptyDbTables,
   reactionsInDb,
   volunteersInDb,
@@ -156,4 +203,7 @@ export {
   postsInDb,
   volunteerTokensInDb,
   agencyTokensInDb,
+  eventsInDb,
+  positionsInDb,
+  membershipsInDb,
 }

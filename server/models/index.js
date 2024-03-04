@@ -46,29 +46,43 @@ Reaction.belongsTo(Post)
 Reaction.belongsTo(Volunteer, { foreignKey: 'created_by_volunteer_id' })
 Reaction.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
 
-Follower.belongsTo(Volunteer, {
+Volunteer.belongsToMany(Volunteer, {
+  through: Follower,
+  as: 'followingVolunteer',
   foreignKey: 'following_volunteer_id',
-  as: 'followingVolunterId',
+})
+
+Volunteer.belongsToMany(Volunteer, {
+  through: Follower,
+  as: 'followedVolunteer',
+  foreignKey: 'followed_volunteer_id',
 })
 
 Follower.belongsTo(Volunteer, {
   foreignKey: 'followed_volunteer_id',
-  as: 'followedVolunterId',
-}) /
-  Agency.hasMany(Post, {
-    onDelete: 'CASCADE',
-    foreignKey: 'created_by_agency_id',
-  })
+})
+
+Follower.belongsTo(Volunteer, {
+  foreignKey: 'following_volunteer_id',
+})
+Agency.hasMany(Post, {
+  onDelete: 'CASCADE',
+
+  foreignKey: 'created_by_agency_id',
+})
 Post.belongsTo(Agency, {
   as: 'createdByAgency',
+  foreignKey: 'created_by_agency_id',
 })
 
 Agency.hasMany(VolunteerReview)
 VolunteerReview.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
 VolunteerReview.belongsTo(Volunteer, { foreignKey: 'reviewed_volunteer_id' })
 
-Agency.hasMany(Position, { onDelete: 'CASCADE' })
-Position.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
+Agency.hasMany(Position, {
+  onDelete: 'CASCADE',
+})
+Position.belongsTo(Agency, { as: 'createdByAgency', foreignKey: 'agency_id' })
 
 Agency.hasMany(Session)
 Session.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
@@ -80,7 +94,13 @@ AgencyAddress.belongsTo(Agency)
 Volunteer.belongsToMany(Agency, { through: Membership })
 Agency.belongsToMany(Volunteer, { through: Membership })
 
-Agency.hasMany(Event)
+Volunteer.hasMany(Membership)
+Membership.belongsTo(Volunteer)
+
+Agency.hasMany(Membership)
+Membership.belongsTo(Agency)
+
+Agency.hasMany(Event, { foreignKey: 'created_by_agency_id' })
 Event.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
 
 Volunteer.belongsToMany(Event, {

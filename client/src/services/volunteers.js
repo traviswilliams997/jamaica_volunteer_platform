@@ -1,8 +1,8 @@
+import axios from 'axios'
 const volunteersEndpoint = '/api/volunteers'
 
-const getAll = async (customAxios) => {
-  const response = await customAxios.get(volunteersEndpoint)
-
+const getAll = async () => {
+  const response = await axios.get(volunteersEndpoint)
   return response.data
 }
 
@@ -12,6 +12,7 @@ const getById = async (id, customAxios) => {
 }
 
 const getFollowing = async (id, customAxios) => {
+  if (typeof id === 'undefined') return []
   const response = await customAxios.get(
     `${volunteersEndpoint}/${id}/following`
   )

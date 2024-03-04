@@ -30,17 +30,15 @@ const volunteerSlice = createSlice({
 })
 
 export const {
-  setMode,
   setVolunteers,
   appendVolunteer,
   setCurrentVolunteer,
   setFollowing,
 } = volunteerSlice.actions
 
-export const initializeVolunteers = (customAxios) => {
+export const initializeVolunteers = () => {
   return async (dispatch) => {
-    const volunteers = await volunteerService.getAll(customAxios)
-
+    const volunteers = await volunteerService.getAll()
     dispatch(setVolunteers(volunteers))
   }
 }

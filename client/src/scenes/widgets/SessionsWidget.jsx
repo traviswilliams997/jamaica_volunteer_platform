@@ -2,7 +2,7 @@ import { Typography, useTheme } from '@mui/material'
 import FlexBetween from '../../components/FlexBetween'
 import WidgetWrapper from '../../components/WidgetWrapper'
 
-const AdvertWidget = () => {
+const SessionsWidget = () => {
   const { palette } = useTheme()
   const dark = palette.neutral.dark
   const main = palette.neutral.main
@@ -12,7 +12,7 @@ const AdvertWidget = () => {
     <WidgetWrapper>
       <FlexBetween>
         <Typography color={dark} varaint="h5" fontWeight="500">
-          Last Sessions
+          Last Session
         </Typography>
         <Typography color={medium}>Red Cross</Typography>
       </FlexBetween>
@@ -35,4 +35,4 @@ const AdvertWidget = () => {
   )
 }
 
-export default AdvertWidget
+export default SessionsWidget

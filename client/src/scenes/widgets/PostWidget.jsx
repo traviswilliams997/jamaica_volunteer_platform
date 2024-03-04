@@ -8,9 +8,10 @@ import {
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material'
 import FlexBetween from '../../components/FlexBetween'
 import Follow from '../../components/Follow'
+import Join from '../../components/Join'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { likeUnlikePost } from '../../reducers/postReducer'
 
@@ -25,13 +26,15 @@ const PostWidget = ({
   reactions,
   comments,
   createdAt,
+  isVolunteer = true,
 }) => {
   const [isComments, setIsComments] = useState(false)
   const createdAtString = new Date(createdAt).toDateString()
   const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
+  const likes = reactions
 
-  const isLiked = false //Boolean(reactions[loggedInUserId])
+  const isLiked = Array.isArray(reactions) ? likes.length : false
   const likeCount = reactions ? 1000 : reactions
 
   const { palette } = useTheme()
@@ -40,12 +43,21 @@ const PostWidget = ({
 
   return (
     <WidgetWrapper m="2rem 0">
-      <Follow
-        followedId={posterId}
-        name={name}
-        subtitle={createdAtString}
-        volunteerPicturePath={posterPicturePath}
-      />
+      {isVolunteer ? (
+        <Follow
+          followedId={posterId}
+          name={name}
+          subtitle={createdAtString}
+          volunteerPicturePath={posterPicturePath}
+        />
+      ) : (
+        <Join
+          agencyId={posterId}
+          name={name}
+          subtitle={createdAtString}
+          picturePath={posterPicturePath}
+        />
+      )}
       <Typography color={main} sx={{ mt: '1rem' }}>
         {content}
       </Typography>

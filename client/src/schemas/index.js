@@ -26,8 +26,8 @@ export const volunteerRegisterSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match')
     .required('Required'),
-  about: yup.string(),
-  skills: yup.string(),
+  about: yup.string().max(250, 'Too long'),
+  skills: yup.string().max(200, 'Too long'),
   dateOfBirth: yup.date(),
   picturePath: yup.string(),
 })

@@ -2,25 +2,18 @@ import { createSlice } from '@reduxjs/toolkit'
 import postService from '../services/posts'
 
 const intialState = {
-  currentVolunteersPosts: [],
-  allPosts: [],
+  posts: [],
 }
 
 const postSlice = createSlice({
-  name: 'posts',
+  name: 'post',
   initialState: intialState,
   reducers: {
     appendPost(state, action) {
-      state.allPosts.push(action.payload.post)
+      state.posts.push(action.payload)
     },
     setPosts(state, action) {
-      return action.payload.posts
-    },
-    appendCurrentVolunteersPost(state, action) {
-      state.currentVolunteersPosts.push(action.payload.post)
-    },
-    setCurrentVolunteersPosts(state, action) {
-      return action.payload.posts
+      return action.payload
     },
   },
 })
@@ -32,18 +25,11 @@ export const {
   setCurrentVolunteersPosts,
 } = postSlice.actions
 
-export const initializePosts = (customAxios) => {
+export const initializePosts = () => {
   return async (dispatch) => {
-    const posts = await postService.getAll(customAxios)
+    const posts = await postService.getAll()
 
-    dispatch(setPosts({ posts: posts }))
-  }
-}
-export const initializeVolunteerPost = (id, customAxios) => {
-  return async (dispatch) => {
-    const posts = await postService.getForPerson(id, customAxios)
-
-    dispatch(setCurrentVolunteersPosts({ posts: posts }))
+    dispatch(setPosts(posts))
   }
 }
 export const createVolunteerPost = (newObject, customAxios) => {
@@ -52,7 +38,7 @@ export const createVolunteerPost = (newObject, customAxios) => {
       newObject,
       customAxios
     )
-    dispatch(appendPost({ post: newPost }))
+    dispatch(appendPost(newPost))
   }
 }
 
@@ -61,7 +47,7 @@ export const removePost = (id) => {
     const posts = await postService.getAll()
     await postService.remove(id)
     const newPosts = posts.filter((b) => b.id !== id)
-    dispatch(setPosts({ posts: newPosts }))
+    dispatch(setPosts(newPosts))
   }
 }
 
@@ -78,7 +64,7 @@ export const likeUnlikePost = (postId, volunteerId, customAxios) => {
         post.id !== postId ? post : updatedPost
       )
 
-      dispatch(setPosts({ posts: newPosts }))
+      dispatch(setPosts(newPosts))
     } catch (error) {
       console.log('error', error)
     }
@@ -100,7 +86,7 @@ export const addComment = (id, commentContent, customAxios) => {
         post.id !== id ? post : returnedPost
       )
 
-      dispatch(setPosts({ posts: newPosts }))
+      dispatch(setPosts(newPosts))
     } catch (error) {
       dispatch(setPosts(posts.filter((post) => post.id !== id)))
     }
@@ -110,7 +96,6 @@ export const addComment = (id, commentContent, customAxios) => {
 export const clearPosts = () => {
   return async (dispatch) => {
     dispatch(setPosts([]))
-    dispatch(setCurrentVolunteersPosts([]))
   }
 }
 

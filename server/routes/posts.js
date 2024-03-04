@@ -5,15 +5,17 @@ import {
   getPost,
   getVolunteerPosts,
   likePost,
+  createAgencyPost,
 } from '../controllers/posts.js'
 import { verifyToken } from '../middleware/auth.js'
 
 const router = express.Router()
 /* CREATE */
 router.post('/volunteer', verifyToken, createVolunteerPost)
+router.post('/agency', verifyToken, createAgencyPost)
 
 /* READ */
-router.get('/', verifyToken, getFeedPosts)
+router.get('/', getFeedPosts)
 router.get('/:id', verifyToken, getPost)
 router.get('/:volunteerId/posts', verifyToken, getVolunteerPosts)
 

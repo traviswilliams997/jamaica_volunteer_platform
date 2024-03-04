@@ -19,8 +19,9 @@ import {
   Help,
   Menu,
   Close,
+  Event,
+  VolunteerActivism,
 } from '@mui/icons-material'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleDarkLightMode } from '../../reducers/globalReducer'
 import { logOutVolunteer } from '../../reducers/volunteerReducer'
@@ -71,7 +72,7 @@ const Navbar = () => {
             },
           }}
         >
-          VolunteerJa
+          VolunteerJA
         </Typography>
         {isNonMobileScreen && (
           <FlexBetween
@@ -90,6 +91,22 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isNonMobileScreen ? (
         <FlexBetween gap="2rem">
+          <IconButton onClick={() => navigate('/events')}>
+            {theme.palette.mode === 'dark' ? (
+              <Event sx={{ color: dark, fontSize: '25px' }} />
+            ) : (
+              <Event sx={{ color: 'black', fontSize: '25px' }} />
+            )}
+          </IconButton>
+          <IconButton onClick={() => navigate('/agencies')}>
+            {theme.palette.mode === 'dark' ? (
+              <VolunteerActivism sx={{ color: dark, fontSize: '25px' }} />
+            ) : (
+              <VolunteerActivism sx={{ color: 'black', fontSize: '25px' }} />
+            )}
+          </IconButton>
+          <Message />
+          <Notifications sx={{ fontSize: '25px' }} />
           <IconButton onClick={() => dispatch(toggleDarkLightMode())}>
             {theme.palette.mode === 'dark' ? (
               <DarkMode sx={{ fontSize: '25px' }} />
@@ -97,9 +114,6 @@ const Navbar = () => {
               <LightMode sx={{ color: dark, fontSize: '25px' }} />
             )}
           </IconButton>
-          <Message sx={{ fontSize: '25px' }} />
-          <Notifications sx={{ fontSize: '25px' }} />
-          <Help sx={{ fontSize: '25px' }} />
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -121,6 +135,7 @@ const Navbar = () => {
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
+
               <MenuItem onClick={() => handleLogout()}>LogOut</MenuItem>
             </Select>
           </FormControl>

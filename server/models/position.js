@@ -10,7 +10,7 @@ Position.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    createdByAgencyId: {
+    agencyId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'agencies', key: 'id' },

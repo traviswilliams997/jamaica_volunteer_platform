@@ -4,7 +4,7 @@ import Navbar from '../navbar'
 import UserWidget from '../widgets/UserWidget'
 import MyPostWidget from '../widgets/MyPostWidget'
 import PostsWidget from '../widgets/PostsWidget'
-import FollowingListWidget from '../widgets/FollowingListWiget'
+import AgencyListWidget from '../widgets/AgencyListWidget'
 import SessionsWidget from '../widgets/SessionsWidget'
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
@@ -40,7 +40,7 @@ const HomePage = () => {
             <SessionsWidget />
 
             <Box m="2rem 0" />
-            <FollowingListWidget volunteerId={volunteer.id} />
+            <AgencyListWidget volunteerId={volunteer.id} />
           </Box>
         )}
       </Box>

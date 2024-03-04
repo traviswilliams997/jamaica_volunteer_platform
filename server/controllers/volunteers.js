@@ -1,11 +1,26 @@
-import { Volunteer, Follower } from '../models/index.js'
+import { Volunteer, Follower, Membership } from '../models/index.js'
 
 /*READ */
+
+export const getVolunteers = async (req, res) => {
+  try {
+    const volunteers = await Volunteer.findAll({
+      include: {
+        model: Membership,
+      },
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+    })
+    return res.status(200).json(volunteers)
+  } catch (err) {
+    console.log('getVolunteers Error', err)
+    res.status(400).json({ message: err })
+  }
+}
 export const getVolunteer = async (req, res) => {
   try {
     const { id } = req.params
 
-    const volunteer = await Volunteer.findByPk(id, {
+    const volunteer = await Volunteer.findByPk(Number(id), {
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     })
 
@@ -20,24 +35,36 @@ export const getVolunteerFollowing = async (req, res) => {
   try {
     const { id } = req.params
 
-    const followings = await Follower.findAll({
-      where: { followingVolunteerId: id },
+    if (id === 'undefined') return res.status(422)
+
+    const volunteer = await Volunteer.findByPk(Number(id), {
+      where: {},
+      include: {
+        model: Volunteer,
+        as: 'followingVolunteer',
+        through: {},
+      },
     })
-    const peopleYouFollow = await Promise.all(
-      followings.map((dataValues) =>
-        Volunteer.findByPk(dataValues.followedVolunteerId)
-      )
-    )
 
-    if (peopleYouFollow.length !== 0) {
-      const peopleYouFollowFormatted = peopleYouFollow.map(
-        (people) => people.dataValues
-      )
+    const followings = volunteer.followingVolunteer
 
-      return res.status(200).json(peopleYouFollowFormatted)
-    } else {
-      return res.status(200).json(peopleYouFollow)
-    }
+    const formattedFollowings = followings.map((following) => {
+      const formattedFollowing = {
+        id: following.id,
+        username: following.username,
+        firstName: following.firstName,
+        lastName: following.lastNsme,
+        email: following.email,
+        picturePath: following.picturePath,
+        dateOfBirth: following.dateOfBirth,
+        about: following.about,
+        skills: following.skills,
+        createdAt: following.createdAt,
+      }
+
+      return formattedFollowing
+    })
+    return res.status(200).json(formattedFollowings)
   } catch (err) {
     console.log('getVolunteerFollowing Error', err)
     res.status(400).json({ message: err })
@@ -49,7 +76,10 @@ export const checkIsFollowing = async (req, res) => {
     const { id, followedId } = req.params
 
     const followings = await Follower.findOne({
-      where: { followingVolunteerId: id, followedVolunteerId: followedId },
+      where: {
+        following_volunteer_id: Number(id),
+        followed_volunteer_id: Number(followedId),
+      },
     })
 
     const isFollowing = followings !== null
@@ -64,19 +94,36 @@ export const checkIsFollowing = async (req, res) => {
 export const getVolunteerFollowers = async (req, res) => {
   try {
     const { id } = req.params
-    const followings = await Follower.findAll({
-      where: { followedVolunteerId: id },
-    })
-    const yourFollowers = await Promise.all(
-      followings.map((dataValues) =>
-        Volunteer.findByPk(dataValues.followingVolunteerId)
-      )
-    )
-    const yourFollowersFormatted = yourFollowers.map(
-      (people) => people.dataValues
-    )
 
-    res.status(200).json(yourFollowersFormatted)
+    const volunteer = await Volunteer.findByPk(Number(id), {
+      where: {},
+      include: {
+        model: Volunteer,
+        as: 'followedVolunteer',
+        through: {},
+      },
+    })
+
+    const followers = volunteer.followedVolunteer
+
+    const formattedFollowers = followers.map((follower) => {
+      const formattedFollower = {
+        id: follower.id,
+        username: follower.username,
+        firstName: follower.firstName,
+        lastName: follower.lastNsme,
+        email: follower.email,
+        picturePath: follower.picturePath,
+        dateOfBirth: follower.dateOfBirth,
+        about: follower.about,
+        skills: follower.skills,
+        createdAt: follower.createdAt,
+      }
+
+      return formattedFollower
+    })
+
+    res.status(200).json(formattedFollowers)
   } catch (err) {
     console.log('getVolunteerFollowers Error', err)
     res.status(400).json({ message: err })
@@ -90,34 +137,33 @@ export const followUnfollow = async (req, res) => {
     const { id, followedId } = req.params
 
     const following = await Follower.findAll({
-      where: { followingVolunteerId: id, followedVolunteerId: followedId },
+      where: { following_volunteer_id: id, followed_volunteer_id: followedId },
     })
 
-    //Follower relationship doesnt exist
+    //Follower relationship doesnt already exist
     if (following.length === 0) {
       const followerObject = new Follower({
-        followingVolunteerId: id,
-        followedVolunteerId: followedId,
+        followed_volunteer_id: followedId,
+        following_volunteer_id: id,
       })
-      await followerObject.save()
+
+      const follow = await followerObject.save()
+
+      return res.status(200).json(follow)
     }
 
     //Follower relationship does exist
     if (following.length === 1) {
       const follwerRelationID = following[0].dataValues.id
+
       await Follower.destroy({
         where: {
           id: follwerRelationID,
         },
       })
+
+      return res.status(200).json({})
     }
-
-
-    const foll = await Follower.findAll({
-      where: { followingVolunteerId: id, followedVolunteerId: followedId },
-    })
-
-    res.status(200).json(foll[0])
   } catch (err) {
     console.log('followUnfollow ERROR', err)
     res.status(400).json({ message: err })

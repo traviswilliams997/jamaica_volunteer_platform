@@ -87,7 +87,7 @@ const Form = () => {
       dispatch(setAccessToken(accessToken))
 
       dispatch(setAuthentication(true))
-      dispatch(logInVolunteer(loggedInResponse))
+      dispatch(logInVolunteer(loggedInResponse.volunteer))
 
       onSubmitProps.resetForm()
       navigate('/home')

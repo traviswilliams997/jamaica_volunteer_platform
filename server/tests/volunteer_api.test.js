@@ -67,8 +67,8 @@ describe('/api/volunteers', () => {
       followerRelationsAtStart.length + 1
     )
 
-    assert.strictEqual(daniel33.id, response.body.followingVolunteerId)
-    assert.strictEqual(stacey45.id, response.body.followedVolunteerId)
+    assert.strictEqual(daniel33.id, response.body.following_volunteer_id)
+    assert.strictEqual(stacey45.id, response.body.followed_volunteer_id)
   })
   test('followUnfollow can unfollow ', async () => {
     const stacey45 = await Volunteer.findOne({
@@ -80,8 +80,8 @@ describe('/api/volunteers', () => {
     })
 
     const followerObject1 = new Follower({
-      followingVolunteerId: stacey45.id,
-      followedVolunteerId: ray45.id,
+      following_volunteer_id: stacey45.id,
+      followed_volunteer_id: ray45.id,
     })
     await followerObject1.save()
 
@@ -113,14 +113,14 @@ describe('/api/volunteers', () => {
     })
 
     const followerObject1 = new Follower({
-      followingVolunteerId: ray45.id,
-      followedVolunteerId: daniel33.id,
+      following_volunteer_id: ray45.id,
+      followed_volunteer_id: daniel33.id,
     })
     await followerObject1.save()
 
     const followerObject2 = new Follower({
-      followingVolunteerId: ray45.id,
-      followedVolunteerId: stacey45.id,
+      following_volunteer_id: ray45.id,
+      followed_volunteer_id: stacey45.id,
     })
     await followerObject2.save()
 
@@ -130,8 +130,12 @@ describe('/api/volunteers', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body[0].username, 'daniel33')
-    assert.strictEqual(response.body[1].username, 'stacey45')
+    const fetchedFollowing = response.body
+
+    const usernames = fetchedFollowing.map((following) => following.username)
+
+    assert(usernames.includes(stacey45.username))
+    assert(usernames.includes(daniel33.username))
   })
 
   test('getFollowers ', async () => {
@@ -146,17 +150,17 @@ describe('/api/volunteers', () => {
       where: { username: 'stacey45' },
     })
 
-    const follow1 = await api
-      .patch(`/api/volunteers/${ray45.id}/${stacey45.id}`)
-      .set({ Authorization: `Bearer ${testtoken}` })
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+    const followerObject1 = new Follower({
+      following_volunteer_id: ray45.id,
+      followed_volunteer_id: stacey45.id,
+    })
+    await followerObject1.save()
 
-    const follow2 = await api
-      .patch(`/api/volunteers/${daniel33.id}/${stacey45.id}`)
-      .set({ Authorization: `Bearer ${testtoken}` })
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+    const followerObject2 = new Follower({
+      following_volunteer_id: daniel33.id,
+      followed_volunteer_id: stacey45.id,
+    })
+    await followerObject2.save()
 
     const response = await api
       .get(`/api/volunteers/${stacey45.id}/followers`)
@@ -168,8 +172,8 @@ describe('/api/volunteers', () => {
 
     const usernames = fetchedFollowers.map((follower) => follower.username)
 
-    assert(usernames.includes('ray45'))
-    assert(usernames.includes('daniel33'))
+    assert(usernames.includes(ray45.username))
+    assert(usernames.includes(daniel33.username))
   })
 
   test('volunteer can check if they are following someone', async () => {
@@ -185,8 +189,8 @@ describe('/api/volunteers', () => {
     })
 
     const followerObject1 = new Follower({
-      followingVolunteerId: ray45.id,
-      followedVolunteerId: daniel33.id,
+      following_volunteer_id: ray45.id,
+      followed_volunteer_id: daniel33.id,
     })
     await followerObject1.save()
 

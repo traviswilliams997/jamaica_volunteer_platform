@@ -6,6 +6,7 @@ import {
   Agency,
   VolunteerToken,
   AgencyToken,
+  Membership,
 } from '../models/index.js'
 
 /* REGISTER */
@@ -105,8 +106,11 @@ export const loginVolunteer = async (req, res) => {
       where: {
         email: email,
       },
+      include: {
+        model: Membership,
+      },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
     })
-
     const passwordCorrect =
       foundVolunteer === null
         ? false
@@ -122,7 +126,6 @@ export const loginVolunteer = async (req, res) => {
       username: foundVolunteer.username,
       id: foundVolunteer.id,
     }
-    delete foundVolunteer.password
 
     const accessToken = jwt.sign(volunteerForToken, ACCESS_SECRET, {
       expiresIn: '600s',
@@ -144,26 +147,31 @@ export const loginVolunteer = async (req, res) => {
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     })
+    const volunteerWithoutPassword = {
+      id: foundVolunteer.id,
+      username: foundVolunteer.username,
+      firstName: foundVolunteer.firstName,
+      lastName: foundVolunteer.lastName,
+      email: foundVolunteer.email,
+      picturePath: foundVolunteer.picturePath,
+      dateOfBirth: foundVolunteer.dateOfBirth,
+      about: foundVolunteer.about,
+      skills: foundVolunteer.skills,
+      latitude: foundVolunteer.latitude,
+      longitude: foundVolunteer.longitude,
+      createdAt: foundVolunteer.createdAt,
+      memberships: foundVolunteer.memberships,
+    }
 
     const responseObj = {
       accessToken,
-      id: foundVolunteer.id,
-      username: foundVolunteer.username,
-      email: foundVolunteer.email,
-      firstName: foundVolunteer.firstName,
-      lastName: foundVolunteer.lastName,
-      phoneNumber: foundVolunteer.phoneNumber,
-      dateOfBirth: foundVolunteer.dateOfBirth,
-      about: foundVolunteer.about,
-      admin: foundVolunteer.admin,
-      skills: foundVolunteer.skills,
-      picturePath: foundVolunteer.picturePath,
-      latitude: foundVolunteer.latitude,
-      longitude: foundVolunteer.longitude,
+      volunteer: volunteerWithoutPassword,
     }
 
     res.status(200).send(responseObj)
   } catch (err) {
+    console.log('loginVolunteer Error', err)
+
     res.status(500).json({ error: err })
   }
 }

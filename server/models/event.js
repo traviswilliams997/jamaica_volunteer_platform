@@ -15,6 +15,9 @@ Event.init(
       allowNull: false,
       references: { model: 'agencies', key: 'id' },
     },
+    agencyName: {
+      type: DataTypes.STRING,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
