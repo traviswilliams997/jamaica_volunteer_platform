@@ -89,7 +89,7 @@ describe('volunteer auth', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body.username, newVolunteer.username)
+    assert.strictEqual(response.body.volunteer.username, newVolunteer.username)
   })
 
   test('volunteer cannot login without correct credentials', async () => {
@@ -246,6 +246,38 @@ describe('agency auth', () => {
     assert.strictEqual(response.body.username, newAgency.username)
   })
 
+  test('agency cannot login without correct credentials', async () => {
+    const newAgency = {
+      username: 'helpthepoor',
+      name: 'helpthepoor',
+      email: 'helpthepoor@gmail.com',
+      phoneNumber: '(876)444-5555',
+      password: 'secret',
+      type: 'donations',
+      picturePath: '',
+      latitude: 18.0059,
+      longitude: -76.7468,
+      about: 'we help the needy',
+      admin: false,
+    }
+
+    await api
+      .post('/api/auth/register/agency')
+      .send(newAgency)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const loginCredentials = {
+      email: 'helpthepoor@gmail.com',
+      password: 'wrongpassword',
+    }
+
+    await api
+      .post('/api/auth/login/agency')
+      .send(loginCredentials)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+  })
+
   test('agency refresh token is created', async () => {
     const tokensAtStart = await agencyTokensInDb()
 
@@ -284,38 +316,6 @@ describe('agency auth', () => {
 
     assert.strictEqual(typeof response.body.accessToken === 'string', true)
     assert.strictEqual(tokensAtEnd.length, tokensAtStart.length + 1)
-  })
-
-  test('agency cannot login without correct credentials', async () => {
-    const newAgency = {
-      username: 'helpthepoor',
-      name: 'helpthepoor',
-      email: 'helpthepoor@gmail.com',
-      phoneNumber: '(876)444-5555',
-      password: 'secret',
-      type: 'donations',
-      picturePath: '',
-      latitude: 18.0059,
-      longitude: -76.7468,
-      about: 'we help the needy',
-      admin: false,
-    }
-
-    await api
-      .post('/api/auth/register/agency')
-      .send(newAgency)
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
-    const loginCredentials = {
-      email: 'helpthepoor@gmail.com',
-      password: 'wrongpassword',
-    }
-
-    await api
-      .post('/api/auth/login/agency')
-      .send(loginCredentials)
-      .expect(401)
-      .expect('Content-Type', /application\/json/)
   })
 
   after(async () => {
