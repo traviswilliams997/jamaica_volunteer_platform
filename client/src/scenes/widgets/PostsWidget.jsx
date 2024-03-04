@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import PostWidget from './PostWidget'
-import postService from '../../services/posts'
 // eslint-disable-next-line react/prop-types
 const PostsWidget = ({
   volunteerId,
@@ -12,43 +11,41 @@ const PostsWidget = ({
   // const allPosts = useSelector((state) => state.posts.posts)
   const [posts, setPosts] = useState([])
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const allPosts = await postService.getAll()
+  const allPosts = useSelector((state) => state.posts)
 
-      const volunteerPosts = allPosts.find((post) => {
-        return Number(post.volunteerId) === Number(volunteerId)
-      })
-      const agencyPosts = allPosts.find((post) => {
-        return Number(post.agencyId) === Number(agencyId)
-      })
-
-      if (isProfile) {
-        if (!isAgency) {
-          if (Array.isArray(volunteerPosts)) {
-            setPosts(volunteerPosts)
-          } else {
-            setPosts([volunteerPosts])
-          }
+  const getPosts = () => {
+    if (isProfile) {
+      if (!isAgency) {
+        const volunteerPosts = allPosts.find((post) => {
+          return Number(post.volunteerId) === Number(volunteerId)
+        })
+        if (Array.isArray(volunteerPosts)) {
+          setPosts(volunteerPosts)
+        } else {
+          setPosts([volunteerPosts])
         }
-
-        if (isAgency) {
-          if (Array.isArray(agencyPosts)) {
-            setPosts(agencyPosts)
-          } else {
-            setPosts([agencyPosts])
-          }
-        }
-      } else {
-        setPosts(allPosts)
       }
+
+      if (isAgency) {
+        const agencyPosts = allPosts.find((post) => {
+          return Number(post.agencyId) === Number(agencyId)
+        })
+        if (Array.isArray(agencyPosts)) {
+          setPosts(agencyPosts)
+        } else {
+          setPosts([agencyPosts])
+        }
+      }
+    } else {
+      setPosts(allPosts)
     }
+  }
+
+  useEffect(() => {
     getPosts()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (typeof posts[0] === 'undefined' || posts.length === 0) {
-    return <div></div>
-  }
+  if (posts.length < 1) return
 
   return (
     <>
