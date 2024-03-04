@@ -49,52 +49,54 @@ const PostsWidget = ({
 
   return (
     <>
-      {posts.map(
-        ({
-          id,
-          volunteerId,
-          agencyId,
-          posterFirstName,
-          posterLastName,
-          posterName,
-          content,
-          type,
-          picturePath,
-          posterPicturePath,
-          reactions,
-          comments,
-          createdAt,
-        }) =>
-          type === 'Volunteer' ? (
-            <PostWidget
-              key={id}
-              postId={id}
-              posterId={volunteerId}
-              name={`${posterFirstName} ${posterLastName}`}
-              content={content}
-              type={type}
-              createdAt={createdAt}
-              picturePath={picturePath}
-              posterPicturePath={posterPicturePath}
-              reactions={reactions}
-              comments={comments}
-            />
-          ) : (
-            <PostWidget
-              key={id}
-              postId={id}
-              posterId={agencyId}
-              name={posterName}
-              content={content}
-              type={type}
-              createdAt={createdAt}
-              picturePath={picturePath}
-              posterPicturePath={posterPicturePath}
-              reactions={reactions}
-              comments={comments}
-            />
-          )
-      )}
+      {posts &&
+        posts.map(
+          ({
+            id,
+            volunteerId,
+            agencyId,
+            posterFirstName,
+            posterLastName,
+            posterName,
+            content,
+            type,
+            picturePath,
+            posterPicturePath,
+            reactions,
+            comments,
+            createdAt,
+          }) =>
+            type === 'Volunteer' ? (
+              <PostWidget
+                key={id}
+                postId={id}
+                posterId={volunteerId}
+                name={`${posterFirstName} ${posterLastName}`}
+                content={content}
+                type={type}
+                createdAt={createdAt}
+                picturePath={picturePath}
+                posterPicturePath={posterPicturePath}
+                reactions={reactions}
+                comments={comments}
+              />
+            ) : (
+              <PostWidget
+                key={id}
+                postId={id}
+                posterId={agencyId}
+                name={posterName}
+                content={content}
+                type={type}
+                createdAt={createdAt}
+                picturePath={picturePath}
+                posterPicturePath={posterPicturePath}
+                reactions={reactions}
+                comments={comments}
+                isVolunteer={false}
+              />
+            )
+        )}
     </>
   )
 }
