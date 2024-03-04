@@ -28,8 +28,8 @@ const EventWidget = ({ agencyId }) => {
   return (
     <WidgetWrapper>
       <Box>
-        <Typography color={dark} varaint="h5" fontWeight="700">
-          Upcomming Event
+        <Typography color={dark} varaint="h5" fontWeight="900">
+          Upcoming Event
         </Typography>
         <Typography color={main}>{agencyEvents.title}</Typography>
       </Box>
