@@ -92,10 +92,6 @@ const AgencyWidget = ({ agencyId, picturePath }) => {
           <DescriptionOutlinedIcon fontSize="medium" sx={{ color: main }} />
           <Typography color={medium}>{about}</Typography>
         </Box>
-        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <BuildOutlined fontSize="medium" sx={{ color: main }} />
-          <Typography color={medium}>{skills}</Typography>
-        </Box>
       </Box>
       <Divider />
 
