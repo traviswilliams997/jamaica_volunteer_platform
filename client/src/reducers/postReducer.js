@@ -38,7 +38,7 @@ export const createVolunteerPost = (newObject, customAxios) => {
       newObject,
       customAxios
     )
-    dispatch(appendPost({ post: newPost }))
+    dispatch(appendPost(newPost))
   }
 }
 
