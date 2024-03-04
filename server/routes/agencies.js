@@ -3,7 +3,6 @@ import {
   getAgencies,
   getAgency,
   createPostion,
-  createEvent,
   addMember,
 } from '../controllers/agencies.js'
 
@@ -15,7 +14,6 @@ router.get('/:id', getAgency)
 
 /* CREATE*/
 router.post('/:id/position', createPostion)
-router.post('/:id/event', createEvent)
 router.post('/join/', addMember)
 
 export default router

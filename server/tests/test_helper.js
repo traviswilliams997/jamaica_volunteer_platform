@@ -6,6 +6,8 @@ import {
   Reaction,
   VolunteerToken,
   AgencyToken,
+  Position,
+  Event,
 } from '../models/index.js'
 
 const initialVolunteersVolunteerApi = [
@@ -130,6 +132,16 @@ const agencyTokensInDb = async () => {
   return tokens.map((token) => token.toJSON())
 }
 
+const eventsInDb = async () => {
+  const events = await Event.findAll({})
+  return events.map((token) => token.toJSON())
+}
+
+const positionsInDb = async () => {
+  const tokens = await Position.findAll({})
+  return tokens.map((token) => token.toJSON())
+}
+
 const emptyDbTables = async (models) => {
   console.log('EMPTYING DATABASE')
   if (models.includes('Follower')) {
@@ -164,6 +176,9 @@ const emptyDbTables = async (models) => {
   if (models.includes('AgencyToken')) {
     await AgencyToken.destroy({ where: {} })
   }
+  if (models.includes('Event')) {
+    await Event.destroy({ where: {} })
+  }
 }
 
 const testtoken =
@@ -182,4 +197,6 @@ export {
   postsInDb,
   volunteerTokensInDb,
   agencyTokensInDb,
+  eventsInDb,
+  positionsInDb,
 }
