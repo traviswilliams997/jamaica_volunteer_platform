@@ -55,7 +55,7 @@ const PostWidget = ({
           agencyId={posterId}
           name={name}
           subtitle={createdAtString}
-          volunteerPicturePath={posterPicturePath}
+          picturePath={posterPicturePath}
         />
       )}
       <Typography color={main} sx={{ mt: '1rem' }}>

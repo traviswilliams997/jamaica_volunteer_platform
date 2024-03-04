@@ -101,10 +101,7 @@ const UserWidget = ({ volunteerId, picturePath }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>
-              {' '}
-              {followers && followers.length} followers
-            </Typography>
+            <Typography color={medium}> 5 followers</Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />

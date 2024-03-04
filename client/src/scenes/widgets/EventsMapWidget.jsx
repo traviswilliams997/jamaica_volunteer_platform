@@ -20,9 +20,7 @@ const EventMapsWidget = ({}) => {
   const events = useSelector((state) => state.events.events)
   const navigate = useNavigate()
   const mapRef = useRef()
-
   const { palette } = useTheme()
-  const dispatch = useDispatch()
 
   const [viewState, setViewState] = useState({
     longitude: -76.8099,
@@ -99,7 +97,7 @@ const EventMapsWidget = ({}) => {
                   color: palette.primary.main,
                 },
               }}
-              onClick={() => navigate(`/event/${e.id}`)}
+              onClick={() => handleMarkerClick(e.id, e.latitude, e.longitude)}
             >
               {truncateString(e.title, 11)}
             </Typography>
@@ -114,7 +112,7 @@ const EventMapsWidget = ({}) => {
               onClick={() => handleMarkerClick(e.id, e.latitude, e.longitude)}
             />
           </Marker>
-          {clickedPopUpId === e.id ? (
+          {showPopup && clickedPopUpId === e.id ? (
             <Popup
               longitude={e.longitude}
               latitude={e.latitude}
@@ -165,7 +163,7 @@ const EventMapsWidget = ({}) => {
                   {' '}
                   <PopupLabel variant="h3">Description:</PopupLabel>{' '}
                   <PopupContent variant="h3">
-                    {truncateString(e.description, 250)}
+                    {truncateString(e.description, 200)}
                   </PopupContent>{' '}
                 </Box>{' '}
                 <Box
