@@ -1,19 +1,17 @@
-import { Box, useMediaQuery } from '@mui/material'
+import { Box, Typography, useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Navbar from '../navbar'
-import MyPostWidget from '../widgets/MyPostWidget'
 import PostsWidget from '../widgets/PostsWidget'
-import EventsWidget from '../widgets/EventWidget'
-import UserWidget from '../widgets/UserWidget'
-import FollowingListWidget from '../widgets/FollowingListWiget'
 import AgencyPositionsWidget from '../widgets/AgencyPositionsWidget '
 import AgencyWidget from '../widgets/AgencyWidget'
 import EventWidget from '../widgets/EventWidget'
+import WidgetWrapper from '../../components/WidgetWrapper'
 
 const ProfilePage = () => {
   const [agency, setAgency] = useState(null)
+  const [hasPosts, setHasPosts] = useState(true)
 
   const agencies = useSelector((state) => state.agency.agencies)
 
@@ -29,6 +27,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getAgency()
+
+    if (agency && Object.prototype.hasOwnProperty.call(agency, 'posts')) {
+      setHasPosts(true)
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!agency) return null
@@ -51,7 +53,18 @@ const ProfilePage = () => {
           flexBasis={isNonMobileScreens ? '42%' : undefined}
           mt={isNonMobileScreens ? undefined : '1rem'}
         >
-          <PostsWidget agencyId={agencyId} isProfile={true} isAgency={true} />
+          {hasPosts ? (
+            <PostsWidget agencyId={agencyId} isProfile={true} isAgency={true} />
+          ) : (
+            <WidgetWrapper>
+              <Box display="flex" justifyContent="center">
+                <Typography variant="h6" fontSize="3rem">
+                  {' '}
+                  No Posts Yet
+                </Typography>
+              </Box>
+            </WidgetWrapper>
+          )}
         </Box>
 
         <Box
