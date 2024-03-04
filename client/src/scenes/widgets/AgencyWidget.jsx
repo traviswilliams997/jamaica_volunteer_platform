@@ -32,12 +32,21 @@ const AgencyWidget = ({ agencyId, picturePath }) => {
   }
 
   const getNumMembersText = () => {
+    if (!Object.prototype.hasOwnProperty.call(agency, 'memberships'))
+      return ` 0 members`
     if (agency.memberships.length === 1) {
       return ` 1 member`
     }
     return `${agency.memberships.length} members`
   }
 
+  const truncateString = (str, num) => {
+    if (str?.length > num) {
+      return str.slice(0, num) + '...'
+    } else {
+      return str
+    }
+  }
   useEffect(() => {
     getAgency()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,7 +56,7 @@ const AgencyWidget = ({ agencyId, picturePath }) => {
     return null
   }
 
-  const { name, phoneNumber, dateOfBirth, about, skills } = agency
+  const { name, phoneNumber, about } = agency
 
   return (
     <WidgetWrapper>
@@ -90,7 +99,7 @@ const AgencyWidget = ({ agencyId, picturePath }) => {
         </Box>
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
           <DescriptionOutlinedIcon fontSize="medium" sx={{ color: main }} />
-          <Typography color={medium}>{about}</Typography>
+          <Typography color={medium}>{truncateString(about, 400)}</Typography>
         </Box>
       </Box>
       <Divider />
