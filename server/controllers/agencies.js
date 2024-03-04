@@ -1,4 +1,4 @@
-import { Agency, Position, Event } from '../models/index.js'
+import { Agency, Position, Event, Membership } from '../models/index.js'
 
 /*READ */
 export const getAgencies = async (req, res) => {
@@ -24,7 +24,7 @@ export const getAgency = async (req, res) => {
   try {
     const { id } = req.params
 
-    const agency = await Agency.findByPk(id, {
+    const agency = await Agency.findByPk(Number(id), {
       include: {
         model: Position,
       },
@@ -43,7 +43,7 @@ export const createPostion = async (req, res) => {
     const { title, description, skills, schedule, vacancies } = req.body
 
     const postion = {
-      agencyId: id,
+      agencyId: Number(id),
       title,
       description,
       skills,
@@ -67,7 +67,7 @@ export const createEvent = async (req, res) => {
     console.log(req.body)
 
     const eventObject = {
-      createdByAgencyId: id,
+      createdByAgencyId: Number(id),
       title,
       description,
       date,
@@ -79,6 +79,30 @@ export const createEvent = async (req, res) => {
     const savedEvent = await newEvent.save()
 
     return res.status(200).json(savedEvent)
+  } catch (err) {
+    console.log('createEvent Error', err)
+    res.status(400).json({ message: err })
+  }
+}
+
+export const addMember = async (req, res) => {
+  try {
+    const { agencyId, volunteerId, position, status } = req.body
+
+    console.log('body', req.body)
+
+    const membershipObject = {
+      agencyId,
+      volunteerId,
+      position,
+      status,
+    }
+    const newMembership = new Membership(membershipObject)
+    const savedMembership = await newMembership.save()
+
+    console.log('saved membership', savedMembership)
+
+    return res.status(200).json(savedMembership)
   } catch (err) {
     console.log('createEvent Error', err)
     res.status(400).json({ message: err })
