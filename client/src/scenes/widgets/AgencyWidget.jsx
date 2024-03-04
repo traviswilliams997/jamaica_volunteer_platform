@@ -10,30 +10,36 @@ import UserImage from '../../components/UserImage'
 import FlexBetween from '../../components/FlexBetween'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import agencyService from '../../services/agencies'
-import { setAgencies } from '../../reducers/agencyReducer'
-const AgencyWidget = ({ agencyId, picturePath }) => {
-  const [agency, setAgency] = useState(null)
 
+const AgencyWidget = ({ agencyId, picturePath }) => {
+  const agencies = useSelector((state) => state.agency.agencies)
+  const [agency, setAgency] = useState(false)
   const { palette } = useTheme()
   const navigate = useNavigate()
-  const axiosPrivate = useAxiosPrivate()
 
   const dark = palette.neutral.dark
   const medium = palette.neutral.medium
   const main = palette.neutral.main
 
   const getAgency = async () => {
-    const response = await agencyService.getById(agencyId, axiosPrivate)
-    setAgency(response)
+    const currentAgency = agencies.find((a) => {
+      return Number(a.id) === Number(agencyId)
+    })
+
+    setAgency(currentAgency)
+  }
+
+  const getNumMembersText = () => {
+    if (agency.memberships.length === 1) {
+      return ` 1 member`
+    }
+    return `${agency.memberships.length} members`
   }
 
   useEffect(() => {
     getAgency()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -68,7 +74,7 @@ const AgencyWidget = ({ agencyId, picturePath }) => {
             >
               {name}
             </Typography>
-            <Typography color={medium}> 30 members</Typography>
+            <Typography color={medium}> {getNumMembersText()}</Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />
