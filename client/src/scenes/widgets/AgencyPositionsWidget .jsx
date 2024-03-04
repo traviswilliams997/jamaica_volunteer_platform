@@ -13,6 +13,7 @@ const AgencyPositionsWidget = ({ agencyPositions }) => {
   useEffect(() => {
     setPositions(agencyPositions)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <WidgetWrapper>
       <FlexBetween>
@@ -33,7 +34,7 @@ const AgencyPositionsWidget = ({ agencyPositions }) => {
       </FlexBetween>
 
       <Box display="flex" flexDirection="column" gap="0.5rem">
-        {!positions.empty ? (
+        {positions.length !== 0 ? (
           positions.map((p) => (
             <AgencyPositionWidget key={p.id} agencyPosition={p} />
           ))

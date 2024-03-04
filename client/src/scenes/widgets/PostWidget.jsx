@@ -32,8 +32,9 @@ const PostWidget = ({
   const createdAtString = new Date(createdAt).toDateString()
   const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
+  const likes = reactions
 
-  const isLiked = true
+  const isLiked = Array.isArray(reactions) ? likes.length : false
   const likeCount = reactions ? 1000 : reactions
 
   const { palette } = useTheme()
