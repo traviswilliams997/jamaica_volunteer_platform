@@ -3,10 +3,12 @@ import Join from '../../components/Join'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import volunteers from '../../services/volunteers'
 // eslint-disable-next-line react/prop-types
 const AgencyListWidget = ({ volunteerId }) => {
   const allAgencies = useSelector((state) => state.agency.agencies)
   const allVolunteers = useSelector((state) => state.volunteer.volunteers)
+  const [thisPageVolunteer, setThisPageVolunteer] = useState()
   const [yourAgencies, setYourAgencies] = useState([])
   const { palette } = useTheme()
 
@@ -14,6 +16,8 @@ const AgencyListWidget = ({ volunteerId }) => {
     const volunteer = allVolunteers.find((volunteer) => {
       return Number(volunteer.id) === Number(volunteerId)
     })
+
+    setThisPageVolunteer(volunteer)
 
     return volunteer.memberships
   }
@@ -25,9 +29,9 @@ const AgencyListWidget = ({ volunteerId }) => {
       const agency = allAgencies.find((agency) => {
         return Number(agency.id) === Number(membership.agencyId)
       })
-      const joinedDate = new Date(membership.createdAt).toDateString()
-      const agencyAndJoinedDate = { joinedDate, ...agency }
-      return agencyAndJoinedDate
+      const position = membership.position
+      const agencyAndPosition = { position, ...agency }
+      return agencyAndPosition
     })
 
     setYourAgencies(agencies)
@@ -46,7 +50,7 @@ const AgencyListWidget = ({ volunteerId }) => {
         fontWeight="500"
         sx={{ mb: '1.5rem' }}
       >
-        Agencies
+        {`${thisPageVolunteer.firstName}'s Agencies`}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
         {yourAgencies.length !== 0 ? (
@@ -55,7 +59,7 @@ const AgencyListWidget = ({ volunteerId }) => {
               key={agency.id}
               agencyId={agency.id}
               name={`${agency.name}`}
-              subtitle={agency.joinedDate}
+              subtitle={agency.position}
               picturePath={agency.picturePath}
               isMember={true}
             />
