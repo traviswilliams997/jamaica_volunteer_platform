@@ -1,26 +1,43 @@
 import { Box, Typography, useTheme } from '@mui/material'
-import FollowedByYou from '../../components/Follow'
+import Join from '../../components/Join'
 import WidgetWrapper from '../../components/WidgetWrapper'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 // eslint-disable-next-line react/prop-types
-const FollowingListWidget = ({ volunteerId }) => {
-  const volunteersYouFollow = useSelector((state) => state.volunteer.volunteers)
-  const dispatch = useDispatch()
+const AgencyListWidget = ({ volunteerId }) => {
+  const allAgencies = useSelector((state) => state.agency.agencies)
+  const allVolunteers = useSelector((state) => state.volunteer.volunteers)
+  const [yourAgencies, setYourAgencies] = useState([])
   const { palette } = useTheme()
-  const axiosPrivate = useAxiosPrivate()
 
-  // const getFollowedByVolunteer = async () => {
-  //   dispatch(setVolunteersYouFollow(volunteerId, axiosPrivate))
-  // }
+  const findMemberships = (volunteerId) => {
+    const volunteer = allVolunteers.find((volunteer) => {
+      return Number(volunteer.id) === Number(volunteerId)
+    })
+
+    return volunteer.memberships
+  }
+
+  const getYourAgencies = () => {
+    const memberships = findMemberships(volunteerId)
+
+    const agencies = memberships.map((membership) => {
+      const agency = allAgencies.find((agency) => {
+        return Number(agency.id) === Number(membership.agencyId)
+      })
+      const joinedDate = new Date(membership.createdAt).toDateString()
+      const agencyAndJoinedDate = { joinedDate, ...agency }
+      return agencyAndJoinedDate
+    })
+
+    setYourAgencies(agencies)
+  }
 
   useEffect(() => {
-    // getFollowedByVolunteer()
+    getYourAgencies()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (volunteersYouFollow.length === 0) return
+  if (yourAgencies.length === 0) return
   return (
     <WidgetWrapper>
       <Typography
@@ -29,25 +46,26 @@ const FollowingListWidget = ({ volunteerId }) => {
         fontWeight="500"
         sx={{ mb: '1.5rem' }}
       >
-        Following
+        Agencies
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {volunteersYouFollow.length !== 0 ? (
-          volunteersYouFollow.map((followed) => (
-            <FollowedByYou
-              key={followed.id}
-              followedId={followed.id}
-              name={`${followed.firstName} ${followed.lastName}`}
-              subtitle={followed.about}
-              volunteerPicturePath={followed.picturePath}
+        {yourAgencies.length !== 0 ? (
+          yourAgencies.map((agency) => (
+            <Join
+              key={agency.id}
+              agencyId={agency.id}
+              name={`${agency.name}`}
+              subtitle={agency.joinedDate}
+              picturePath={agency.picturePath}
+              isMember={true}
             />
           ))
         ) : (
-          <Box>You are not following any one yet</Box>
+          <Box>You are not a member of any agencyt</Box>
         )}
       </Box>
     </WidgetWrapper>
   )
 }
 
-export default FollowingListWidget
+export default AgencyListWidget

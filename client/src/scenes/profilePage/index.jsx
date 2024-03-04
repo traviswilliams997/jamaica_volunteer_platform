@@ -6,7 +6,7 @@ import Navbar from '../navbar'
 import MyPostWidget from '../widgets/MyPostWidget'
 import PostsWidget from '../widgets/PostsWidget'
 import UserWidget from '../widgets/UserWidget'
-import FollowingListWidget from '../widgets/FollowingListWiget'
+import AgencyListWidget from '../widgets/AgencyListWidget'
 const ProfilePage = () => {
   const [volunteer, setVolunteer] = useState(null)
   const { volunteerId } = useParams()
@@ -45,7 +45,7 @@ const ProfilePage = () => {
             picturePath={volunteer.picturePath}
           />
           <Box m="2rem 0" />
-          <FollowingListWidget volunteerId={volunteerId} />
+          <AgencyListWidget volunteerId={volunteerId} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? '42%' : undefined}

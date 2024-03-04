@@ -1,64 +1,28 @@
 import { PersonAddOutlined, PersonRemoveOutlined } from '@mui/icons-material'
 import { Box, IconButton, Typography, useTheme } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import UserImage from './UserImage'
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import volunteerService from '../services/volunteers'
-import { useState, useEffect } from 'react'
-import { setVolunteersYouFollow } from '../reducers/volunteerReducer'
 
-const Join = ({ posterId, name, subtitle, volunteerPicturePath }) => {
-  const dispatch = useDispatch()
+const Join = ({ agencyId, name, subtitle, picturePath, isMember = false }) => {
   const navigate = useNavigate()
-  const { id } = useSelector((state) => state.volunteer.currentVolunteer)
-
-  const [isMember, setIsfollowedByYou] = useState(false)
-
-  const axiosPrivate = useAxiosPrivate()
-
+  const { id } = useSelector((state) => state.volunteer.currentVolunteer.id)
   const { palette } = useTheme()
   const primaryLight = palette.primary.light
   const primaryDark = palette.primary.dark
   const main = palette.neutral.main
   const medium = palette.neutral.medium
 
-  const checkIsFollowing = async () => {
-    if (id && followedId) {
-      const response = await volunteerService.checkIsFollowing(
-        id,
-        followedId,
-        axiosPrivate
-      )
-
-      setIsfollowedByYou(response)
-    } else {
-      setIsfollowedByYou(false)
-    }
-  }
-  useEffect(() => {
-    checkIsFollowing()
-  }, [])
-
-  const followUnfollow = async (id, followedId) => {
-    const response = await volunteerService.followUnfollow(
-      id,
-      followedId,
-      axiosPrivate
-    )
-    const data = await response.json()
-
-    dispatch(setVolunteersYouFollow({ followedByYou: data }))
-  }
+  const JoinAgency = async (id, agencyId) => {}
 
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
-        <UserImage image={volunteerPicturePath} size="55px" />
+        <UserImage image={picturePath} size="55px" />
         <Box
           onClick={() => {
-            navigate(`/profile/${followedId}`)
+            navigate(`/agency/${agencyId}`)
             navigate(0)
           }}
         >
@@ -80,11 +44,12 @@ const Join = ({ posterId, name, subtitle, volunteerPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
+
       <IconButton
-        onClick={() => followUnfollow(id, followedId)}
+        onClick={() => JoinAgency(id, agencyId)}
         sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
       >
-        {isfollowedByYou ? (
+        {!isMember ? (
           <PersonAddOutlined sx={{ color: primaryDark }} />
         ) : (
           <PersonRemoveOutlined sx={{ color: primaryDark }} />
