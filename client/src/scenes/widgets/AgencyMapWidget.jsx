@@ -52,6 +52,14 @@ const AgencyMapWidget = ({}) => {
     setViewState({ ...viewState, latitude: lat, longitude: long })
   }
 
+  const truncateString = (str, num) => {
+    if (str?.length > num) {
+      return str.slice(0, num) + '...'
+    } else {
+      return str
+    }
+  }
+
   if (!agencies) return
   return (
     <ReactMapGL
@@ -112,7 +120,7 @@ const AgencyMapWidget = ({}) => {
                 display="flex"
                 sx={{
                   width: '250px',
-                  height: '400px',
+                  height: '350px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'left',
@@ -137,8 +145,10 @@ const AgencyMapWidget = ({}) => {
                   }}
                 >
                   {' '}
-                  <PopupLabel variant="h3">Description:</PopupLabel>{' '}
-                  <PopupContent variant="h3">{a.about}</PopupContent>{' '}
+                  <PopupLabel variant="h3">About:</PopupLabel>{' '}
+                  <PopupContent variant="h3">
+                    {truncateString(a.about, 250)}
+                  </PopupContent>{' '}
                 </Box>
                 <Box
                   display="flex"
