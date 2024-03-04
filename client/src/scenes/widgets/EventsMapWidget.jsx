@@ -15,6 +15,8 @@ import Geocoder from './GeocoderWidget'
 // eslint-disable-next-line react/prop-types
 const EventMapsWidget = ({}) => {
   const [showPopup, setShowPopup] = useState(false)
+  const [clickedPopUpId, setClickPopUpId] = useState(0)
+
   const events = useSelector((state) => state.events.events)
   const navigate = useNavigate()
   const mapRef = useRef()
@@ -45,11 +47,20 @@ const EventMapsWidget = ({}) => {
 
   const handleMarkerClick = (id, lat, long) => {
     setViewState({ ...viewState, latitude: lat, longitude: long })
+    setClickPopUpId(id)
     setShowPopup(true)
   }
 
   const handleGeoLocateClick = (lat, long) => {
     setViewState({ ...viewState, latitude: lat, longitude: long })
+  }
+
+  const truncateString = (str, num) => {
+    if (str?.length > num) {
+      return str.slice(0, num) + '...'
+    } else {
+      return str
+    }
   }
 
   // eslint-disable-line react-hooks/exhaustive-deps
@@ -90,10 +101,12 @@ const EventMapsWidget = ({}) => {
               }}
               onClick={() => navigate(`/event/${e.id}`)}
             >
-              {e.title}
+              {truncateString(e.title, 11)}
             </Typography>
             <Room
               style={{
+                width: 'min-content',
+
                 fontSize: viewState.zoom * 4,
                 color: 'tomato',
                 cursor: 'pointer',
@@ -101,7 +114,7 @@ const EventMapsWidget = ({}) => {
               onClick={() => handleMarkerClick(e.id, e.latitude, e.longitude)}
             />
           </Marker>
-          {showPopup ? (
+          {clickedPopUpId === e.id ? (
             <Popup
               longitude={e.longitude}
               latitude={e.latitude}
@@ -113,7 +126,7 @@ const EventMapsWidget = ({}) => {
                 display="flex"
                 sx={{
                   width: '250px',
-                  height: '400px',
+                  height: '350px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'left',
@@ -151,7 +164,9 @@ const EventMapsWidget = ({}) => {
                 >
                   {' '}
                   <PopupLabel variant="h3">Description:</PopupLabel>{' '}
-                  <PopupContent variant="h3">{e.description}</PopupContent>{' '}
+                  <PopupContent variant="h3">
+                    {truncateString(e.description, 250)}
+                  </PopupContent>{' '}
                 </Box>{' '}
                 <Box
                   display="flex"
