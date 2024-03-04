@@ -5,7 +5,7 @@ import {
   createPostion,
   addMember,
 } from '../controllers/agencies.js'
-
+import { verifyToken } from '../middleware/auth.js'
 const router = express.Router()
 
 /* READ */
@@ -13,7 +13,7 @@ router.get('/', getAgencies)
 router.get('/:id', getAgency)
 
 /* CREATE*/
-router.post('/:id/position', createPostion)
-router.post('/join/', addMember)
+router.post('/:id/position', verifyToken, createPostion)
+router.post('/join/', verifyToken, addMember)
 
 export default router

@@ -8,6 +8,7 @@ import {
   AgencyToken,
   Position,
   Event,
+  Membership,
 } from '../models/index.js'
 
 const initialVolunteersVolunteerApi = [
@@ -134,12 +135,17 @@ const agencyTokensInDb = async () => {
 
 const eventsInDb = async () => {
   const events = await Event.findAll({})
-  return events.map((token) => token.toJSON())
+  return events.map((e) => e.toJSON())
 }
 
 const positionsInDb = async () => {
-  const tokens = await Position.findAll({})
-  return tokens.map((token) => token.toJSON())
+  const positions = await Position.findAll({})
+  return positions.map((p) => p.toJSON())
+}
+
+const membershipsInDb = async () => {
+  const memberships = await Membership.findAll({})
+  return memberships.map((m) => m.toJSON())
 }
 
 const emptyDbTables = async (models) => {
@@ -199,4 +205,5 @@ export {
   agencyTokensInDb,
   eventsInDb,
   positionsInDb,
+  membershipsInDb,
 }
