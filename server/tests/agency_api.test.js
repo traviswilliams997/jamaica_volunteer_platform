@@ -28,7 +28,7 @@ describe('/api/agency', () => {
   })
 
   afterEach(async () => {
-    await emptyDbTables(['Follower'])
+    await emptyDbTables(['Agency'])
   })
 
   test('getVolunteer returns correct volunteer', async () => {
