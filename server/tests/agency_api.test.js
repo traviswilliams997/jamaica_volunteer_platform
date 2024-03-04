@@ -31,7 +31,7 @@ describe('/api/agency', () => {
     await emptyDbTables(['Agency'])
   })
 
-  test('getVolunteer returns correct volunteer', async () => {
+  test('getAgency returns correct agency', async () => {
     const response = await api
       .get('/api/agencies')
       .expect(200)
