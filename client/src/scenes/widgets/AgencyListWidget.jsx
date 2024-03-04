@@ -18,7 +18,9 @@ const AgencyListWidget = ({ volunteerId }) => {
     })
 
     setThisPageVolunteer(volunteer)
-
+    if (!Object.prototype.hasOwnProperty.call(volunteer, 'memberships')) {
+      return []
+    }
     return volunteer.memberships
   }
 
