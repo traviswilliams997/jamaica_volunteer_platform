@@ -159,7 +159,7 @@ const AgencyMapWidget = ({}) => {
                 >
                   {' '}
                   <PopupLabel variant="h3">Members:</PopupLabel>{' '}
-                  <PopupContent variant="h3">10</PopupContent>{' '}
+                  <PopupContent variant="h3">110</PopupContent>{' '}
                 </Box>{' '}
                 <Box
                   display="flex"
@@ -178,51 +178,6 @@ const AgencyMapWidget = ({}) => {
                   </PopupContent>
                 </Box>{' '}
               </Box>
-              {/* <Box
-                display="flex"
-                sx={{
-                  width: '250px',
-                  height: '200px',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <Box
-                  display="flex"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  {' '}
-                  <PopupLabel variant="h3">Agency:</PopupLabel>{' '}
-                  <PopupLabel variant="h3">Type:</PopupLabel>{' '}
-                  <PopupLabel variant="h3">Members:</PopupLabel>{' '}
-                  <PopupLabel variant="h3">Rating:</PopupLabel>
-                  <PopupLabel variant="h3">Founded:</PopupLabel>
-                </Box>
-                <Box
-                  display="flex"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  {' '}
-                  <PopupContent variant="h3">{a.name}</PopupContent>{' '}
-                  <PopupContent variant="h3">{a.type}</PopupContent>{' '}
-                  <PopupContent variant="h3">10</PopupContent>{' '}
-                  <PopupContent variant="h3" sx={{ color: 'gold' }}>
-                    <Star />
-                    <Star />
-                    <Star />
-                    <Star />
-                    <Star />
-                  </PopupContent>
-                  <PopupContent variant="h3">February 24, 2024</PopupContent>{' '}
-                </Box>
-              </Box> */}
             </Popup>
           ) : null}{' '}
         </Box>
