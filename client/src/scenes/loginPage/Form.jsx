@@ -191,6 +191,7 @@ const Form = () => {
                   value={values.about}
                   name="about"
                   multiline
+                  height="200px"
                   error={Boolean(touched.about) && Boolean(errors.about)}
                   helperText={touched.about && errors.about}
                   sx={{ gridColumn: 'span 4' }}
