@@ -64,7 +64,6 @@ const FollowedByYou = ({
         <Box
           onClick={() => {
             navigate(`/profile/${followedId}`)
-            navigate(0)
           }}
         >
           <Typography
