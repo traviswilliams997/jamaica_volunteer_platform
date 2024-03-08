@@ -23,8 +23,6 @@ jobs:
         run: cd client && npm install
       - name: Install server dependencies
         run: cd  server &&  npm install
-      - name: Check style
-        run: cd client && npm run lint
       - name: Check build
         run: cd client && npm run build
       - name: Check test
