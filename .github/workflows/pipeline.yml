@@ -1,0 +1,43 @@
+# name and trigger not shown anymore...
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install client dependencies
+        run: cd client && npm install
+      - name: Install server dependencies
+        run: cd  server &&  npm install
+      - name: Check style
+        run: cd client && npm run eslint
+      - name: Check build
+        run: cd client && npm run build
+      - name: Check test
+        run: cd client && npm run test
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: cd client && npm run test:e2e
+          start: cd server && npm run start
+          wait-on: http://localhost:3003/
+          wait-on-timeout: 60
+      - name: Deploy app
+        if: ${{ github.event_name == 'push' }}
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

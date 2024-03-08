@@ -14,17 +14,23 @@ import eventRoutes from './routes/events.js'
 import testingRoutes from './routes/testing.js'
 import { corsOptions } from './config/corsOptions.js'
 import { errorHandler, unknownEndpoint } from './middleware/middleware.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 /* CONFIGURATIONS */
 const app = express()
-app.use(helmet())
-app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
+// app.use(helmet())
+
 app.use(morgan('common'))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
+app.use(express.static(path.join(__dirname, '../client/dist')))
 
 /* ROUTES */
 app.use('/api/auth', authRoutes)
@@ -39,6 +45,7 @@ app.use('/api/logout', logoutRoutes)
 if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRoutes)
 }
+
 app.use(unknownEndpoint)
 app.use(errorHandler)
 

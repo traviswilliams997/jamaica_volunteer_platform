@@ -23,7 +23,6 @@ const Join = ({ agencyId, name, subtitle, picturePath, isMember = false }) => {
         <Box
           onClick={() => {
             navigate(`/agency/${agencyId}`)
-            navigate(0)
           }}
         >
           <Typography
