@@ -51,6 +51,7 @@ export const registerVolunteer = async (req, res) => {
 
     res.status(201).json(savedVolunteer)
   } catch (err) {
+    console.log('Error', err)
     res.status(500).json({ error: err })
   }
 }
