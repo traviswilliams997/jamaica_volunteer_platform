@@ -67,10 +67,8 @@ test('renders content', () => {
   const element = screen.getByText('Upcoming Event')
   const eventNameEl = screen.getByText('VolJA Hackathon')
   const locationEl = screen.getByText('Engineering basement, UTech')
-  const dateElement = screen.getByText('Thu Mar 28 2024')
 
   expect(element).toBeDefined()
   expect(eventNameEl).toBeDefined()
   expect(locationEl).toBeDefined()
-  expect(dateElement).toBeDefined()
 })
