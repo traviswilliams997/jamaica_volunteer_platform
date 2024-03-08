@@ -11,6 +11,7 @@ import refreshRoutes from './routes/refresh.js'
 import logoutRoutes from './routes/logout.js'
 import agencyRoutes from './routes/agencies.js'
 import eventRoutes from './routes/events.js'
+import testingRoutes from './routes/testing.js'
 import { corsOptions } from './config/corsOptions.js'
 import { errorHandler, unknownEndpoint } from './middleware/middleware.js'
 
@@ -35,6 +36,9 @@ app.use('/api/events', eventRoutes)
 app.use('/api/refresh', refreshRoutes)
 app.use('/api/logout', logoutRoutes)
 
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/testing', testingRoutes)
+}
 app.use(unknownEndpoint)
 app.use(errorHandler)
 

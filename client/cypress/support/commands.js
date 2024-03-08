@@ -23,3 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (email, password) => {
+  cy.request('POST', 'http://localhost:3003/api/auth/login/volunteer', {
+    email,
+    password,
+  }).then(({ body }) => {
+    cy.visit('http://localhost:5173/home')
+  })
+})
+
+Cypress.Commands.add('register', (user) => {
+  cy.request('POST', 'http://localhost:3003/api/auth/register/volunteer', user)
+})
