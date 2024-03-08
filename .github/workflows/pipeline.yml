@@ -28,7 +28,6 @@ jobs:
       - name: Check test
         run: cd client && npm run test
       - name: Deploy app
-        if: ${{ github.event_name == 'push' }}
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
