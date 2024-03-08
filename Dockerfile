@@ -17,22 +17,36 @@ ENV NODE_ENV="production"
 FROM base as build
 
 # Install packages needed to build node modules
-RUN apt-get update -qq && \
+RUN cd server && apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python3
+
+    # Install packages needed to build node modules
+RUN cd client && apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python3
 
 # Install node modules
-COPY --link package-lock.json package.json ./
-RUN npm ci --include=dev
+COPY cd server &&  --link package-lock.json package.json ./
+RUN cd server && npm ci --include=dev
+
+# Install node modules
+COPY cd client &&  --link package-lock.json package.json ./
+RUN cd client && npm ci --include=dev
 
 # Copy application code
-COPY --link . .
+COPY cd server &&  --link . .
+
+# Copy application code
+COPY cd client &&  --link . .
+
 
 # Build application
-RUN npm run build
+RUN cd client && npm run build
 
 # Remove development dependencies
-RUN npm prune --omit=dev
+RUN cd server &&  npm prune --omit=dev
 
+# Remove development dependencies
+RUN cd client &&  npm prune --omit=dev
 
 # Final stage for app image
 FROM base
