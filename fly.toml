@@ -6,6 +6,23 @@
 app = 'jamaica-volunteer-platform'
 primary_region = 'mia'
 
+
+[deploy]
+  release_command = "npm run build"
+  strategy = "canary"
+
+
+[processes]
+  app = "node index.js"
+
+[env]
+PORT = "8080"
+
+[build]
+  [build.args]
+    NODE_VERSION = "20"
+
+
 [env]
   PORT = "8080"
 
