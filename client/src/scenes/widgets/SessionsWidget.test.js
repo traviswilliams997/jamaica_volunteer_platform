@@ -22,7 +22,7 @@ test('renders content', () => {
 
   expect(dateParagraph).toHaveTextContent('Thursday, Feb 29, 2024')
 
-  screen.debug()
+  //   screen.debug()
 
   expect(element).toBeDefined()
   expect(element2).toBeDefined()
