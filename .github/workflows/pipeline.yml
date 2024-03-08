@@ -24,7 +24,7 @@ jobs:
       - name: Install server dependencies
         run: cd  server &&  npm install
       - name: Check style
-        run: npm run eslint
+        run: cd client && npm run eslint
       - name: Check build
         run: cd client && npm run build
       - name: Check test
