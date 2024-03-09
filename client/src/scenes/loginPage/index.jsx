@@ -12,7 +12,7 @@ const LoginPage = () => {
         textAlign="center"
       >
         <Typography fontWeight="bold" fontSize="32px" color="primary">
-          Voluntaica
+          VolunteerJA
         </Typography>
       </Box>
       <Box
@@ -23,7 +23,7 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: '1.5rem' }}>
-          Welcome to Voluntaica, the go-to place to find volunteering agencies
+          Welcome to VolunteerJA, the go-to place to find volunteering agencies
           and events
         </Typography>
         <Form />
