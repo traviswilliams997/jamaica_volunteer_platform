@@ -27,7 +27,3 @@ jobs:
         run: cd client && npm run build
       - name: Check test
         run: cd client && npm run test
-      - name: Deploy app
-        run: fly deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
