@@ -12,7 +12,6 @@ import logoutRoutes from './routes/logout.js'
 import agencyRoutes from './routes/agencies.js'
 import eventRoutes from './routes/events.js'
 import testingRoutes from './routes/testing.js'
-import { corsOptions } from './config/corsOptions.js'
 import { errorHandler, unknownEndpoint } from './middleware/middleware.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -27,7 +26,7 @@ const app = express()
 app.use(morgan('common'))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '../client/dist')))
