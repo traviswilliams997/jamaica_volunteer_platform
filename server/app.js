@@ -35,13 +35,14 @@ let corsOptions = {
     'http://127.0.0.1:5173',
     'http://localhost:4173',
   ],
+  credentials: true,
 }
 
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
 // app.use(express.static(path.join(__dirname, '../client/dist')))
-app.use(express.static('dist'))
+// app.use(express.static('dist'))
 
 /* ROUTES */
 app.use('/api/auth', authRoutes)

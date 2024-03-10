@@ -1,5 +1,7 @@
 import axios from 'axios'
-const agenciesEndpoint = '/api/agencies'
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
+const agenciesEndpoint = `${BASE_URL}/api/agencies`
 
 const getAll = async () => {
   const response = await axios.get(agenciesEndpoint)

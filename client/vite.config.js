@@ -7,14 +7,14 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [react()],
-    server: {
-      proxy: {
-        '/api': {
-          target: process.env.VITE_BASE_URL,
-          changeOrigin: true,
-          secure: false,
-        },
-      },
-    },
+    // server: {
+    //   proxy: {
+    //     '/api': {
+    //       target: process.env.VITE_BASE_URL,
+    //       changeOrigin: true,
+    //       secure: false,
+    //     },
+    //   },
+    // },
   })
 }

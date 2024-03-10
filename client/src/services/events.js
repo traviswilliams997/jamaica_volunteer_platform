@@ -1,5 +1,7 @@
 import axios from 'axios'
-const eventsEndpoint = '/api/events'
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
+const eventsEndpoint = `${BASE_URL}/api/events`
 
 const getAll = async () => {
   const config = {

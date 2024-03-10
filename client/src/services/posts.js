@@ -1,5 +1,7 @@
 import axios from 'axios'
-const postsEndpoint = '/api/posts'
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
+const postsEndpoint = `${BASE_URL}/api/posts`
 
 const getAll = async () => {
   const config = {

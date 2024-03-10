@@ -1,5 +1,7 @@
 import axios from 'axios'
-const volunteersEndpoint = '/api/volunteers'
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
+const volunteersEndpoint = `${BASE_URL}/api/volunteers`
 
 const getAll = async () => {
   const config = {

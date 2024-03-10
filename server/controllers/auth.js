@@ -103,8 +103,6 @@ export const loginVolunteer = async (req, res) => {
   try {
     const { email, password } = req.body
 
-    console.log('LoginIn', req.body)
-
     const foundVolunteer = await Volunteer.findOne({
       where: {
         email: email,
@@ -170,8 +168,6 @@ export const loginVolunteer = async (req, res) => {
       accessToken,
       volunteer: volunteerWithoutPassword,
     }
-
-    console.log('LoginInRed', responseObj)
 
     res.status(200).json(responseObj)
   } catch (err) {
