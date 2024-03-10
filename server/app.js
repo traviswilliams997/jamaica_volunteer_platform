@@ -26,10 +26,21 @@ const app = express()
 app.use(morgan('common'))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(cors())
+
+let corsOptions = {
+  origin: [
+    'https://volunteer-platform-frontend.onrender.com/home',
+    'http://localhost:3003',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://localhost:4173',
+  ],
+}
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, '../client/dist')))
+// app.use(express.static(path.join(__dirname, '../client/dist')))
 // app.use(express.static('dist'))
 
 /* ROUTES */

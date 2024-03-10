@@ -1,5 +1,6 @@
 import axios from '../api/axios'
-const authEndpoint = '/api/auth'
+const BASE_URL = import.meta.env.VITE_BASE_URL
+const authEndpoint = `/api/auth`
 
 const logAgencyIn = async (credentials) => {
   const config = {
