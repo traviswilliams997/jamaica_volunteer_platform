@@ -18,15 +18,6 @@ export const getAgencies = async (req, res) => {
 
     const formattedAgencies = agencies.map((agency) => agency.dataValues)
 
-    res.header(
-      'Access-Control-Allow-Origin',
-      'https://volunteer-platform-frontend.onrender.com'
-    )
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    )
-
     return res.status(200).json(formattedAgencies)
   } catch (err) {
     console.log('getAgencies Error', err)

@@ -11,15 +11,6 @@ export const getVolunteers = async (req, res) => {
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     })
 
-    res.header(
-      'Access-Control-Allow-Origin',
-      'https://volunteer-platform-frontend.onrender.com'
-    )
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    )
-
     return res.status(200).json(volunteers)
   } catch (err) {
     console.log('getVolunteers Error', err)
