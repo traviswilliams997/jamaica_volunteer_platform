@@ -67,7 +67,7 @@ const AgencyListWidget = ({ volunteerId }) => {
             />
           ))
         ) : (
-          <Box>You are not a member of any agencyt</Box>
+          <Box>You are not a member of any agency</Box>
         )}
       </Box>
     </WidgetWrapper>

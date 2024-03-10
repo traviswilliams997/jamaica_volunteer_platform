@@ -28,7 +28,7 @@ export const createAgencyPost = async (req, res) => {
     const { agencyId, content, picturePath, posterPicturePath } = req.body
 
     const newPost = new Post({
-      createdAgencyId: agencyId,
+      createdByAgencyId: agencyId,
       content,
       type: 'Agency',
       posterPicturePath: posterPicturePath,
