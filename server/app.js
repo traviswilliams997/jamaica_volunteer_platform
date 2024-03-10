@@ -29,8 +29,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 
 let corsOptions = {
   origin: [
-    'https://volunteer-platform-frontend.onrender.com/home',
-    'http://localhost:3003',
+    'https://volunteer-platform-frontend.onrender.com',
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:4173',
