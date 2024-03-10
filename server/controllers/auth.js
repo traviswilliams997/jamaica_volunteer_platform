@@ -103,6 +103,8 @@ export const loginVolunteer = async (req, res) => {
   try {
     const { email, password } = req.body
 
+    console.log('LoginIn', req.body)
+
     const foundVolunteer = await Volunteer.findOne({
       where: {
         email: email,
@@ -169,7 +171,9 @@ export const loginVolunteer = async (req, res) => {
       volunteer: volunteerWithoutPassword,
     }
 
-    res.status(200).send(responseObj)
+    console.log('LoginInRed', responseObj)
+
+    res.status(200).json(responseObj)
   } catch (err) {
     console.log('loginVolunteer Error', err)
 
@@ -225,7 +229,7 @@ export const loginAgency = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     })
 
-    res.status(200).send({ accessToken, username: foundAgency.username })
+    res.status(200).json({ accessToken, username: foundAgency.username })
   } catch (err) {
     res.status(500).json({ error: err })
   }

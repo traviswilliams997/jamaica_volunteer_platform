@@ -4,7 +4,7 @@ const authEndpoint = `/api/auth`
 
 const logAgencyIn = async (credentials) => {
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     withCredentials: true,
   }
   const response = await axios.post(
@@ -17,7 +17,7 @@ const logAgencyIn = async (credentials) => {
 
 const logVolunteerIn = async (credentials) => {
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     withCredentials: true,
   }
   const response = await axios.post(
@@ -30,7 +30,7 @@ const logVolunteerIn = async (credentials) => {
 
 const registerAgency = async (agencyObject) => {
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     withCredentials: true,
   }
   const response = await axios.post(
@@ -43,7 +43,7 @@ const registerAgency = async (agencyObject) => {
 
 const registerVolunteer = async (volunteerObject) => {
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   }
   const response = await axios.post(
     `${authEndpoint}/register/volunteer`,

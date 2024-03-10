@@ -2,7 +2,11 @@ import axios from 'axios'
 const volunteersEndpoint = '/api/volunteers'
 
 const getAll = async () => {
-  const response = await axios.get(volunteersEndpoint)
+  const config = {
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+  }
+
+  const response = await axios.get(volunteersEndpoint, config)
   return response.data
 }
 

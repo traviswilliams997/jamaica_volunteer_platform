@@ -10,6 +10,9 @@ export const getVolunteers = async (req, res) => {
       },
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     })
+
+    console.log('VOlunteers', volunteers)
+
     return res.status(200).json(volunteers)
   } catch (err) {
     console.log('getVolunteers Error', err)
