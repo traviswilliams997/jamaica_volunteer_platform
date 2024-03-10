@@ -8,6 +8,16 @@ export const getEvents = async (req, res) => {
     })
 
     const formattedEvents = events.map((events) => events.dataValues)
+
+    res.header(
+      'Access-Control-Allow-Origin',
+      'https://volunteer-platform-frontend.onrender.com'
+    )
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    )
+
     return res.status(200).json(formattedEvents)
   } catch (err) {
     console.log('getEvents Error', err)

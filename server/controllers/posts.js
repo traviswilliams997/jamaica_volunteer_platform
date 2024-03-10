@@ -112,6 +112,14 @@ export const getFeedPosts = async (req, res) => {
         }
       })
     )
+    res.header(
+      'Access-Control-Allow-Origin',
+      'https://volunteer-platform-frontend.onrender.com'
+    )
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    )
 
     res.status(200).json(formattedPosts)
   } catch (err) {

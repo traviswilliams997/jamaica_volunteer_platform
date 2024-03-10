@@ -169,6 +169,15 @@ export const loginVolunteer = async (req, res) => {
       volunteer: volunteerWithoutPassword,
     }
 
+    res.header(
+      'Access-Control-Allow-Origin',
+      'https://volunteer-platform-frontend.onrender.com'
+    ) // update to match the domain you will make the request from
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    )
+
     res.status(200).json(responseObj)
   } catch (err) {
     console.log('loginVolunteer Error', err)
