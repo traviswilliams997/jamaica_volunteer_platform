@@ -6,11 +6,6 @@ import CarouselItem from './CarouselItem'
 const CarouselWidget = ({ setCarouselText }) => {
   let items = [
     {
-      title: 'Share Your Day',
-      imgUrl:
-        'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1710136227/pvoywmwzzkbtv68txf4e.png',
-    },
-    {
       title: 'Find Agencies',
       imgUrl:
         'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1710135386/fn4txelztzkgtpbf1990.png',
@@ -21,14 +16,20 @@ const CarouselWidget = ({ setCarouselText }) => {
         'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1710135918/pcj0bjwppmgsciu8u4xd.png',
     },
     {
-      title: 'Make Connections',
-      imgUrl:
-        'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1710136103/ryrrcdorzzs6o9fc64as.png',
-    },
-    {
       title: 'Find Events',
       imgUrl:
         'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1710135697/mj36vlxocfhz7ycakbbx.png',
+    },
+    {
+      title: 'Share With Others',
+      imgUrl:
+        'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1710136227/pvoywmwzzkbtv68txf4e.png',
+    },
+
+    {
+      title: 'Make Connections',
+      imgUrl:
+        'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1710136103/ryrrcdorzzs6o9fc64as.png',
     },
   ]
 

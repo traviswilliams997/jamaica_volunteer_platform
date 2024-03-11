@@ -20,7 +20,7 @@ const LandingPage = () => {
   const isDesktop = useMediaQuery('(min-width:1600px)')
   const isMobile = useMediaQuery('(min-width:700px)')
 
-  const [carouselText, setCarouselText] = useState('')
+  const [carouselText, setCarouselText] = useState('Find Agencies')
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
