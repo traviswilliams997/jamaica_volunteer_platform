@@ -62,7 +62,7 @@ const LandingPage = () => {
         flexDirection={isDesktop ? 'column' : 'row'}
         alignItems={isDesktop ? 'center' : 'space-between'}
         justifyContent={isDesktop ? 'center' : 'space-between'}
-        height={isDesktop ? '100vh' : '10vh'}
+        height={isDesktop ? '100vh' : '15vh'}
         width={isDesktop ? '50vw' : '100vw'}
         bgcolor={'#77A6F7'}
       >
