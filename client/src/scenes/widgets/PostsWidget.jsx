@@ -45,7 +45,7 @@ const PostsWidget = ({
     getPosts()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (posts.length < 1) return
+  if (posts.length < 1 || posts[0] === undefined) return
 
   return (
     <>
