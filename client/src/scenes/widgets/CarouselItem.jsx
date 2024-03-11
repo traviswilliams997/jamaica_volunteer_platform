@@ -1,9 +1,12 @@
-import { Paper, Button, Box, Typography } from '@mui/material'
+import { Box, Typography, useMediaQuery } from '@mui/material'
 import './widgets.css'
 import { useEffect } from 'react'
+
 const CarouselItem = ({ title, imgUrl }) => {
+  const isDesktop = useMediaQuery('(min-width:1600px)')
+
   return (
-    <Box height={'100vh'} position={'relative'}>
+    <Box height={isDesktop ? '100vh' : '85vh'} position={'relative'}>
       <img
         className="carouselImg"
         src={imgUrl}
