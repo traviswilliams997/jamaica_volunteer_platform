@@ -1,5 +1,5 @@
 # jamaica_volunteer_platform
-# Project info
+# Project Info
 A platform to find volunteering agencies and events near you, post about your good deeds and make lasting connections. This project was inspired by my, and other students, difficulties in finding a place to volunteer for UTechs community service module.
 # Live Demo
 Available at https://volunteer-platform-frontend.onrender.com/
@@ -28,7 +28,7 @@ Available at https://volunteer-platform-frontend.onrender.com/
 
 # Behind the scenes
 
-**Front End**
+**Frontend**
 * Vite
 * Material UI components are used for styling
 * Redux and Redux persist for state management
@@ -40,7 +40,7 @@ Available at https://volunteer-platform-frontend.onrender.com/
 * Testing is done with jest, react testing library, redux mock store and  cyrpress
 * Linting is done with eslint
 
-**Backend End**
+**Backend**
 * Express and Node
 * Bcrypt is used to hash passwords before storage.
 * JsonWebTokens are used to authenticate users. The tokens are set to expire after ten minutes 
@@ -57,7 +57,7 @@ However an axios inteceptor with fetch a new access token using the users refres
 
 **Deployment**
 * Github actions CI/CD for automated testing before merge
-* Both front and backend are deployed on Render.com and auto redeploy after commit to main branch
+* Both frontend and backend are deployed on Render.com and auto redeploy after commit to main branch
 
 
 
