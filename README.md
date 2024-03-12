@@ -36,6 +36,7 @@ Available at https://volunteer-platform-frontend.onrender.com/
 * Yup is used to validate user input and warn them if their input is not valid
 * Cloudinary's upload widget is used to upload images
 * Mapbox is used for agency and event maps
+* Axios is used for requests
 * Testing is done with jest, react testing library, redux mock store and  cyrpress
 * Linting is done with eslint
 
@@ -50,7 +51,7 @@ However an axios inteceptor with fetch a new access token using the users refres
 * Sequelize is used as the Postgres ORM
 * Testing is done with node:test
 * Linting is done with eslint
-* Cross Site Origin attacks are handles with express cors
+* Cross Origin Resource vulnurabilty is handled with express cors
 * Logging is done with morgan
 
 
