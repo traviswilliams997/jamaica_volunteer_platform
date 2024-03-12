@@ -1,4 +1,4 @@
-# jamaica_volunteer_platform
+# Jamaica Volunteering Platform
 # Project Info
 A platform to find volunteering agencies and events near you, post about your good deeds and make lasting connections. This project was inspired by my, and other students, difficulties in finding a place to volunteer for UTechs community service module.
 # Live Demo
