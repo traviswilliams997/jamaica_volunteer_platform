@@ -14,10 +14,10 @@ const router = express.Router()
 /* READ */
 router.get('/', getVolunteers)
 
-router.get('/:id', verifyToken, getVolunteer)
-router.get('/:id/following', verifyToken, getVolunteerFollowing)
-router.get('/:id/followers', verifyToken, getVolunteerFollowers)
-router.get('/:id/:followedId', verifyToken, checkIsFollowing)
+router.get('/:id', getVolunteer)
+router.get('/:id/following', getVolunteerFollowing)
+router.get('/:id/followers', getVolunteerFollowers)
+router.get('/:id/:followedId', checkIsFollowing)
 
 /* UPDATE */
 router.patch('/:id/:followedId', verifyToken, followUnfollow)
