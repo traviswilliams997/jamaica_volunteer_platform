@@ -18,12 +18,7 @@ const postSlice = createSlice({
   },
 })
 
-export const {
-  appendPost,
-  setPosts,
-  appendCurrentVolunteersPost,
-  setCurrentVolunteersPosts,
-} = postSlice.actions
+export const { appendPost, setPosts } = postSlice.actions
 
 export const initializePosts = () => {
   return async (dispatch) => {
