@@ -43,10 +43,9 @@ const addComment = async (id, newObject, customAxios) => {
 }
 
 const likePost = async (postId, volunteerId, customAxios) => {
-  const response = await customAxios.patch(
-    `${postsEndpoint}/${postId}/like`,
-    volunteerId
-  )
+  const response = await customAxios.patch(`${postsEndpoint}/${postId}/like`, {
+    volunteerId,
+  })
   return response.data
 }
 

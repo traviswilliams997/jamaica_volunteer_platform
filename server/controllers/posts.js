@@ -222,7 +222,7 @@ export const likePost = async (req, res) => {
 
     const likes = await Reaction.findAll({
       where: {
-        createdByVolunteerId: volunteerId,
+        createdByVolunteerId: Number(volunteerId),
         postId: Number(id),
       },
     })
