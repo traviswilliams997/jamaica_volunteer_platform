@@ -1,6 +1,6 @@
 import axios from 'axios'
-// const BASE_URL = import.meta.env.VITE_BASE_URL
-const BASE_URL = process.env.VITE_BASE_URL
+const BASE_URL = import.meta.env.VITE_BASE_URL
+// const BASE_URL = process.env.VITE_BASE_URL
 const postsEndpoint = `${BASE_URL}/api/posts`
 
 const getAll = async () => {
