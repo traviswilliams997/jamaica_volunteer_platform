@@ -6,6 +6,6 @@ export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
   return defineConfig({
-    plugins: [react(), 'babel-plugin-transform-vite-meta-env'],
+    plugins: [react()],
   })
 }
