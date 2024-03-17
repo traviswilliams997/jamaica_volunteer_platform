@@ -5,6 +5,7 @@ import ProfilePage from './scenes/profilePage'
 import AgenciesPage from './scenes/agenciesPage'
 import AgencyPage from './scenes/agencyPage'
 import EventsPage from './scenes/eventsPage'
+import LandingPage from './scenes/landingPage'
 
 import { useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -46,7 +47,9 @@ function App() {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Routes>
-              <Route path="/" element={<LoginPage />} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+
               <Route
                 path="/home"
                 element={isAuth ? <HomePage /> : <Navigate to="/" />}
