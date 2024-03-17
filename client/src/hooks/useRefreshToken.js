@@ -1,13 +1,14 @@
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setAccessToken } from '../reducers/globalReducer'
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 const useRefreshToken = () => {
   const dispatch = useDispatch()
 
   const refresh = async () => {
     try {
-      const response = await axios.get('/api/refresh/volunteer', {
+      const response = await axios.get(`${BASE_URL}/api/refresh/volunteer`, {
         withCredentials: true,
       })
 

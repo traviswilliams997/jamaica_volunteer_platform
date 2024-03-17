@@ -54,7 +54,7 @@ export const getVolunteerFollowing = async (req, res) => {
         id: following.id,
         username: following.username,
         firstName: following.firstName,
-        lastName: following.lastNsme,
+        lastName: following.lastName,
         email: following.email,
         picturePath: following.picturePath,
         dateOfBirth: following.dateOfBirth,

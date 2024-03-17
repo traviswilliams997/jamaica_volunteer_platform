@@ -7,7 +7,7 @@ import UserImage from './UserImage'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import volunteerService from '../services/volunteers'
 import { useState, useEffect } from 'react'
-import { setVolunteersYouFollow } from '../reducers/volunteerReducer'
+// import { setVolunteersYouFollow } from '../reducers/volunteerReducer'
 
 const FollowedByYou = ({
   followedId,
@@ -52,9 +52,10 @@ const FollowedByYou = ({
       followedId,
       axiosPrivate
     )
-    const data = await response.json()
 
-    dispatch(setVolunteersYouFollow({ followedByYou: data }))
+    setIsfollowedByYou(!isfollowedByYou)
+
+    navigate(0)
   }
 
   return (
@@ -89,9 +90,9 @@ const FollowedByYou = ({
         sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
       >
         {isfollowedByYou ? (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        ) : (
           <PersonRemoveOutlined sx={{ color: primaryDark }} />
+        ) : (
+          <PersonAddOutlined sx={{ color: primaryDark }} />
         )}
       </IconButton>
     </FlexBetween>

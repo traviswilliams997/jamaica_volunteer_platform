@@ -6,6 +6,7 @@ import MyPostWidget from '../widgets/MyPostWidget'
 import PostsWidget from '../widgets/PostsWidget'
 import AgencyListWidget from '../widgets/AgencyListWidget'
 import SessionsWidget from '../widgets/SessionsWidget'
+import FollowingListWidget from '../widgets/FollowingListWiget'
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
   const volunteer = useSelector((state) => state.volunteer.currentVolunteer)
@@ -26,6 +27,8 @@ const HomePage = () => {
             volunteerId={volunteer.id}
             picturePath={volunteer.picturePath}
           />
+          <Box m="2rem 0" />
+          <FollowingListWidget volunteerId={volunteer.id} />
         </Box>
 
         <Box
@@ -38,7 +41,6 @@ const HomePage = () => {
         {isNonMobileScreens && (
           <Box flexBasis="26%">
             <SessionsWidget />
-
             <Box m="2rem 0" />
             <AgencyListWidget volunteerId={volunteer.id} />
           </Box>
