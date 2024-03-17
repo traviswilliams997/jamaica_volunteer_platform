@@ -48,18 +48,8 @@ export const removePost = (id) => {
 
 export const likeUnlikePost = (postId, volunteerId, customAxios) => {
   return async (dispatch) => {
-    const posts = await postService.getAll(customAxios)
-
     try {
       await postService.likePost(postId, volunteerId, customAxios)
-
-      const updatedPost = await postService.getPost(postId, customAxios)
-
-      const newPosts = posts.map((post) =>
-        post.id !== postId ? post : updatedPost
-      )
-
-      dispatch(setPosts(newPosts))
     } catch (error) {
       console.log('error', error)
     }
