@@ -1,0 +1,8 @@
+.carouselText {
+  opacity: 1;
+  z-index: 1;
+}
+
+img.carouselImg {
+  opacity: 0.8;
+}
