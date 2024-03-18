@@ -6,6 +6,7 @@ import {
   getVolunteerFollowers,
   checkIsFollowing,
   followUnfollow,
+  getVolunteerSessions,
 } from '../controllers/volunteers.js'
 import { verifyToken } from '../middleware/auth.js'
 
@@ -15,6 +16,8 @@ const router = express.Router()
 router.get('/', getVolunteers)
 
 router.get('/:id', getVolunteer)
+router.get('/:id/sessions', getVolunteerSessions)
+
 router.get('/:id/following', getVolunteerFollowing)
 router.get('/:id/followers', getVolunteerFollowers)
 router.get('/:id/:followedId', checkIsFollowing)

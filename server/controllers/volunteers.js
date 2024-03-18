@@ -1,4 +1,4 @@
-import { Volunteer, Follower, Membership } from '../models/index.js'
+import { Volunteer, Follower, Membership, Session } from '../models/index.js'
 
 /*READ */
 
@@ -167,6 +167,21 @@ export const followUnfollow = async (req, res) => {
     }
   } catch (err) {
     console.log('followUnfollow ERROR', err)
+    res.status(400).json({ message: err })
+  }
+}
+
+export const getVolunteerSessions = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const sessions = await Session.findAll({
+      where: { volunteerId: id },
+    })
+
+    return res.status(200).json(sessions)
+  } catch (err) {
+    console.log('getSessions Error', err)
     res.status(400).json({ message: err })
   }
 }
