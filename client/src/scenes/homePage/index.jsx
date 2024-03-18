@@ -43,7 +43,7 @@ const HomePage = () => {
                 <Box m="2rem 0" />
               </Box>
             ) : null}
-            <AgencyListWidget volunteerId={volunteer.id} />
+            <AgencyListWidget volunteer={volunteer} />
           </Box>
         )}
       </Box>

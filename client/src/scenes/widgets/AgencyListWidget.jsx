@@ -5,31 +5,13 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import volunteers from '../../services/volunteers'
 // eslint-disable-next-line react/prop-types
-const AgencyListWidget = ({ volunteerId }) => {
+const AgencyListWidget = ({ volunteer }) => {
   const allAgencies = useSelector((state) => state.agency.agencies)
-  const allVolunteers = useSelector((state) => state.volunteer.volunteers)
-  const [thisPageVolunteer, setThisPageVolunteer] = useState()
   const [yourAgencies, setYourAgencies] = useState([])
   const { palette } = useTheme()
 
-  const findMemberships = (volunteerId) => {
-    const volunteer = allVolunteers.find((volunteer) => {
-      return Number(volunteer.id) === Number(volunteerId)
-    })
-
-    setThisPageVolunteer(volunteer)
-    if (typeof volunteer === 'undefined') return []
-
-    if (!Object.prototype.hasOwnProperty.call(volunteer, 'memberships')) {
-      return []
-    }
-    return volunteer.memberships
-  }
-
   const getYourAgencies = () => {
-    const memberships = findMemberships(volunteerId)
-
-    const agencies = memberships.map((membership) => {
+    const agencies = volunteer.memberships.map((membership) => {
       const agency = allAgencies.find((agency) => {
         return Number(agency.id) === Number(membership.agencyId)
       })
@@ -54,7 +36,7 @@ const AgencyListWidget = ({ volunteerId }) => {
         fontWeight="500"
         sx={{ mb: '1.5rem' }}
       >
-        {`${thisPageVolunteer.firstName}'s Agencies`}
+        {`${volunteer.firstName}'s Agencies`}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
         {yourAgencies.length !== 0 ? (

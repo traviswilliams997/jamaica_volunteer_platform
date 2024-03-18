@@ -42,7 +42,7 @@ const ProfilePage = () => {
         <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
           <UserWidget volunteer={volunteer} />
           <Box m="2rem 0" />
-          <AgencyListWidget volunteerId={volunteerId} />
+          <AgencyListWidget volunteer={volunteer} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? '42%' : undefined}
