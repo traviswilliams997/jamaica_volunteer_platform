@@ -40,7 +40,7 @@ const HomePage = () => {
         </Box>
         {isNonMobileScreens && (
           <Box flexBasis="26%">
-            <SessionsWidget />
+            <SessionsWidget volunteerId={volunteer.id} />
             <Box m="2rem 0" />
             <AgencyListWidget volunteerId={volunteer.id} />
           </Box>
