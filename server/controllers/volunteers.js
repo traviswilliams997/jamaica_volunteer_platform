@@ -5,9 +5,7 @@ import { Volunteer, Follower, Membership, Session } from '../models/index.js'
 export const getVolunteers = async (req, res) => {
   try {
     const volunteers = await Volunteer.findAll({
-      include: {
-        model: Membership,
-      },
+      include: [{ model: Membership }, { model: Session }],
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     })
 
