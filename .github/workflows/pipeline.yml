@@ -11,7 +11,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  simple_deployment_pipeline:
+  build_and__test:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
