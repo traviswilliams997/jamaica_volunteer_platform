@@ -160,6 +160,16 @@ const emptyDbTables = async (models) => {
       where: {},
     })
   }
+  if (models.includes('Position')) {
+    await Position.destroy({
+      where: {},
+    })
+  }
+  if (models.includes('Event')) {
+    await Event.destroy({
+      where: {},
+    })
+  }
 
   if (models.includes('Post')) {
     await Post.destroy({
