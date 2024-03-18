@@ -112,6 +112,12 @@ const LandingPage = () => {
                 variant={isDesktop ? 'h4' : 'h7'}
                 color={'#77A6F7'}
                 fontWeight={700}
+                sx={{
+                  '&:hover': {
+                    color: '#FFFFFF',
+                    fontWeight: '500',
+                  },
+                }}
               >
                 {' '}
                 Login/Register
@@ -130,6 +136,12 @@ const LandingPage = () => {
                 variant={isDesktop ? 'h4' : 'h7'}
                 color={'#77A6F7'}
                 fontWeight={700}
+                sx={{
+                  '&:hover': {
+                    color: '#FFFFFF',
+                    fontWeight: '900',
+                  },
+                }}
               >
                 {' '}
                 Login As Guest
@@ -164,7 +176,15 @@ const LandingPage = () => {
                   Login/Register
                 </Link>{' '}
               </MenuItem>
-              <MenuItem onClick={handleLoginGuest}>
+              <MenuItem
+                onClick={handleLoginGuest}
+                sx={{
+                  '&:hover': {
+                    color: '#FFFFFF',
+                    fontWeight: '500',
+                  },
+                }}
+              >
                 <Link variant="h5" color={'#77A6F7'} href="# ">
                   LoginAsGuest
                 </Link>
