@@ -7,6 +7,32 @@ import MockTheme from '../../MockTheme'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 
+const volunteer = {
+  id: 1,
+  username: 'andrew947',
+  firstName: 'Andrew',
+  lastName: 'Holness',
+  email: 'andrew847@gmail.com',
+  phoneNumber: '(876)927-9941',
+  picturePath:
+    'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1709541484/sch3ki3rhhguv339i6my.jpg',
+  dateOfBirth: '1972-07-22T00:00:00.000Z',
+  about:
+    'Andrew Michael Holness, is the prime minister of Jamaica.He is leader of the Jamaica Labour Party (JLP). In March 2016, aged 43, he became the youngest to ever be elected prime minister',
+  skills:
+    'Being a father and a husband. Leading my country upwards and onwards',
+  sessions: [
+    {
+      id: 1,
+      volunteerId: 1,
+      createdByAgencyId: 1,
+      sessionStart: '2024-03-17',
+      sessionEnd: '2024-03-18',
+      workDone: 'Refactor Ui',
+    },
+  ],
+}
+
 const intialState = {
   posts: [],
   events: {
@@ -32,33 +58,7 @@ const intialState = {
     ],
   },
   volunteer: {
-    volunteers: [
-      {
-        id: 1,
-        username: 'andrew947',
-        firstName: 'Andrew',
-        lastName: 'Holness',
-        email: 'andrew847@gmail.com',
-        phoneNumber: '(876)927-9941',
-        picturePath:
-          'https://res.cloudinary.com/ddrcxv4fg/image/upload/v1709541484/sch3ki3rhhguv339i6my.jpg',
-        dateOfBirth: '1972-07-22T00:00:00.000Z',
-        about:
-          'Andrew Michael Holness, is the prime minister of Jamaica.He is leader of the Jamaica Labour Party (JLP). In March 2016, aged 43, he became the youngest to ever be elected prime minister',
-        skills:
-          'Being a father and a husband. Leading my country upwards and onwards',
-        sessions: [
-          {
-            id: 1,
-            volunteerId: 1,
-            createdByAgencyId: 1,
-            sessionStart: '2024-03-17',
-            sessionEnd: '2024-03-18',
-            workDone: 'Refactor Ui',
-          },
-        ],
-      },
-    ],
+    volunteers: [volunteer],
   },
 }
 
@@ -76,9 +76,10 @@ const render = (component) =>
   )
 
 test('renders content', () => {
-  const { container } = render(<SessionsWidget volunteerId={1} />)
+  const { container } = render(<SessionsWidget volunteer={volunteer} />)
 
   // screen.debug()
+  ////
 
   const element = screen.getByText('Last Session')
   const element2 = screen.getByText('Refactor Ui')

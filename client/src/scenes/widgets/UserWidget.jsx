@@ -17,8 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { setVolunteersYouFollow } from '../../reducers/volunteerReducer'
 import volunteerService from '../../services/volunteers'
-const UserWidget = ({ volunteerId, picturePath }) => {
-  const [volunteer, setVolunteer] = useState(null)
+const UserWidget = ({ volunteer }) => {
   const [followers, setFollowers] = useState([])
   const [followings, setFollowings] = useState([])
   const dispatch = useDispatch()
@@ -26,18 +25,9 @@ const UserWidget = ({ volunteerId, picturePath }) => {
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
 
-  const volunteers = useSelector((state) => state.volunteer.volunteers)
-
   const dark = palette.neutral.dark
   const medium = palette.neutral.medium
   const main = palette.neutral.main
-
-  const getVolunteer = () => {
-    const volunteer = volunteers.find((volunteer) => {
-      return Number(volunteer.id) === Number(volunteerId)
-    })
-    setVolunteer(volunteer)
-  }
 
   const getVolunteersYouFollow = async () => {
     const response = await volunteerService.getFollowing(
@@ -60,15 +50,6 @@ const UserWidget = ({ volunteerId, picturePath }) => {
     dispatch(setVolunteersYouFollow(volunteerId, axiosPrivate))
   }
 
-  useEffect(() => {
-    getVolunteer()
-    getVolunteersYouFollow()
-    getFollowers()
-    getFollowedByVolunteer
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   if (!volunteer) {
     return null
   }
@@ -82,10 +63,10 @@ const UserWidget = ({ volunteerId, picturePath }) => {
       <FlexBetween
         gap="0.5rem"
         pb="1.1rem"
-        onClick={() => navigate(`/profile/${volunteerId}`)}
+        onClick={() => navigate(`/profile/${volunteer.id}`)}
       >
         <FlexBetween gap="1rem">
-          <UserImage image={picturePath} />
+          <UserImage image={volunteer.picturePath} />
 
           <Box>
             <Typography
