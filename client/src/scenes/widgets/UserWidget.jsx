@@ -50,8 +50,6 @@ const UserWidget = ({ volunteer }) => {
     dispatch(setVolunteersYouFollow(volunteerId, axiosPrivate))
   }
 
-  console.log('User widget', volunteer)
-
   if (!volunteer) {
     return null
   }

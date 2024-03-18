@@ -4,8 +4,7 @@ import WidgetWrapper from '../../components/WidgetWrapper'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 
-const SessionsWidget = ({ volunteerId }) => {
-  const volunteers = useSelector((state) => state.volunteer.volunteers)
+const SessionsWidget = ({ volunteer }) => {
   const agencies = useSelector((state) => state.agency.agencies)
   const [sessions, setSessions] = useState([])
   const [sessionStart, setSessionStart] = useState(new Date())
@@ -19,10 +18,6 @@ const SessionsWidget = ({ volunteerId }) => {
   const medium = palette.neutral.medium
 
   useEffect(() => {
-    const volunteer = volunteers.find((volunteer) => {
-      return Number(volunteer.id) === Number(volunteerId)
-    })
-
     if (typeof volunteer !== 'undefined') {
       setSessions(volunteer.sessions)
 

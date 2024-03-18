@@ -39,7 +39,7 @@ const HomePage = () => {
           <Box flexBasis="26%">
             {volunteer.sessions.length !== 0 ? (
               <Box>
-                <SessionsWidget volunteerId={volunteer.id} />
+                <SessionsWidget volunteer={volunteer} />
                 <Box m="2rem 0" />
               </Box>
             ) : null}
