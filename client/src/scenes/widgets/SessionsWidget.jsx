@@ -2,33 +2,53 @@ import { Typography, useTheme } from '@mui/material'
 import FlexBetween from '../../components/FlexBetween'
 import WidgetWrapper from '../../components/WidgetWrapper'
 import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 
 const SessionsWidget = ({ volunteerId }) => {
   const volunteers = useSelector((state) => state.volunteer.volunteers)
   const agencies = useSelector((state) => state.agency.agencies)
-
-  const volunteer = volunteers.find((volunteer) => {
-    return Number(volunteer.id) === Number(volunteerId)
-  })
-  const sessions = volunteer.sessions
-  const sessionStart = new Date(sessions[sessions.length - 1].sessionStart)
-  const sessionEnd = new Date(sessions[sessions.length - 1].sessionEnd)
-  const msHour = 60 * 60 * 1000
-  const msDay = 60 * 60 * 24 * 1000
-  const hours = Math.floor(((sessionEnd - sessionStart) % msDay) / msHour)
-
-  const sessionAgency = agencies.find((agency) => {
-    return (
-      Number(agency.id) ===
-      Number(sessions[sessions.length - 1].createdByAgencyId)
-    )
-  })
+  const [sessions, setSessions] = useState([])
+  const [sessionStart, setSessionStart] = useState(new Date())
+  const [sessionEnd, setSessionEnd] = useState(new Date())
+  const [sessionAgency, setSessionAgency] = useState('')
+  const [hours, setHours] = useState('0')
 
   const { palette } = useTheme()
   const dark = palette.neutral.dark
   const main = palette.neutral.main
   const medium = palette.neutral.medium
 
+  useEffect(() => {
+    const volunteer = volunteers.find((volunteer) => {
+      return Number(volunteer.id) === Number(volunteerId)
+    })
+
+    if (typeof volunteer !== 'undefined') {
+      setSessions(volunteer.sessions)
+
+      const sessAgency = agencies.find((agency) => {
+        return (
+          Number(agency.id) ===
+          Number(
+            volunteer.sessions[volunteer.sessions.length - 1].createdByAgencyId
+          )
+        )
+      })
+      setSessionAgency(sessAgency)
+
+      setSessionStart(
+        new Date(volunteer.sessions[volunteer.sessions.length - 1].sessionStart)
+      )
+      setSessionEnd(
+        new Date(volunteer.sessions[volunteer.sessions.length - 1].sessionEnd)
+      )
+      const msHour = 60 * 60 * 1000
+      const msDay = 60 * 60 * 24 * 1000
+      setHours(Math.floor(((sessionEnd - sessionStart) % msDay) / msHour))
+    }
+  }, [])
+
+  if (sessions.length === 0) return null
   return (
     <WidgetWrapper>
       <FlexBetween>
