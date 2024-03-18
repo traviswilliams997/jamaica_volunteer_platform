@@ -18,7 +18,10 @@ const SessionsWidget = ({ volunteerId }) => {
   const hours = Math.floor(((sessionEnd - sessionStart) % msDay) / msHour)
 
   const sessionAgency = agencies.find((agency) => {
-    return Number(agency.id) === Number(sessions[1].createdByAgencyId)
+    return (
+      Number(agency.id) ===
+      Number(sessions[sessions.length - 1].createdByAgencyId)
+    )
   })
 
   const { palette } = useTheme()
