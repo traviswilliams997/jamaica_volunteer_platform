@@ -41,9 +41,11 @@ const HomePage = () => {
         {isNonMobileScreens && (
           <Box flexBasis="26%">
             {volunteer.sessions.length !== 0 ? (
-              <SessionsWidget volunteerId={volunteer.id} />
+              <Box>
+                <SessionsWidget volunteerId={volunteer.id} />
+                <Box m="2rem 0" />
+              </Box>
             ) : null}
-            <Box m="2rem 0" />
             <AgencyListWidget volunteerId={volunteer.id} />
           </Box>
         )}
