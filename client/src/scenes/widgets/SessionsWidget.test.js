@@ -79,6 +79,7 @@ test('renders content', () => {
   const { container } = render(<SessionsWidget volunteerId={1} />)
 
   // screen.debug()
+  //
 
   const element = screen.getByText('Last Session')
   const element2 = screen.getByText('Refactor Ui')
