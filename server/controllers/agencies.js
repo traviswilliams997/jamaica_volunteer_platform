@@ -1,4 +1,4 @@
-import { Agency, Position, Membership } from '../models/index.js'
+import { Agency, Position, Membership, Session } from '../models/index.js'
 
 /*READ */
 export const getAgencies = async (req, res) => {
@@ -80,7 +80,29 @@ export const addMember = async (req, res) => {
 
     return res.status(200).json(savedMembership)
   } catch (err) {
-    console.log('createEvent Error', err)
+    console.log('addMember Error', err)
+    res.status(400).json({ message: err })
+  }
+}
+
+export const createSession = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { volunteerId, sessionStart, sessionEnd, workDone } = req.body
+
+    const session = {
+      createdByAgencyId: Number(id),
+      volunteerId: Number(volunteerId),
+      sessionStart,
+      sessionEnd,
+      workDone,
+    }
+    const newSession = new Session(session)
+    const savedSession = await newSession.save()
+
+    return res.status(200).json(savedSession)
+  } catch (err) {
+    console.log('createSession Error', err)
     res.status(400).json({ message: err })
   }
 }

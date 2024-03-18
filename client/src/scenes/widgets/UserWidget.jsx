@@ -128,24 +128,6 @@ const UserWidget = ({ volunteerId, picturePath }) => {
 
       {/* THIRD ROW*/}
       <Box p="1rem 0">
-        <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Hours Volunteered</Typography>
-          <Typography color={medium} fontWeight="500">
-            2183
-          </Typography>
-        </FlexBetween>
-        <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Rank</Typography>
-          <Typography color={medium} fontWeight="500">
-            #2980 By Hours Volunteered
-          </Typography>
-        </FlexBetween>
-        <FlexBetween>
-          <Typography color={medium}>Karma</Typography>
-          <Typography color={medium} fontWeight="500">
-            217985
-          </Typography>
-        </FlexBetween>
         <FlexBetween>
           <Box display="flex">
             <Typography color={medium}>Current streak</Typography>
@@ -153,6 +135,25 @@ const UserWidget = ({ volunteerId, picturePath }) => {
           </Box>
           <Typography color={medium} fontWeight="500">
             10 Weeks
+          </Typography>
+        </FlexBetween>
+        <FlexBetween mb="0.5rem">
+          <Typography color={medium}>Hours Volunteered</Typography>
+          <Typography color={medium} fontWeight="500">
+            2100
+          </Typography>
+        </FlexBetween>
+
+        <FlexBetween mb="0.5rem">
+          <Typography color={medium}>Rank</Typography>
+          <Typography color={medium} fontWeight="500">
+            #2 By Hours Volunteered
+          </Typography>
+        </FlexBetween>
+        <FlexBetween>
+          <Typography color={medium}>Likes</Typography>
+          <Typography color={medium} fontWeight="500">
+            5000
           </Typography>
         </FlexBetween>
       </Box>

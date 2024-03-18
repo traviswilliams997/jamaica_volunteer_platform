@@ -84,9 +84,10 @@ Agency.hasMany(Position, {
 })
 Position.belongsTo(Agency, { as: 'createdByAgency', foreignKey: 'agency_id' })
 
-Agency.hasMany(Session)
+Agency.hasMany(Session, { foreignKey: 'created_by_agency_id' })
 Session.belongsTo(Agency, { foreignKey: 'created_by_agency_id' })
 Session.belongsTo(Volunteer)
+Volunteer.hasMany(Session)
 
 Agency.hasOne(AgencyAddress, { onDelete: 'CASCADE' })
 AgencyAddress.belongsTo(Agency)

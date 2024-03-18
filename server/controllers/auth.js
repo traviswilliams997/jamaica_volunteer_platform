@@ -7,6 +7,7 @@ import {
   VolunteerToken,
   AgencyToken,
   Membership,
+  Session,
 } from '../models/index.js'
 
 /* REGISTER */
@@ -107,9 +108,14 @@ export const loginVolunteer = async (req, res) => {
       where: {
         email: email,
       },
-      include: {
-        model: Membership,
-      },
+      include: [
+        {
+          model: Membership,
+        },
+        {
+          model: Session,
+        },
+      ],
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     })
     const passwordCorrect =
@@ -162,6 +168,7 @@ export const loginVolunteer = async (req, res) => {
       longitude: foundVolunteer.longitude,
       createdAt: foundVolunteer.createdAt,
       memberships: foundVolunteer.memberships,
+      sessions: foundVolunteer.sessions,
     }
 
     const responseObj = {
