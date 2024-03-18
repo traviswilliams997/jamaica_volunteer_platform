@@ -160,6 +160,7 @@ export const loginVolunteer = async (req, res) => {
       firstName: foundVolunteer.firstName,
       lastName: foundVolunteer.lastName,
       email: foundVolunteer.email,
+      phoneNumber: foundVolunteer.phoneNumber,
       picturePath: foundVolunteer.picturePath,
       dateOfBirth: foundVolunteer.dateOfBirth,
       about: foundVolunteer.about,
