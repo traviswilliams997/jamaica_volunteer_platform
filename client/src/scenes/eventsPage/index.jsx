@@ -20,10 +20,7 @@ const EventsPage = () => {
         justifyContent="space-between"
       >
         <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
-          <UserWidget
-            volunteerId={volunteer.id}
-            picturePath={volunteer.picturePath}
-          />
+          <UserWidget volunteer={volunteer} />
         </Box>
 
         <Box
