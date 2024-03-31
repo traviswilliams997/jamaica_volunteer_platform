@@ -26,7 +26,6 @@ const LandingPage = () => {
   const dispatch = useDispatch()
 
   const handleLoginGuest = async () => {
-    console.log('clicked')
     try {
       const loginCredentials = {
         email: 'guest@gmail.com',

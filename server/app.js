@@ -13,15 +13,11 @@ import agencyRoutes from './routes/agencies.js'
 import eventRoutes from './routes/events.js'
 import testingRoutes from './routes/testing.js'
 import { errorHandler, unknownEndpoint } from './middleware/middleware.js'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 /* CONFIGURATIONS */
 const app = express()
-// app.use(helmet())
+app.use(helmet())
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 
 app.use(morgan('common'))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
@@ -40,8 +36,6 @@ let corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
-// app.use(express.static(path.join(__dirname, '../client/dist')))
-// app.use(express.static('dist'))
 
 /* ROUTES */
 app.use('/api/auth', authRoutes)
