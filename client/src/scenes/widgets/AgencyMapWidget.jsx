@@ -1,4 +1,4 @@
-import { Box, useTheme, Typography } from '@mui/material'
+import { Box, useTheme, Typography, useMediaQuery } from '@mui/material'
 import { useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import ReactMapGL, {
@@ -20,6 +20,7 @@ const AgencyMapWidget = ({}) => {
   const mapRef = useRef()
   const agencies = useSelector((state) => state.agency.agencies)
   const { palette } = useTheme()
+  const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
 
   const [viewState, setViewState] = useState({
     longitude: -76.8099,
@@ -69,7 +70,7 @@ const AgencyMapWidget = ({}) => {
       onMove={(evt) => setViewState(evt.viewState)}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       style={{
-        width: '70vw',
+        width: isNonMobileScreen ? '70vw' : '100%',
         height: '82vh',
         backgroundColor: palette.background.alt,
         borderRadius: '1.5rem',

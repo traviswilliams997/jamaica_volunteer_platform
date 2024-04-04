@@ -19,9 +19,11 @@ const EventsPage = () => {
         gap="0.5rem"
         justifyContent="space-between"
       >
-        <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
-          <UserWidget volunteer={volunteer} />
-        </Box>
+        {isNonMobileScreens && (
+          <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
+            <UserWidget volunteer={volunteer} />
+          </Box>
+        )}
 
         <Box
           flexBasis={isNonMobileScreens ? '74%' : undefined}

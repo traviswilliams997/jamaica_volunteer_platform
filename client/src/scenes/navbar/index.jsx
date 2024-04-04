@@ -176,6 +176,20 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >
+            <IconButton onClick={() => navigate('/events')}>
+              {theme.palette.mode === 'dark' ? (
+                <Event sx={{ color: dark, fontSize: '25px' }} />
+              ) : (
+                <Event sx={{ color: 'black', fontSize: '25px' }} />
+              )}
+            </IconButton>
+            <IconButton onClick={() => navigate('/agencies')}>
+              {theme.palette.mode === 'dark' ? (
+                <VolunteerActivism sx={{ color: dark, fontSize: '25px' }} />
+              ) : (
+                <VolunteerActivism sx={{ color: 'black', fontSize: '25px' }} />
+              )}
+            </IconButton>
             <IconButton
               onClick={() => dispatch(toggleDarkLightMode())}
               sx={{ fontSize: '25px' }}
@@ -186,9 +200,9 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: '25px' }} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: '25px' }} />
+            {/* <Message sx={{ fontSize: '25px' }} /> */}
             <Notifications sx={{ fontSize: '25px' }} />
-            <Help sx={{ fontSize: '25px' }} />
+            {/* <Help sx={{ fontSize: '25px' }} /> */}
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

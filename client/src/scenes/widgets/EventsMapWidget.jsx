@@ -1,4 +1,4 @@
-import { Box, useTheme, Typography } from '@mui/material'
+import { Box, useTheme, Typography, useMediaQuery } from '@mui/material'
 import { useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactMapGL, {
@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom'
 import Geocoder from './GeocoderWidget'
 // eslint-disable-next-line react/prop-types
 const EventMapsWidget = ({}) => {
+  const isNonMobileScreen = useMediaQuery('(min-width: 1000px)')
+
   const [showPopup, setShowPopup] = useState(false)
   const [clickedPopUpId, setClickPopUpId] = useState(0)
 
@@ -71,7 +73,7 @@ const EventMapsWidget = ({}) => {
       onMove={(evt) => setViewState(evt.viewState)}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       style={{
-        width: '70vw',
+        width: isNonMobileScreen ? '70vw' : '100%',
         height: '82vh',
         backgroundColor: palette.background.alt,
         borderRadius: '1.5rem',
